@@ -1,0 +1,17 @@
+digraph {
+residence -> education;
+age -> IADL;
+age -> cognitive_impairment;
+gender -> smoke;
+gender -> alcohol;
+marital_status -> living_alone;
+wealth -> depression;
+chronic_disease -> IADL;
+social_activity -> depression;
+social_activity -> cognitive_impairment;
+depression -> cognitive_impairment;
+sleep_quality -> cognitive_impairment;
+physical_activity -> IADL;
+using_phone_year -> cognitive_impairment;
+using_phone_year -> hours_phone_per_day;
+}

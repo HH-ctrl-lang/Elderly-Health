@@ -1,0 +1,46 @@
+(intel_env) PS D:\工作\深度学习> & D:\AppGallery\Downloads\miniconda\envs\intel_env\python.exe d:/工作/深度学习/project/src/train.py
+使用设备: privateuseone:0
+输入特征维度: 151
+D:\AppGallery\Downloads\miniconda\envs\intel_env\lib\site-packages\torch\nn\functional.py:3172: UserWarning: The operator 'aten::binary_cross_entropy' is not currently supported on the DML backend and will fall back to run on the CPU. This may have performance implications. (Triggered internally at C:\__w\1\s\pytorch-directml-plugin\torch_directml\csrc\dml\dml_cpu_fallback.cpp:17.)
+  return torch._C._nn.binary_cross_entropy(input, target, weight, reduction_enum)
+Epoch   1/100 | Train Loss: 0.5461 | Val Loss: 0.4373 | Val AUC: 0.8284
+  --> 保存最佳模型, Val AUC: 0.8284
+Epoch   2/100 | Train Loss: 0.3740 | Val Loss: 0.3403 | Val AUC: 0.8943
+  --> 保存最佳模型, Val AUC: 0.8943
+Epoch   3/100 | Train Loss: 0.2969 | Val Loss: 0.3209 | Val AUC: 0.9059
+  --> 保存最佳模型, Val AUC: 0.9059
+Epoch   4/100 | Train Loss: 0.2610 | Val Loss: 0.3109 | Val AUC: 0.9145
+  --> 保存最佳模型, Val AUC: 0.9145
+Epoch   5/100 | Train Loss: 0.2317 | Val Loss: 0.3138 | Val AUC: 0.9072
+Epoch   6/100 | Train Loss: 0.2211 | Val Loss: 0.3023 | Val AUC: 0.9167
+  --> 保存最佳模型, Val AUC: 0.9167
+Epoch   7/100 | Train Loss: 0.2036 | Val Loss: 0.3131 | Val AUC: 0.9148
+Epoch   8/100 | Train Loss: 0.1769 | Val Loss: 0.3274 | Val AUC: 0.9080
+Epoch   9/100 | Train Loss: 0.1627 | Val Loss: 0.3327 | Val AUC: 0.9093
+Epoch  10/100 | Train Loss: 0.1598 | Val Loss: 0.3634 | Val AUC: 0.9011
+Epoch  11/100 | Train Loss: 0.1472 | Val Loss: 0.3647 | Val AUC: 0.9102
+Epoch  12/100 | Train Loss: 0.1360 | Val Loss: 0.3553 | Val AUC: 0.9124
+Epoch  13/100 | Train Loss: 0.1390 | Val Loss: 0.3702 | Val AUC: 0.9088
+Epoch  14/100 | Train Loss: 0.1184 | Val Loss: 0.3680 | Val AUC: 0.9075
+Epoch  15/100 | Train Loss: 0.1225 | Val Loss: 0.3762 | Val AUC: 0.9077
+Epoch  16/100 | Train Loss: 0.0991 | Val Loss: 0.4074 | Val AUC: 0.9033
+Epoch  17/100 | Train Loss: 0.1009 | Val Loss: 0.4156 | Val AUC: 0.9033
+Epoch  18/100 | Train Loss: 0.0907 | Val Loss: 0.4385 | Val AUC: 0.9022
+Epoch  19/100 | Train Loss: 0.0848 | Val Loss: 0.4253 | Val AUC: 0.9050
+Epoch  20/100 | Train Loss: 0.0761 | Val Loss: 0.4389 | Val AUC: 0.9058
+Epoch  21/100 | Train Loss: 0.0845 | Val Loss: 0.4473 | Val AUC: 0.9081
+早停触发，训练结束于 epoch 21
+d:\工作\深度学习\project\src\train.py:137: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load("best_model_cognition_dml.pth"))
+
+========================================
+测试集评估结果:
+AUC: 0.9111
+Accuracy: 0.8692
+F1-score: 0.7380
+Precision: 0.7443
+Recall: 0.7318
+========================================
+ROC 曲线已保存至 roc_curve_dml.png
+
+注：图片输出路径相同导致第一次实验的ROC曲线被覆盖，后续已修改保存路径以区分不同实验的结果。
