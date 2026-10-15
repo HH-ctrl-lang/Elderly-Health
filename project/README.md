@@ -1,5 +1,8 @@
 # V4 Causal Disentanglement + Graph-Guided Prior
 
+> 历史V4实验说明。当前维护入口、行为修复及运行命令请参阅[仓库README](../README.md)
+> 和[代码整理说明](../doc/代码整理说明.md)。下文旧命令及方法结论不代表整理后的实现。
+
 ## 项目结构
 
 ```
