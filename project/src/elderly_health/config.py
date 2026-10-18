@@ -35,8 +35,15 @@ class TrainConfig:
     device: str = "cpu"
     threads: int = 2
     probe_epochs: int = 30
+    # One-based first epoch eligible for best-checkpoint selection; None keeps legacy policy.
+    selection_start_epoch: int | None = None
 
     def __post_init__(self):
+        if self.selection_start_epoch is not None:
+            if type(self.selection_start_epoch) is not int:
+                raise ValueError("selection_start_epoch must be an integer or null")
+            if not 1 <= self.selection_start_epoch <= self.epochs:
+                raise ValueError("selection_start_epoch must be between 1 and epochs")
         for name in (
             "seed",
             "epochs",
@@ -94,3 +101,11 @@ class TrainConfig:
 
     def to_dict(self):
         return asdict(self)
+
+    def first_selection_epoch(self):
+        """Resolve the checkpoint policy without changing optimization or its schedule."""
+        if self.selection_start_epoch is not None:
+            return self.selection_start_epoch
+        if self.model != "baseline" and self.irm_start < self.epochs:
+            return self.irm_start + 1
+        return 1

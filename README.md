@@ -66,6 +66,30 @@ python project/run.py train --epochs 3 --probe-epochs 0 --output outputs/smoke
 V1预设只改变稀疏模式和图权重，不调整IRM、HSIC、预测头及其他超参数。
 环境粒度的地区/省份映射及外部算法暂未纳入这次整理，地区归属需要按调查方案确认。
 
+## 完整约束阶段的选模对照
+
+JSON可设置 `selection_start_epoch`，使用日志中的一基轮次（第1轮为1）。
+例如 `91` 表示前90轮仍正常训练、验证和调整学习率，但只从第91轮起
+按验证AUC保存最佳权重，并从该窗口开始计算早停的未改善次数。
+默认值 `null` 保留旧策略：解耦模型若进入IRM阶段，从第51轮起选模；
+不足51轮的短训练及普通MLP从第1轮选模。
+
+当前 `irm_start=50`、`ramp_epochs=40` 使用零基训练索引，故第91轮的
+约束渐增系数才达到1。新配置不改变任何训练目标、约束时序或数据划分，
+只改变选模窗口及其早停计数。早停计数改变可能延长总训练轮数。
+
+```bash
+python project/run.py train --config project/configs/v1_full_polar0.json --output outputs/v1-full-polar0-42
+python project/run.py train --config project/configs/v1_full_polar3.json --output outputs/v1-full-polar3-42
+python project/run.py train --config project/configs/v1_full_polar30.json --output outputs/v1-full-polar30-42
+```
+
+三组均为均值稀疏、无图、seed=42，只在极化权重0/3/30之间变化。
+不要用 `--epochs 3` 覆盖这些配置：训练轮数小于显式选模起点会报错，
+短训练应使用原有配置或把选模起点同步设小。`training.json` 新增实际
+`selection_start_epoch`、每轮是否可选，以及稀疏/不变性渐增系数，方便核验。
+91是根据训练时序确定的对照起点，不是根据测试集挑选的最佳超参数。
+
 ## 目录
 
 | 路径 | 用途 |
@@ -118,4 +142,3 @@ ruff format --check project/src/elderly_health project/run.py project/src/train 
 
 无PyTorch时，数据、配置和图解析测试可以运行，训练与梯度测试会明确跳过。
 历史结果无需重写，修正后的新结果应独立编号；详见 `doc/代码整理说明.md`。
-

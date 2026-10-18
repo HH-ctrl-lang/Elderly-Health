@@ -103,11 +103,9 @@ def fit(train, val, config, prior=None):
     best_auc, best_state, best_epoch, stale = -float("inf"), None, 0, 0
     history = []
     causal = config.model != "baseline"
+    first_selection_epoch = config.first_selection_epoch()
 
     for epoch in range(config.epochs):
-        # Select the best model after all scheduled objectives enter, if that phase is reached.
-        if causal and epoch == config.irm_start:
-            best_auc, best_state, stale = -float("inf"), None, 0
         model.train()
         totals = {}
         for x, y, environment in loader:
@@ -170,19 +168,27 @@ def fit(train, val, config, prior=None):
             auc = roc_auc_score(val.y, torch.sigmoid(logits).cpu().numpy().ravel())
         scheduler.step(val_loss)
         record = {"epoch": epoch + 1, "val_auc": float(auc), "val_loss": val_loss}
+        record["eligible_for_selection"] = epoch + 1 >= first_selection_epoch
+        record["sparse_ramp"] = (
+            ramp(epoch, config.sparse_start, config.ramp_epochs) if causal else 0.0
+        )
+        record["invariant_ramp"] = (
+            ramp(epoch, config.irm_start, config.ramp_epochs) if causal else 0.0
+        )
         record.update({f"train_{k}": v / len(train.x) for k, v in totals.items()})
         if causal:
             record["mask"] = model.gate.get_scores().cpu().tolist()
         history.append(record)
-        if auc > best_auc:
-            best_auc, best_epoch, stale = float(auc), epoch + 1, 0
-            best_state = copy.deepcopy(model.state_dict())
-        else:
-            stale += 1
+        if record["eligible_for_selection"]:
+            if auc > best_auc:
+                best_auc, best_epoch, stale = float(auc), epoch + 1, 0
+                best_state = copy.deepcopy(model.state_dict())
+            else:
+                stale += 1
         if epoch % 30 == 0 or epoch == config.epochs - 1:
             print(f"Epoch {epoch + 1}: validation AUC={auc:.4f}; loss={val_loss:.4f}", flush=True)
         earliest_stop = config.irm_start + config.irm_grace_epochs if causal else 0
-        if epoch >= earliest_stop and stale >= config.patience:
+        if record["eligible_for_selection"] and epoch >= earliest_stop and stale >= config.patience:
             break
 
     model.load_state_dict(best_state)
@@ -190,6 +196,7 @@ def fit(train, val, config, prior=None):
     return model, {
         "best_epoch": best_epoch,
         "best_val_auc": best_auc,
+        "selection_start_epoch": first_selection_epoch,
         "history": history,
         "env_map": env_map,
         "device": str(device),

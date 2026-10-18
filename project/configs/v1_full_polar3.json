@@ -1,0 +1,15 @@
+{
+  "model": "v5",
+  "seed": 42,
+  "device": "cpu",
+  "epochs": 300,
+  "batch_size": 64,
+  "learning_rate": 0.0003,
+  "irm_mode": "v11",
+  "independence": "hsic",
+  "sparsity": "mean",
+  "lambda_sparse": 0.3,
+  "lambda_entropy": 3,
+  "lambda_graph": 0,
+  "selection_start_epoch": 91
+}

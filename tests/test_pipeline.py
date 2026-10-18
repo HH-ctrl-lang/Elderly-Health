@@ -98,9 +98,76 @@ class GraphTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 TrainConfig(**params)
 
+    def test_selection_policy_validation_and_legacy_defaults(self):
+        self.assertEqual(TrainConfig(model="baseline").first_selection_epoch(), 1)
+        self.assertEqual(TrainConfig().first_selection_epoch(), 51)
+        self.assertEqual(TrainConfig(epochs=3).first_selection_epoch(), 1)
+        self.assertEqual(TrainConfig(selection_start_epoch=91).first_selection_epoch(), 91)
+        for value in (0, -1, 301, 2.5, True, "91"):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                TrainConfig(selection_start_epoch=value)
+
 
 @unittest.skipUnless(importlib.util.find_spec("torch"), "PyTorch is not installed")
 class TorchTests(unittest.TestCase):
+    def test_late_selection_excludes_early_best_without_changing_training(self):
+        from unittest.mock import patch
+
+        import torch
+        from elderly_health.training import fit, predict
+        from sklearn.metrics import roc_auc_score
+
+        rng = np.random.default_rng(12)
+        x = rng.normal(size=(48, 19)).astype(np.float32)
+        y = np.tile([0, 1], 24).astype(np.float32)
+        env = np.tile(["A", "A", "B", "B"], 12)
+        train = SplitData(x[:32], y[:32], env[:32], np.arange(32))
+        val = SplitData(x[32:], y[32:], env[32:], np.arange(32, 48))
+        for model in ("baseline", "v5"):
+            cfg = TrainConfig(
+                model=model,
+                epochs=4,
+                batch_size=16,
+                threads=1,
+                probe_epochs=0,
+                sparse_start=0,
+                irm_start=0,
+                ramp_epochs=1,
+                patience=10,
+                selection_start_epoch=3,
+            )
+            # Force the best reported early score to be outside the eligible window.
+            # Epoch 3 must win over epoch 4, and its real predictions must be restored.
+            actual_scores = []
+            actual_predictions = []
+
+            def score(y_true, probabilities):
+                actual_scores.append(roc_auc_score(y_true, probabilities))
+                actual_predictions.append(probabilities.copy())
+                return [0.99, 0.98, 0.60, 0.55][len(actual_scores) - 1]
+
+            with patch("elderly_health.training.roc_auc_score", side_effect=score):
+                trained, report = fit(train, val, cfg)
+            self.assertEqual(report["best_epoch"], 3)
+            self.assertEqual(report["selection_start_epoch"], 3)
+            self.assertEqual(
+                [row["eligible_for_selection"] for row in report["history"]],
+                [False, False, True, True],
+            )
+            self.assertAlmostEqual(
+                roc_auc_score(val.y, predict(trained, val.x, torch.device("cpu"))),
+                actual_scores[2],
+            )
+            np.testing.assert_array_equal(
+                predict(trained, val.x, torch.device("cpu")), actual_predictions[2]
+            )
+            _, reference = fit(train, val, replace(cfg, selection_start_epoch=None))
+            for before, after in zip(report["history"], reference["history"]):
+                self.assertEqual(before["train_total"], after["train_total"])
+                if model == "v5":
+                    self.assertEqual(before["mask"], after["mask"])
+            self.assertEqual(report["history"][2]["invariant_ramp"], float(model == "v5"))
+
     def test_graph_loss_has_nonzero_gradient(self):
         import torch
         from elderly_health.graph import graph_guided_loss
