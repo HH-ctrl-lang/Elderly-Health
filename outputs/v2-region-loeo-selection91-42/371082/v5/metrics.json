@@ -1,0 +1,104 @@
+{
+  "main": {
+    "auc": 0.6497513562386981,
+    "auprc": 0.32961570564075915,
+    "accuracy": 0.7675,
+    "balanced_accuracy": 0.5775316455696202,
+    "f1": 0.3111111111111111,
+    "precision": 0.4117647058823529,
+    "recall": 0.25,
+    "log_loss": 0.5229801166174579,
+    "brier": 0.16909866276195845,
+    "n": 400,
+    "positive_rate": 0.20999999344348907,
+    "threshold": 0.5
+  },
+  "per_environment": {
+    "east": {
+      "auc": 0.6497513562386981,
+      "auprc": 0.32961570564075915,
+      "accuracy": 0.7675,
+      "balanced_accuracy": 0.5775316455696202,
+      "f1": 0.3111111111111111,
+      "precision": 0.4117647058823529,
+      "recall": 0.25,
+      "log_loss": 0.5229801166174579,
+      "brier": 0.16909866276195845,
+      "n": 400,
+      "positive_rate": 0.20999999344348907,
+      "threshold": 0.5
+    }
+  },
+  "per_site": {
+    "371082": {
+      "auc": 0.6497513562386981,
+      "auprc": 0.32961570564075915,
+      "accuracy": 0.7675,
+      "balanced_accuracy": 0.5775316455696202,
+      "f1": 0.3111111111111111,
+      "precision": 0.4117647058823529,
+      "recall": 0.25,
+      "log_loss": 0.5229801166174579,
+      "brier": 0.16909866276195845,
+      "n": 400,
+      "positive_rate": 0.20999999344348907,
+      "threshold": 0.5
+    }
+  },
+  "zc": {
+    "auc": 0.6351341169379144,
+    "auprc": 0.3279730880951294,
+    "accuracy": 0.775,
+    "balanced_accuracy": 0.5866485834840265,
+    "f1": 0.3283582089552239,
+    "precision": 0.44,
+    "recall": 0.2619047619047619,
+    "log_loss": 0.528053862667153,
+    "brier": 0.17070996442831576,
+    "n": 400,
+    "positive_rate": 0.20999999344348907,
+    "threshold": 0.5
+  },
+  "gate": {
+    "residence": 0.47382643818855286,
+    "age": 0.5424124598503113,
+    "gender": 0.4569251239299774,
+    "education": 0.46804356575012207,
+    "marital_status": 0.46842095255851746,
+    "living_alone": 0.47000131011009216,
+    "wealth": 0.5129501223564148,
+    "chronic_disease": 0.39959895610809326,
+    "social_activity": 0.4584139585494995,
+    "IADL": 0.4441085457801819,
+    "depression": 0.4405442178249359,
+    "sleep_quality": 0.48403868079185486,
+    "sleep_duration": 0.5235872864723206,
+    "physical_activity": 0.4323982894420624,
+    "if_use_mobile_phone": 0.5219864249229431,
+    "using_phone_year": 0.48662278056144714,
+    "hours_phone_per_day": 0.464680016040802,
+    "smoke": 0.4747108519077301,
+    "alcohol": 0.4314190149307251
+  },
+  "selected_features": [
+    "age",
+    "wealth",
+    "sleep_duration",
+    "if_use_mobile_phone"
+  ],
+  "graph_jaccard": null,
+  "zc_env_probe": {
+    "n_known": 400,
+    "n_unseen": 0,
+    "accuracy": 0.515,
+    "balanced_accuracy": 0.515,
+    "majority_accuracy": 0.0
+  },
+  "zs_env_probe": {
+    "n_known": 400,
+    "n_unseen": 0,
+    "accuracy": 0.5725,
+    "balanced_accuracy": 0.5725,
+    "majority_accuracy": 0.0
+  }
+}

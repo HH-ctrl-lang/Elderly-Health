@@ -1,0 +1,85 @@
+{
+  "main": {
+    "auc": 0.8663829787234042,
+    "auprc": 0.2708185753988455,
+    "accuracy": 0.8753117206982544,
+    "balanced_accuracy": 0.7841489361702128,
+    "f1": 0.40476190476190477,
+    "precision": 0.288135593220339,
+    "recall": 0.68,
+    "log_loss": 0.3149720362928274,
+    "brier": 0.09512309052945452,
+    "n": 401,
+    "positive_rate": 0.06234414130449295,
+    "threshold": 0.5
+  },
+  "per_environment": {
+    "640106": {
+      "auc": 0.8663829787234042,
+      "auprc": 0.2708185753988455,
+      "accuracy": 0.8753117206982544,
+      "balanced_accuracy": 0.7841489361702128,
+      "f1": 0.40476190476190477,
+      "precision": 0.288135593220339,
+      "recall": 0.68,
+      "log_loss": 0.3149720362928274,
+      "brier": 0.09512309052945452,
+      "n": 401,
+      "positive_rate": 0.06234414130449295,
+      "threshold": 0.5
+    }
+  },
+  "zc": {
+    "auc": 0.8364893617021277,
+    "auprc": 0.24501110146189278,
+    "accuracy": 0.8703241895261845,
+    "balanced_accuracy": 0.7441489361702127,
+    "f1": 0.36585365853658536,
+    "precision": 0.2631578947368421,
+    "recall": 0.6,
+    "log_loss": 0.3213179260020183,
+    "brier": 0.09632523468085163,
+    "n": 401,
+    "positive_rate": 0.06234414130449295,
+    "threshold": 0.5
+  },
+  "gate": {
+    "residence": 0.3947524428367615,
+    "age": 0.49500417709350586,
+    "gender": 0.4889727830886841,
+    "education": 0.3907969892024994,
+    "marital_status": 0.43586620688438416,
+    "living_alone": 0.4682663679122925,
+    "wealth": 0.4411439597606659,
+    "chronic_disease": 0.43000203371047974,
+    "social_activity": 0.4234355390071869,
+    "IADL": 0.470516175031662,
+    "depression": 0.4531359076499939,
+    "sleep_quality": 0.48007720708847046,
+    "sleep_duration": 0.4987635910511017,
+    "physical_activity": 0.4176798164844513,
+    "if_use_mobile_phone": 0.5179387927055359,
+    "using_phone_year": 0.4372682273387909,
+    "hours_phone_per_day": 0.4595993757247925,
+    "smoke": 0.4040750563144684,
+    "alcohol": 0.4342834949493408
+  },
+  "selected_features": [
+    "if_use_mobile_phone"
+  ],
+  "graph_jaccard": null,
+  "zc_env_probe": {
+    "n_known": 0,
+    "n_unseen": 401,
+    "accuracy": null,
+    "balanced_accuracy": null,
+    "majority_accuracy": null
+  },
+  "zs_env_probe": {
+    "n_known": 0,
+    "n_unseen": 401,
+    "accuracy": null,
+    "balanced_accuracy": null,
+    "majority_accuracy": null
+  }
+}
