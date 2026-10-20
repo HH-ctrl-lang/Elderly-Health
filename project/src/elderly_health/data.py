@@ -11,6 +11,14 @@ from sklearn.preprocessing import StandardScaler
 
 TARGET = "cognitive_impairment"
 ENVIRONMENT = "environment_code"
+REGION = "environment_region"
+# Three-region study assumption: Beijing/Shandong east, Jilin/Jiangxi central,
+# Guangxi/Ningxia west. This is deliberately an explicit, auditable mapping.
+PROVINCE_TO_REGION = {
+    "11": "east", "37": "east", "22": "central", "36": "central",
+    "45": "west", "64": "west",
+}
+
 FEATURES = (
     "residence",
     "age",
@@ -57,6 +65,19 @@ def read_raw(path, encoding="gbk"):
     if frame.empty or frame["label"].nunique() != 2:
         raise ValueError("Both outcome classes are required")
     return frame
+
+
+def attach_regions(frame):
+    """Add research-defined regions without replacing original six-digit site codes."""
+    codes = frame[ENVIRONMENT].astype(str)
+    provinces = codes.str[:2]
+    invalid = ~codes.str.fullmatch(r"[0-9]{6}") | ~provinces.isin(PROVINCE_TO_REGION)
+    if invalid.any():
+        bad_codes = sorted(codes[invalid].unique().tolist())
+        raise ValueError(f"Region mapping is undefined for site codes: {bad_codes}")
+    result = frame.copy()
+    result[REGION] = provinces.map(PROVINCE_TO_REGION)
+    return result
 
 
 def random_split(frame, seed=42):
@@ -124,16 +145,18 @@ class SplitData:
     y: np.ndarray
     env: np.ndarray
     sample_ids: np.ndarray
+    site_env: np.ndarray | None = None
 
 
-def prepare_splits(frames):
+def prepare_splits(frames, environment_column=ENVIRONMENT):
     preprocessor = FeaturePreprocessor().fit(frames[0])
     splits = [
         SplitData(
             preprocessor.transform(frame),
             frame["label"].to_numpy(dtype=np.float32),
-            frame[ENVIRONMENT].to_numpy(dtype=str),
+            frame[environment_column].to_numpy(dtype=str),
             frame["sample_id"].to_numpy(),
+            frame[ENVIRONMENT].to_numpy(dtype=str),
         )
         for frame in frames
     ]
@@ -145,6 +168,8 @@ def save_splits(path, splits):
     path.parent.mkdir(parents=True, exist_ok=True)
     arrays = {"feature_names": np.asarray(FEATURES)}
     for name, split in zip(("train", "val", "test"), splits):
+        if split.site_env is not None:
+            arrays[f"site_env_{name}"] = split.site_env
         arrays.update(
             {
                 f"X_{name}": split.x,
