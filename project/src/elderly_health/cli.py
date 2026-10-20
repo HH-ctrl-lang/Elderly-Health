@@ -107,6 +107,13 @@ def run_experiment(args, config, frames, output):
     return result
 
 
+def loeo_config_for_model(config, model_name):
+    """Keep a comparison MLP's checkpoint policy independent of the causal model."""
+    if model_name == "baseline" and config.model != "baseline":
+        return replace(config, model="baseline", selection_start_epoch=None)
+    return replace(config, model=model_name)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -153,7 +160,7 @@ def main(argv=None):
         for model_name in (
             (config.model, "baseline") if config.model != "baseline" else ("baseline",)
         ):
-            fold_config = replace(config, model=model_name)
+            fold_config = loeo_config_for_model(config, model_name)
             # Original model and baseline see exactly the same rows in each fold.
             result = run_experiment(args, fold_config, frames, args.output / str(site) / model_name)
             rows.append({"site": str(site), "model": model_name, **result["main"]})
