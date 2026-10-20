@@ -90,6 +90,59 @@ python project/run.py train --config project/configs/v1_full_polar30.json --outp
 `selection_start_epoch`、每轮是否可选，以及稀疏/不变性渐增系数，方便核验。
 91是根据训练时序确定的对照起点，不是根据测试集挑选的最佳超参数。
 
+## 2026年10月：V1软门控与V2三地区环境实验
+
+`project/configs/v1_relaxed.json` 已明确使用均值软稀疏（`sparsity=mean`）、
+无图先验（`lambda_graph=0`）及零极化惩罚（`lambda_entropy=0`）。
+其余双表示、V5预测头、IRM(v11)和HSIC的实现不变。
+门控在训练中始终是连续分数，不因0.5阈值发生硬截断。
+**请不要把此次配置改动后的新结果与原同名配置的历史结果混为同一条件。**
+
+V2新增 `environment_granularity`，默认 `site`（12监测点），可选
+`region`（东、中、西三个地区）。地区编码为研究方案的明确假设：
+北京11、山东37 -> east；吉林22、江西36 -> central；广西45、宁夏64 -> west。
+映射仅由站点码前两位生成，需与原调查方案/老师核对，尤其吉林所属的
+研究区域分组；未知省份或非六位编码会报错。它不是一个预测特征，不覆盖
+原始`environment_code`，原站点信息仍在预测CSV和NPZ中。
+研究环境标签由原站点转为地区时，改变的是分组标签，不是样本或预测特征。
+
+使用相同配置与seed做公平对照（从仓库根目录）：
+
+```bash
+python -m unittest discover -s tests -v
+python -m compileall -q project/src/elderly_health project/run.py
+
+# V1软门控：未完成时可单独训练（已存在输出目录不可复用）
+python project/run.py train --config project/configs/v1_relaxed.json --output outputs/v1-relaxed-zero-polar-42
+
+# V2: 仅改变环境粒度，其余超参数、训练/验证/测试划分保持一致
+python project/run.py train --config project/configs/v2_site_v1.json --output outputs/v2-site-v1-42
+python project/run.py train --config project/configs/v2_region_v1.json --output outputs/v2-region-v1-42
+
+# 外部泛化测试：按原12站点留一；两套模型用相同的外部站点和输入行
+python project/run.py loeo --held-out 110113 --holdout-level site --config project/configs/v2_site_v1.json --output outputs/v2-site-loeo-one-42
+python project/run.py loeo --held-out 110113 --holdout-level site --config project/configs/v2_region_v1.json --output outputs/v2-region-loeo-one-42
+
+# 上述单折运行通过后，再执行完整12站点留一对照
+python project/run.py loeo --holdout-level site --config project/configs/v2_site_v1.json --output outputs/v2-site-loeo-all-42
+python project/run.py loeo --holdout-level site --config project/configs/v2_region_v1.json --output outputs/v2-region-loeo-all-42
+
+# 附加研究：真正留下一个完整地区（共3折），不是上述12站点对照的替代
+python project/run.py loeo --holdout-level region --config project/configs/v2_region_v1.json --output outputs/v2-region-leave-region-out-42
+```
+
+`loeo`默认外部留出粒度依旧是`site`；`--holdout-level region`才把
+一个地区的全部样本一起留出。地区留出下，环境探针在测试地区上
+`n_known=0`时指标为null，不意味着`z_c`成功去除了环境信息。
+`summary.csv`包含外部留出单位、环境训练粒度和分类指标；
+地区配置的`metrics.json`还附加`per_site`，防止地区聚合掩盖站点差异。
+样本的目标标签和划分逻辑不变；不能由这两组实验推断因果效应。
+
+**注意：** 当前v11是自定义梯度方差惩罚，不是已证实的标准IRM。
+若研究发现地区粒度改善了环境探针或站点泛化，仍必须验证不同随机种子、
+以验证集选择超参、评估站点异质性，并确认认知障碍标签是否来自正确的
+MMSE判定规则。测试集不得用于选模。Git LFS的.pt/.npz指针需拉取真实数据。
+
 ## 目录
 
 | 路径 | 用途 |
