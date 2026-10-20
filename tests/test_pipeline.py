@@ -70,6 +70,21 @@ class DataTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Entirely missing"):
             FeaturePreprocessor().fit(frame)
 
+    def test_loeo_baseline_does_not_inherit_causal_checkpoint_window(self):
+        from elderly_health.cli import loeo_config_for_model
+
+        causal = TrainConfig(model="v5", epochs=100, selection_start_epoch=91)
+        self.assertEqual(loeo_config_for_model(causal, "v5").first_selection_epoch(), 91)
+        baseline = loeo_config_for_model(causal, "baseline")
+        self.assertEqual(baseline.model, "baseline")
+        self.assertIsNone(baseline.selection_start_epoch)
+        self.assertEqual(baseline.first_selection_epoch(), 1)
+        self.assertEqual(causal.selection_start_epoch, 91)
+        standalone = TrainConfig(model="baseline", epochs=100, selection_start_epoch=15)
+        self.assertEqual(
+            loeo_config_for_model(standalone, "baseline").first_selection_epoch(), 15
+        )
+
     def test_help_without_torch_or_data_load(self):
         result = subprocess.run(
             [sys.executable, str(ROOT / "project/run.py"), "--help"],
