@@ -103,6 +103,13 @@ def evaluate(model, splits, config, prior=None):
         str(env): metrics(test.y[test.env == env], probabilities[test.env == env])
         for env in sorted(set(test.env))
     }
+    if test.site_env is not None and not np.array_equal(test.env, test.site_env):
+        result["per_site"] = {
+            str(site): metrics(
+                test.y[test.site_env == site], probabilities[test.site_env == site]
+            )
+            for site in sorted(set(test.site_env))
+        }
     if not isinstance(model, SimpleMLP):
         result["zc"] = metrics(test.y, predict(model, test.x, device, head="zc"))
         mask = model.gate.get_scores().cpu().numpy()
@@ -135,7 +142,8 @@ def export_predictions(model, splits, config, output):
         table = pd.DataFrame(
             {
                 "sample_id": split.sample_ids,
-                "environment_code": split.env,
+                "environment_code": split.site_env if split.site_env is not None else split.env,
+                "environment_group": split.env,
                 "cognitive_impairment": split.y.astype(int),
                 "split": name,
                 "seed": config.seed,
