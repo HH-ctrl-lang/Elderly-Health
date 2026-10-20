@@ -112,7 +112,7 @@ V2新增 `environment_granularity`，默认 `site`（12监测点），可选
 python -m unittest discover -s tests -v
 python -m compileall -q project/src/elderly_health project/run.py
 
-# V1软门控：未完成时可单独训练（已存在输出目录不可复用）
+# V1软门控：可单独训练；与下方site_v1条件等价，通常二选一即可
 python project/run.py train --config project/configs/v1_relaxed.json --output outputs/v1-relaxed-zero-polar-42
 
 # V2: 仅改变环境粒度，其余超参数、训练/验证/测试划分保持一致
