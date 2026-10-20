@@ -63,7 +63,9 @@ def provenance(args, config):
         "feature_names": list(FEATURES),
         "label_encoding": "0=no impairment;1=impairment",
         "environment_granularity": config.environment_granularity,
-        "region_mapping": PROVINCE_TO_REGION if config.environment_granularity == "region" else None,
+        "region_mapping": (
+            PROVINCE_TO_REGION if config.environment_granularity == "region" else None
+        ),
         "holdout_level": getattr(args, "holdout_level", None),
         "python": platform.python_version(),
         "torch": torch.__version__,
@@ -88,7 +90,9 @@ def run_experiment(args, config, frames, output):
     if args.graph and config.model != "baseline" and config.lambda_graph > 0:
         prior = load_graph_prior(args.graph, "cognitive_impairment", FEATURES)
     output.mkdir(parents=True, exist_ok=False)
-    environment_column = REGION if config.environment_granularity == "region" else ENVIRONMENT
+    environment_column = (
+        REGION if config.environment_granularity == "region" else ENVIRONMENT
+    )
     splits, preprocessor = prepare_splits(frames, environment_column=environment_column)
     write_json(output / "config.json", provenance(args, config))
     save_splits(output / "splits.npz", splits)
@@ -141,7 +145,9 @@ def main(argv=None):
             # None explicitly means no graph. Missing paths fail instead of silently disabling it.
             sub.add_argument("--graph", type=Path, default=None)
         if command == "loeo":
-            sub.add_argument("--held-out", help="One site code or region label for --holdout-level")
+            sub.add_argument(
+                "--held-out", help="One site code or region label for --holdout-level"
+            )
             sub.add_argument(
                 "--holdout-level",
                 choices=["site", "region"],
@@ -185,13 +191,15 @@ def main(argv=None):
             fold_config = loeo_config_for_model(config, model_name)
             # Original model and baseline see exactly the same rows in each fold.
             result = run_experiment(args, fold_config, frames, args.output / str(site) / model_name)
-            rows.append({
-                "held_out": str(site),
-                "held_out_level": args.holdout_level,
-                "environment_granularity": fold_config.environment_granularity,
-                "model": model_name,
-                **result["main"],
-            })
+            rows.append(
+                {
+                    "held_out": str(site),
+                    "held_out_level": args.holdout_level,
+                    "environment_granularity": fold_config.environment_granularity,
+                    "model": model_name,
+                    **result["main"],
+                }
+            )
             pd.DataFrame(rows).to_csv(args.output / "summary.csv", index=False)
     print("LOEO complete; use summary.csv for paired per-site comparisons.")
 
