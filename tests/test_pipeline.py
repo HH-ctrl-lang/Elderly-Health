@@ -18,7 +18,10 @@ from elderly_health.config import TrainConfig  # noqa: E402
 from elderly_health.data import (  # noqa: E402
     ENVIRONMENT,
     FEATURES,
+    REGION,
     FeaturePreprocessor,
+    attach_regions,
+    prepare_splits,
     SplitData,
     held_out_split,
     random_split,
@@ -84,6 +87,46 @@ class DataTests(unittest.TestCase):
         self.assertEqual(
             loeo_config_for_model(standalone, "baseline").first_selection_epoch(), 15
         )
+
+    def test_region_grouping_and_site_identity(self):
+        codes = [
+            "110113", "110114", "371082", "371121",
+            "220202", "220421", "360102", "361125",
+            "450108", "450125", "640106", "640221",
+        ]
+        frame = synthetic_frame()
+        frame[ENVIRONMENT] = np.tile(codes, 10)
+        grouped = attach_regions(frame)
+        self.assertEqual(set(grouped[REGION]), {"east", "central", "west"})
+        self.assertEqual(grouped[REGION].value_counts().to_dict(), {
+            "east": 40, "central": 40, "west": 40
+        })
+        self.assertEqual(grouped[ENVIRONMENT].tolist(), frame[ENVIRONMENT].tolist())
+        splits, _ = prepare_splits(random_split(grouped), environment_column=REGION)
+        for split in splits:
+            self.assertEqual(len(split.env), len(split.site_env))
+            for group, site in zip(split.env, split.site_env):
+                self.assertEqual(
+                    group,
+                    {"11": "east", "37": "east", "22": "central",
+                     "36": "central", "45": "west", "64": "west"}[site[:2]],
+                )
+        source_train, source_val, heldout = held_out_split(
+            grouped, "west", column=REGION
+        )
+        self.assertEqual(set(heldout[REGION]), {"west"})
+        self.assertFalse(
+            {"west"} & set(source_train[REGION]) | ({"west"} & set(source_val[REGION]))
+        )
+
+    def test_unknown_region_codes_fail_instead_of_silent_grouping(self):
+        frame = synthetic_frame()
+        frame[ENVIRONMENT] = "999999"
+        with self.assertRaisesRegex(ValueError, "Region mapping is undefined"):
+            attach_regions(frame)
+        self.assertEqual(TrainConfig(environment_granularity="region").environment_granularity, "region")
+        with self.assertRaises(ValueError):
+            TrainConfig(environment_granularity="province")
 
     def test_help_without_torch_or_data_load(self):
         result = subprocess.run(
