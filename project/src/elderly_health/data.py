@@ -15,8 +15,12 @@ REGION = "environment_region"
 # Three-region study assumption: Beijing/Shandong east, Jilin/Jiangxi central,
 # Guangxi/Ningxia west. This is deliberately an explicit, auditable mapping.
 PROVINCE_TO_REGION = {
-    "11": "east", "37": "east", "22": "central", "36": "central",
-    "45": "west", "64": "west",
+    "11": "east",
+    "37": "east",
+    "22": "central",
+    "36": "central",
+    "45": "west",
+    "64": "west",
 }
 
 FEATURES = (
