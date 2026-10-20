@@ -18,6 +18,9 @@ from .config import TrainConfig
 from .data import (
     ENVIRONMENT,
     FEATURES,
+    REGION,
+    PROVINCE_TO_REGION,
+    attach_regions,
     held_out_split,
     prepare_splits,
     random_split,
@@ -59,6 +62,9 @@ def provenance(args, config):
         "input_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
         "feature_names": list(FEATURES),
         "label_encoding": "0=no impairment;1=impairment",
+        "environment_granularity": config.environment_granularity,
+        "region_mapping": PROVINCE_TO_REGION if config.environment_granularity == "region" else None,
+        "holdout_level": getattr(args, "holdout_level", None),
         "python": platform.python_version(),
         "torch": torch.__version__,
         "numpy": np.__version__,
@@ -82,7 +88,8 @@ def run_experiment(args, config, frames, output):
     if args.graph and config.model != "baseline" and config.lambda_graph > 0:
         prior = load_graph_prior(args.graph, "cognitive_impairment", FEATURES)
     output.mkdir(parents=True, exist_ok=False)
-    splits, preprocessor = prepare_splits(frames)
+    environment_column = REGION if config.environment_granularity == "region" else ENVIRONMENT
+    splits, preprocessor = prepare_splits(frames, environment_column=environment_column)
     write_json(output / "config.json", provenance(args, config))
     save_splits(output / "splits.npz", splits)
     with (output / "preprocessor.pkl").open("wb") as stream:
@@ -134,7 +141,13 @@ def main(argv=None):
             # None explicitly means no graph. Missing paths fail instead of silently disabling it.
             sub.add_argument("--graph", type=Path, default=None)
         if command == "loeo":
-            sub.add_argument("--held-out", help="One site code; omit to evaluate every site")
+            sub.add_argument("--held-out", help="One site code or region label for --holdout-level")
+            sub.add_argument(
+                "--holdout-level",
+                choices=["site", "region"],
+                default="site",
+                help="Outer holdout unit; site keeps the original 12-site paired protocol",
+            )
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     frame = read_raw(args.input, args.encoding)
@@ -148,22 +161,37 @@ def main(argv=None):
         print(f"Saved train-only preprocessing to {args.output}")
         return
     config = load_config(args)
+    if config.environment_granularity == "region" or (
+        args.command == "loeo" and args.holdout_level == "region"
+    ):
+        frame = attach_regions(frame)
     if args.command == "train":
         run_experiment(args, config, random_split(frame, config.seed), args.output)
         return
     # Every outer fold starts from raw data and learns its own imputer and scaler.
-    sites = sorted(frame[ENVIRONMENT].unique()) if args.held_out is None else [args.held_out]
+    holdout_column = REGION if args.holdout_level == "region" else ENVIRONMENT
+    sites = (
+        sorted(frame[holdout_column].unique())
+        if args.held_out is None
+        else [args.held_out]
+    )
     args.output.mkdir(parents=True, exist_ok=False)
     rows = []
     for site in sites:
-        frames = held_out_split(frame, site, config.seed)
+        frames = held_out_split(frame, site, config.seed, column=holdout_column)
         for model_name in (
             (config.model, "baseline") if config.model != "baseline" else ("baseline",)
         ):
             fold_config = loeo_config_for_model(config, model_name)
             # Original model and baseline see exactly the same rows in each fold.
             result = run_experiment(args, fold_config, frames, args.output / str(site) / model_name)
-            rows.append({"site": str(site), "model": model_name, **result["main"]})
+            rows.append({
+                "held_out": str(site),
+                "held_out_level": args.holdout_level,
+                "environment_granularity": fold_config.environment_granularity,
+                "model": model_name,
+                **result["main"],
+            })
             pd.DataFrame(rows).to_csv(args.output / "summary.csv", index=False)
     print("LOEO complete; use summary.csv for paired per-site comparisons.")
 
