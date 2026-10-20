@@ -7,6 +7,7 @@ from dataclasses import asdict, dataclass
 @dataclass(frozen=True)
 class TrainConfig:
     model: str = "v5"
+    environment_granularity: str = "site"
     seed: int = 42
     epochs: int = 300
     batch_size: int = 64
@@ -66,6 +67,7 @@ class TrainConfig:
                 raise ValueError(f"{name} must be finite")
         choices = {
             "model": {"baseline", "v4", "v5"},
+            "environment_granularity": {"site", "region"},
             "irm_mode": {"none", "standard", "v11"},
             "independence": {"none", "cosine", "hsic"},
             "sparsity": {"none", "target", "mean"},
