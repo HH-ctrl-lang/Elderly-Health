@@ -142,7 +142,9 @@ def export_predictions(model, splits, config, output):
         table = pd.DataFrame(
             {
                 "sample_id": split.sample_ids,
-                "environment_code": split.site_env if split.site_env is not None else split.env,
+                "environment_code": (
+                    split.site_env if split.site_env is not None else split.env
+                ),
                 "environment_group": split.env,
                 "cognitive_impairment": split.y.astype(int),
                 "split": name,
