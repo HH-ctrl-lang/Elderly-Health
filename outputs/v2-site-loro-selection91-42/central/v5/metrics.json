@@ -1,0 +1,129 @@
+{
+  "main": {
+    "auc": 0.738824775576536,
+    "auprc": 0.21326206321002733,
+    "accuracy": 0.7847309136420526,
+    "balanced_accuracy": 0.6626054403343136,
+    "f1": 0.2979591836734694,
+    "precision": 0.20977011494252873,
+    "recall": 0.5140845070422535,
+    "log_loss": 0.45094662049787554,
+    "brier": 0.14573733780764767,
+    "n": 1598,
+    "positive_rate": 0.08886107802391052,
+    "threshold": 0.5
+  },
+  "per_environment": {
+    "220202": {
+      "auc": 0.4970050683458762,
+      "auprc": 0.04571436397322065,
+      "accuracy": 0.7925,
+      "balanced_accuracy": 0.4700506834587621,
+      "f1": 0.04597701149425287,
+      "precision": 0.02857142857142857,
+      "recall": 0.11764705882352941,
+      "log_loss": 0.43729432386404093,
+      "brier": 0.1400384266475243,
+      "n": 400,
+      "positive_rate": 0.042500000447034836,
+      "threshold": 0.5
+    },
+    "220421": {
+      "auc": 0.804299645390071,
+      "auprc": 0.21572136330219527,
+      "accuracy": 0.7175,
+      "balanced_accuracy": 0.7522163120567376,
+      "f1": 0.25165562913907286,
+      "precision": 0.14960629921259844,
+      "recall": 0.7916666666666666,
+      "log_loss": 0.5326863499782623,
+      "brier": 0.1793175190270685,
+      "n": 400,
+      "positive_rate": 0.05999999865889549,
+      "threshold": 0.5
+    },
+    "360102": {
+      "auc": 0.7648594685916141,
+      "auprc": 0.20942891172102562,
+      "accuracy": 0.92,
+      "balanced_accuracy": 0.6209491629549992,
+      "f1": 0.23809523809523808,
+      "precision": 0.2,
+      "recall": 0.29411764705882354,
+      "log_loss": 0.2529632244962729,
+      "brier": 0.0660940134865497,
+      "n": 400,
+      "positive_rate": 0.042500000447034836,
+      "threshold": 0.5
+    },
+    "361125": {
+      "auc": 0.7082385501971489,
+      "auprc": 0.37948449451079624,
+      "accuracy": 0.7085427135678392,
+      "balanced_accuracy": 0.6539657264179557,
+      "f1": 0.44761904761904764,
+      "precision": 0.373015873015873,
+      "recall": 0.5595238095238095,
+      "log_loss": 0.5814953271863684,
+      "brier": 0.19775950289488436,
+      "n": 398,
+      "positive_rate": 0.21105527877807617,
+      "threshold": 0.5
+    }
+  },
+  "zc": {
+    "auc": 0.7306700781612754,
+    "auprc": 0.2099987204426883,
+    "accuracy": 0.7841051314142679,
+    "balanced_accuracy": 0.6845060749110046,
+    "f1": 0.31683168316831684,
+    "precision": 0.22038567493112948,
+    "recall": 0.5633802816901409,
+    "log_loss": 0.4473685093912579,
+    "brier": 0.14580958780072414,
+    "n": 1598,
+    "positive_rate": 0.08886107802391052,
+    "threshold": 0.5
+  },
+  "gate": {
+    "residence": 0.42310288548469543,
+    "age": 0.497260183095932,
+    "gender": 0.451286256313324,
+    "education": 0.3885592818260193,
+    "marital_status": 0.4513228237628937,
+    "living_alone": 0.4688013792037964,
+    "wealth": 0.4677754044532776,
+    "chronic_disease": 0.4497784376144409,
+    "social_activity": 0.45612451434135437,
+    "IADL": 0.4734416604042053,
+    "depression": 0.5043572187423706,
+    "sleep_quality": 0.4976816773414612,
+    "sleep_duration": 0.5274561047554016,
+    "physical_activity": 0.40300923585891724,
+    "if_use_mobile_phone": 0.4961642324924469,
+    "using_phone_year": 0.5091851949691772,
+    "hours_phone_per_day": 0.4437475800514221,
+    "smoke": 0.38831013441085815,
+    "alcohol": 0.47169947624206543
+  },
+  "selected_features": [
+    "depression",
+    "sleep_duration",
+    "using_phone_year"
+  ],
+  "graph_jaccard": null,
+  "zc_env_probe": {
+    "n_known": 0,
+    "n_unseen": 1598,
+    "accuracy": null,
+    "balanced_accuracy": null,
+    "majority_accuracy": null
+  },
+  "zs_env_probe": {
+    "n_known": 0,
+    "n_unseen": 1598,
+    "accuracy": null,
+    "balanced_accuracy": null,
+    "majority_accuracy": null
+  }
+}
