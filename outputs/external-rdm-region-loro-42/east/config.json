@@ -1,0 +1,27 @@
+{
+  "algorithm": "RDM (binary tabular adaptation)",
+  "source_algorithm": "Nguyen et al. RDM/DomainBed",
+  "source_commit": "1b8830e1b373ccacc7b50a2089ebfc2c188bb6b2",
+  "rdm_reference_lambda": 5.0,
+  "rdm_reference_anneal_steps": 1500,
+  "source_license": "MIT (project/external/RDM_LICENSE.txt)",
+  "config": {
+    "seed": 42,
+    "device": "cpu",
+    "threads": 2,
+    "epochs": 300,
+    "per_environment_batch_size": 32,
+    "learning_rate": 0.0003,
+    "rdm_lr": 1.5e-05,
+    "weight_decay": 1e-05,
+    "positive_weight": 3.0,
+    "rdm_lambda": 5.0,
+    "rdm_penalty_anneal_iters": 1500,
+    "variance_weight": 0.0,
+    "patience": 80,
+    "selection_start_epoch": 91
+  },
+  "environment_granularity": "region",
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "holdout_mode": "loro"
+}
