@@ -1,0 +1,2412 @@
+{
+  "best_epoch": 264,
+  "best_val_auc": 0.7139202965708991,
+  "history": [
+    {
+      "epoch": 1,
+      "updates": 43,
+      "val_auc": 0.7348285449490269,
+      "mean_risk": 0.8060478776000267,
+      "risk_variance": 0.012413733693350413,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 2,
+      "updates": 86,
+      "val_auc": 0.7328637627432808,
+      "mean_risk": 0.7286459900612055,
+      "risk_variance": 0.02671713051414943,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 3,
+      "updates": 129,
+      "val_auc": 0.7250046339202966,
+      "mean_risk": 0.7364360177239706,
+      "risk_variance": 0.03477486340209928,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 4,
+      "updates": 172,
+      "val_auc": 0.7141427247451344,
+      "mean_risk": 0.712285271910734,
+      "risk_variance": 0.01816788339225283,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 5,
+      "updates": 215,
+      "val_auc": 0.712289156626506,
+      "mean_risk": 0.7023501784302467,
+      "risk_variance": 0.02482956442347216,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 6,
+      "updates": 258,
+      "val_auc": 0.7106580166821131,
+      "mean_risk": 0.6881510975748993,
+      "risk_variance": 0.01892881799200717,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 7,
+      "updates": 301,
+      "val_auc": 0.7063948100092678,
+      "mean_risk": 0.7006782057673432,
+      "risk_variance": 0.025641566431965846,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 8,
+      "updates": 344,
+      "val_auc": 0.7108063021316035,
+      "mean_risk": 0.654907783796621,
+      "risk_variance": 0.012429107846422318,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 9,
+      "updates": 387,
+      "val_auc": 0.7110287303058388,
+      "mean_risk": 0.6578369736671448,
+      "risk_variance": 0.02794342466247969,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 10,
+      "updates": 430,
+      "val_auc": 0.7110658016682113,
+      "mean_risk": 0.6646375018496846,
+      "risk_variance": 0.023661882161409162,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 11,
+      "updates": 473,
+      "val_auc": 0.7087303058387396,
+      "mean_risk": 0.6594716462978097,
+      "risk_variance": 0.019819451686533623,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 12,
+      "updates": 516,
+      "val_auc": 0.7098424467099166,
+      "mean_risk": 0.666934436836908,
+      "risk_variance": 0.03202950996688572,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 13,
+      "updates": 559,
+      "val_auc": 0.7092493049119555,
+      "mean_risk": 0.6305699514788251,
+      "risk_variance": 0.013514047915440494,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 14,
+      "updates": 602,
+      "val_auc": 0.7070620945319741,
+      "mean_risk": 0.688037707362064,
+      "risk_variance": 0.014593454771593949,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 15,
+      "updates": 645,
+      "val_auc": 0.7052455977757182,
+      "mean_risk": 0.6725970645283543,
+      "risk_variance": 0.01652644925762129,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 16,
+      "updates": 688,
+      "val_auc": 0.7043558850787767,
+      "mean_risk": 0.6861493545909261,
+      "risk_variance": 0.013514065809169617,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 17,
+      "updates": 731,
+      "val_auc": 0.7032808155699721,
+      "mean_risk": 0.6992678725442221,
+      "risk_variance": 0.011729351873983369,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 18,
+      "updates": 774,
+      "val_auc": 0.7062465245597777,
+      "mean_risk": 0.6919041899747627,
+      "risk_variance": 0.009680640255093556,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 19,
+      "updates": 817,
+      "val_auc": 0.7054680259499536,
+      "mean_risk": 0.7000145551770233,
+      "risk_variance": 0.013127615333846628,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 20,
+      "updates": 860,
+      "val_auc": 0.702354031510658,
+      "mean_risk": 0.685519953106725,
+      "risk_variance": 0.009451178671402294,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 21,
+      "updates": 903,
+      "val_auc": 0.7061353104726599,
+      "mean_risk": 0.706917735033257,
+      "risk_variance": 0.010293343590663341,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 22,
+      "updates": 946,
+      "val_auc": 0.700389249304912,
+      "mean_risk": 0.681420951388603,
+      "risk_variance": 0.0054469397367189944,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 23,
+      "updates": 989,
+      "val_auc": 0.6983873957367933,
+      "mean_risk": 0.6893941579863082,
+      "risk_variance": 0.012039379497043009,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 24,
+      "updates": 1032,
+      "val_auc": 0.6946431881371641,
+      "mean_risk": 0.7015039865360704,
+      "risk_variance": 0.009044767369310426,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 25,
+      "updates": 1075,
+      "val_auc": 0.6975718257645968,
+      "mean_risk": 0.7213265521581783,
+      "risk_variance": 0.014266835449223775,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 26,
+      "updates": 1118,
+      "val_auc": 0.6957182576459685,
+      "mean_risk": 0.7135851327763048,
+      "risk_variance": 0.00650959681144191,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 27,
+      "updates": 1161,
+      "val_auc": 0.6913438368860055,
+      "mean_risk": 0.69715208646863,
+      "risk_variance": 0.010980151641994125,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 28,
+      "updates": 1204,
+      "val_auc": 0.695421686746988,
+      "mean_risk": 0.6903738171555275,
+      "risk_variance": 0.00881409129062884,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 29,
+      "updates": 1247,
+      "val_auc": 0.6965338276181651,
+      "mean_risk": 0.674736832463464,
+      "risk_variance": 0.0075117309448075485,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 30,
+      "updates": 1290,
+      "val_auc": 0.6909731232622799,
+      "mean_risk": 0.6622151399767676,
+      "risk_variance": 0.008760952790003843,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 31,
+      "updates": 1333,
+      "val_auc": 0.692085264133457,
+      "mean_risk": 0.6764796445536059,
+      "risk_variance": 0.009971321941735212,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 32,
+      "updates": 1376,
+      "val_auc": 0.6840407784986098,
+      "mean_risk": 0.6472257334132527,
+      "risk_variance": 0.008575683419338887,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 33,
+      "updates": 1419,
+      "val_auc": 0.6870064874884152,
+      "mean_risk": 0.6879707935244538,
+      "risk_variance": 0.011693494707964588,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 34,
+      "updates": 1462,
+      "val_auc": 0.6873030583873957,
+      "mean_risk": 0.6856268893840701,
+      "risk_variance": 0.009960693795894555,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 35,
+      "updates": 1505,
+      "val_auc": 0.6847080630213161,
+      "mean_risk": 0.6779380385265794,
+      "risk_variance": 0.009429807127246953,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 36,
+      "updates": 1548,
+      "val_auc": 0.6854494902687673,
+      "mean_risk": 0.6618155788543613,
+      "risk_variance": 0.007066645952130954,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 37,
+      "updates": 1591,
+      "val_auc": 0.6894531974050047,
+      "mean_risk": 0.67822361408278,
+      "risk_variance": 0.01008697145065622,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 38,
+      "updates": 1634,
+      "val_auc": 0.6915662650602411,
+      "mean_risk": 0.6759152259937552,
+      "risk_variance": 0.00812450555425257,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 39,
+      "updates": 1677,
+      "val_auc": 0.6895644114921223,
+      "mean_risk": 0.6342473570690599,
+      "risk_variance": 0.007374863100191898,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 40,
+      "updates": 1720,
+      "val_auc": 0.6897868396663577,
+      "mean_risk": 0.6698991004810777,
+      "risk_variance": 0.011398350255297183,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 41,
+      "updates": 1763,
+      "val_auc": 0.6957182576459684,
+      "mean_risk": 0.666390527126401,
+      "risk_variance": 0.007609380542542271,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 42,
+      "updates": 1806,
+      "val_auc": 0.6982020389249305,
+      "mean_risk": 0.6708686102268308,
+      "risk_variance": 0.013159811517679436,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 43,
+      "updates": 1849,
+      "val_auc": 0.6977201112140872,
+      "mean_risk": 0.6881389811981556,
+      "risk_variance": 0.008248254995224266,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 44,
+      "updates": 1892,
+      "val_auc": 0.7026876737720111,
+      "mean_risk": 0.6874270328255587,
+      "risk_variance": 0.013045864543813835,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 45,
+      "updates": 1935,
+      "val_auc": 0.6991288229842446,
+      "mean_risk": 0.6637822750002839,
+      "risk_variance": 0.009714144033306754,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 46,
+      "updates": 1978,
+      "val_auc": 0.6969416126042632,
+      "mean_risk": 0.6797384876151418,
+      "risk_variance": 0.011350696479595017,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 47,
+      "updates": 2021,
+      "val_auc": 0.6970528266913809,
+      "mean_risk": 0.6930526730626129,
+      "risk_variance": 0.009823461348073685,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 48,
+      "updates": 2064,
+      "val_auc": 0.695088044485635,
+      "mean_risk": 0.6811447711878045,
+      "risk_variance": 0.009124865240072574,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 49,
+      "updates": 2107,
+      "val_auc": 0.6957924003707135,
+      "mean_risk": 0.6761837525423183,
+      "risk_variance": 0.009045473068443582,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 50,
+      "updates": 2150,
+      "val_auc": 0.6994995366079704,
+      "mean_risk": 0.6511530931605849,
+      "risk_variance": 0.005732825797658047,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 51,
+      "updates": 2193,
+      "val_auc": 0.695681186283596,
+      "mean_risk": 0.6543635323990223,
+      "risk_variance": 0.010774268870630844,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 52,
+      "updates": 2236,
+      "val_auc": 0.6972381835032438,
+      "mean_risk": 0.6841463432755581,
+      "risk_variance": 0.008712901070166647,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 53,
+      "updates": 2279,
+      "val_auc": 0.6948656163113994,
+      "mean_risk": 0.6501169176988824,
+      "risk_variance": 0.009342356608940226,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 54,
+      "updates": 2322,
+      "val_auc": 0.6914550509731232,
+      "mean_risk": 0.6323410043882769,
+      "risk_variance": 0.007603556972246097,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 55,
+      "updates": 2365,
+      "val_auc": 0.6860797034291011,
+      "mean_risk": 0.6639043217481568,
+      "risk_variance": 0.011781575757616571,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 56,
+      "updates": 2408,
+      "val_auc": 0.6856719184430027,
+      "mean_risk": 0.6736590390981629,
+      "risk_variance": 0.010516366681404073,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 57,
+      "updates": 2451,
+      "val_auc": 0.6858943466172381,
+      "mean_risk": 0.6565038686574891,
+      "risk_variance": 0.00731482405750327,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 58,
+      "updates": 2494,
+      "val_auc": 0.6898980537534755,
+      "mean_risk": 0.6429907111234443,
+      "risk_variance": 0.008120363434868006,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 59,
+      "updates": 2537,
+      "val_auc": 0.6881186283595921,
+      "mean_risk": 0.6730427894481393,
+      "risk_variance": 0.010915106411367503,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 60,
+      "updates": 2580,
+      "val_auc": 0.688822984244671,
+      "mean_risk": 0.625654200481814,
+      "risk_variance": 0.008574798418872136,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 61,
+      "updates": 2623,
+      "val_auc": 0.6884893419833179,
+      "mean_risk": 0.6348089548044427,
+      "risk_variance": 0.011687663062624525,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 62,
+      "updates": 2666,
+      "val_auc": 0.6897497683039852,
+      "mean_risk": 0.6402935039165408,
+      "risk_variance": 0.007788358732542229,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 63,
+      "updates": 2709,
+      "val_auc": 0.6900834105653383,
+      "mean_risk": 0.6534702971924183,
+      "risk_variance": 0.008218285276476892,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 64,
+      "updates": 2752,
+      "val_auc": 0.6778498609823911,
+      "mean_risk": 0.662433524464452,
+      "risk_variance": 0.012217448350321944,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 65,
+      "updates": 2795,
+      "val_auc": 0.6778498609823911,
+      "mean_risk": 0.6675059532010278,
+      "risk_variance": 0.006821006892847055,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 66,
+      "updates": 2838,
+      "val_auc": 0.6878591288229843,
+      "mean_risk": 0.6477981521639713,
+      "risk_variance": 0.009675851788544222,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 67,
+      "updates": 2881,
+      "val_auc": 0.681371640407785,
+      "mean_risk": 0.6489080162935479,
+      "risk_variance": 0.007913395476185373,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 68,
+      "updates": 2924,
+      "val_auc": 0.6861909175162187,
+      "mean_risk": 0.6499145585437154,
+      "risk_variance": 0.009401747479786494,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 69,
+      "updates": 2967,
+      "val_auc": 0.6845968489341984,
+      "mean_risk": 0.6639153583105221,
+      "risk_variance": 0.01287387485693833,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 70,
+      "updates": 3010,
+      "val_auc": 0.6863392029657089,
+      "mean_risk": 0.6745942955793336,
+      "risk_variance": 0.0073985210974887045,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 71,
+      "updates": 3053,
+      "val_auc": 0.687191844300278,
+      "mean_risk": 0.673435277717058,
+      "risk_variance": 0.010317842206491996,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 72,
+      "updates": 3096,
+      "val_auc": 0.6920852641334568,
+      "mean_risk": 0.6878389272578928,
+      "risk_variance": 0.00789809994594814,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 73,
+      "updates": 3139,
+      "val_auc": 0.6933456904541242,
+      "mean_risk": 0.6568333714507347,
+      "risk_variance": 0.007778241798934137,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 74,
+      "updates": 3182,
+      "val_auc": 0.6953104726598702,
+      "mean_risk": 0.6489013703756554,
+      "risk_variance": 0.008052895716393196,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 75,
+      "updates": 3225,
+      "val_auc": 0.7006858202038926,
+      "mean_risk": 0.6198547399321268,
+      "risk_variance": 0.010350934860004896,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 76,
+      "updates": 3268,
+      "val_auc": 0.7025393883225209,
+      "mean_risk": 0.6446609850539717,
+      "risk_variance": 0.009283813775795785,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 77,
+      "updates": 3311,
+      "val_auc": 0.6983873957367933,
+      "mean_risk": 0.6371618426123331,
+      "risk_variance": 0.0101400390768123,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 78,
+      "updates": 3354,
+      "val_auc": 0.6982761816496756,
+      "mean_risk": 0.6498857792033705,
+      "risk_variance": 0.012983443479369756,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 79,
+      "updates": 3397,
+      "val_auc": 0.6953475440222429,
+      "mean_risk": 0.6522256877533225,
+      "risk_variance": 0.007490212956106249,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 80,
+      "updates": 3440,
+      "val_auc": 0.6999073215940685,
+      "mean_risk": 0.6132273978965227,
+      "risk_variance": 0.007033905442885371,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 81,
+      "updates": 3483,
+      "val_auc": 0.698498609823911,
+      "mean_risk": 0.6354370969672536,
+      "risk_variance": 0.010454834527821689,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 82,
+      "updates": 3526,
+      "val_auc": 0.6931232622798889,
+      "mean_risk": 0.6468143587888673,
+      "risk_variance": 0.010528659593462159,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 83,
+      "updates": 3569,
+      "val_auc": 0.6886005560704356,
+      "mean_risk": 0.6318492147811624,
+      "risk_variance": 0.007923714155981015,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 84,
+      "updates": 3612,
+      "val_auc": 0.6897497683039852,
+      "mean_risk": 0.645651675240938,
+      "risk_variance": 0.010772049977921873,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 85,
+      "updates": 3655,
+      "val_auc": 0.6897868396663578,
+      "mean_risk": 0.6555059829423594,
+      "risk_variance": 0.009004769684864631,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 86,
+      "updates": 3698,
+      "val_auc": 0.6887859128822984,
+      "mean_risk": 0.6458390091740808,
+      "risk_variance": 0.008618925787594213,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 87,
+      "updates": 3741,
+      "val_auc": 0.6842632066728452,
+      "mean_risk": 0.6495533336040585,
+      "risk_variance": 0.009195313487292994,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 88,
+      "updates": 3784,
+      "val_auc": 0.6862650602409639,
+      "mean_risk": 0.6673876587734666,
+      "risk_variance": 0.012594750390975563,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 89,
+      "updates": 3827,
+      "val_auc": 0.6802224281742354,
+      "mean_risk": 0.670413710350214,
+      "risk_variance": 0.006350691938741663,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 90,
+      "updates": 3870,
+      "val_auc": 0.6827432808155699,
+      "mean_risk": 0.6409604923669682,
+      "risk_variance": 0.008049851601754199,
+      "eligible_for_selection": false
+    },
+    {
+      "epoch": 91,
+      "updates": 3913,
+      "val_auc": 0.6865616311399444,
+      "mean_risk": 0.6426946756451629,
+      "risk_variance": 0.008486568823929152,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 92,
+      "updates": 3956,
+      "val_auc": 0.68548656163114,
+      "mean_risk": 0.6451871408972629,
+      "risk_variance": 0.013025560036969055,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 93,
+      "updates": 3999,
+      "val_auc": 0.6863392029657088,
+      "mean_risk": 0.6667009744533273,
+      "risk_variance": 0.007011248718215338,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 94,
+      "updates": 4042,
+      "val_auc": 0.6872659870250232,
+      "mean_risk": 0.6455322781274485,
+      "risk_variance": 0.009129832641921767,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 95,
+      "updates": 4085,
+      "val_auc": 0.6897497683039853,
+      "mean_risk": 0.6706312035405358,
+      "risk_variance": 0.008532079458746011,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 96,
+      "updates": 4128,
+      "val_auc": 0.6878220574606118,
+      "mean_risk": 0.6558451694111491,
+      "risk_variance": 0.0074852828294942175,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 97,
+      "updates": 4171,
+      "val_auc": 0.6939388322520854,
+      "mean_risk": 0.6473521049632582,
+      "risk_variance": 0.008233472172536876,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 98,
+      "updates": 4214,
+      "val_auc": 0.6923076923076924,
+      "mean_risk": 0.6422260500663934,
+      "risk_variance": 0.01327713449232588,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 99,
+      "updates": 4257,
+      "val_auc": 0.6851899907321594,
+      "mean_risk": 0.6326699499474016,
+      "risk_variance": 0.004902747117428402,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 100,
+      "updates": 4300,
+      "val_auc": 0.6801112140871177,
+      "mean_risk": 0.6254369075908217,
+      "risk_variance": 0.009541186086629074,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 101,
+      "updates": 4343,
+      "val_auc": 0.6809267840593143,
+      "mean_risk": 0.6302434510962908,
+      "risk_variance": 0.0064978164333974004,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 102,
+      "updates": 4386,
+      "val_auc": 0.6809267840593142,
+      "mean_risk": 0.6652847833411638,
+      "risk_variance": 0.006909566142915769,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 103,
+      "updates": 4429,
+      "val_auc": 0.6887117701575532,
+      "mean_risk": 0.6412599696669468,
+      "risk_variance": 0.006348497024804982,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 104,
+      "updates": 4472,
+      "val_auc": 0.686079703429101,
+      "mean_risk": 0.6361623344033264,
+      "risk_variance": 0.01351556925692421,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 105,
+      "updates": 4515,
+      "val_auc": 0.6831510658016682,
+      "mean_risk": 0.6427192805811416,
+      "risk_variance": 0.006994611982394798,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 106,
+      "updates": 4558,
+      "val_auc": 0.6900092678405931,
+      "mean_risk": 0.6362101816853811,
+      "risk_variance": 0.008046339649475813,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 107,
+      "updates": 4601,
+      "val_auc": 0.6961631139944393,
+      "mean_risk": 0.6212410469387852,
+      "risk_variance": 0.010194573681244122,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 108,
+      "updates": 4644,
+      "val_auc": 0.6994253938832253,
+      "mean_risk": 0.6375229019065236,
+      "risk_variance": 0.00839995155302425,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 109,
+      "updates": 4687,
+      "val_auc": 0.6971640407784986,
+      "mean_risk": 0.6369325802769772,
+      "risk_variance": 0.008668711485941373,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 110,
+      "updates": 4730,
+      "val_auc": 0.6944207599629286,
+      "mean_risk": 0.6545967404232469,
+      "risk_variance": 0.008398747023790726,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 111,
+      "updates": 4773,
+      "val_auc": 0.6977942539388322,
+      "mean_risk": 0.607632114443668,
+      "risk_variance": 0.00885778945062051,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 112,
+      "updates": 4816,
+      "val_auc": 0.6980908248378128,
+      "mean_risk": 0.62532256370367,
+      "risk_variance": 0.007778083497755212,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 113,
+      "updates": 4859,
+      "val_auc": 0.693531047265987,
+      "mean_risk": 0.6344916709633761,
+      "risk_variance": 0.010252008100937822,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 114,
+      "updates": 4902,
+      "val_auc": 0.697831325301205,
+      "mean_risk": 0.6353256522223006,
+      "risk_variance": 0.01144866142669005,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 115,
+      "updates": 4945,
+      "val_auc": 0.695495829471733,
+      "mean_risk": 0.6325907173544861,
+      "risk_variance": 0.006940056758512477,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 116,
+      "updates": 4988,
+      "val_auc": 0.690268767377201,
+      "mean_risk": 0.6226164282754411,
+      "risk_variance": 0.010066099934129154,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 117,
+      "updates": 5031,
+      "val_auc": 0.6894902687673772,
+      "mean_risk": 0.6284276607424714,
+      "risk_variance": 0.008528182622306537,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 118,
+      "updates": 5074,
+      "val_auc": 0.6855607043558851,
+      "mean_risk": 0.6354138802650363,
+      "risk_variance": 0.006762091837085897,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 119,
+      "updates": 5117,
+      "val_auc": 0.6840407784986098,
+      "mean_risk": 0.6340714693069458,
+      "risk_variance": 0.00817965148341902,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 120,
+      "updates": 5160,
+      "val_auc": 0.683002780352178,
+      "mean_risk": 0.6518821466800778,
+      "risk_variance": 0.009346332768219263,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 121,
+      "updates": 5203,
+      "val_auc": 0.6875625579240037,
+      "mean_risk": 0.6306706777838773,
+      "risk_variance": 0.007295816285392881,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 122,
+      "updates": 5246,
+      "val_auc": 0.6839295644114921,
+      "mean_risk": 0.6237517872522044,
+      "risk_variance": 0.007933535670735034,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 123,
+      "updates": 5289,
+      "val_auc": 0.686339202965709,
+      "mean_risk": 0.6187164811200874,
+      "risk_variance": 0.00850324110987733,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 124,
+      "updates": 5332,
+      "val_auc": 0.6853012048192771,
+      "mean_risk": 0.6551858172860257,
+      "risk_variance": 0.010639067129302527,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 125,
+      "updates": 5375,
+      "val_auc": 0.6886005560704356,
+      "mean_risk": 0.6446895377580509,
+      "risk_variance": 0.005551727621846218,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 126,
+      "updates": 5418,
+      "val_auc": 0.6865616311399444,
+      "mean_risk": 0.6168844034505445,
+      "risk_variance": 0.00980959230893732,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 127,
+      "updates": 5461,
+      "val_auc": 0.6851158480074143,
+      "mean_risk": 0.6296125234559525,
+      "risk_variance": 0.008508204226779717,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 128,
+      "updates": 5504,
+      "val_auc": 0.6894902687673773,
+      "mean_risk": 0.626343289086985,
+      "risk_variance": 0.008886860954293679,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 129,
+      "updates": 5547,
+      "val_auc": 0.6882669138090826,
+      "mean_risk": 0.6052088682041612,
+      "risk_variance": 0.009081339029529942,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 130,
+      "updates": 5590,
+      "val_auc": 0.6864874884151992,
+      "mean_risk": 0.6426632043927215,
+      "risk_variance": 0.010407603811652438,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 131,
+      "updates": 5633,
+      "val_auc": 0.6861538461538461,
+      "mean_risk": 0.6412673079690268,
+      "risk_variance": 0.012568480539241221,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 132,
+      "updates": 5676,
+      "val_auc": 0.6933456904541242,
+      "mean_risk": 0.6265639163726984,
+      "risk_variance": 0.008374076080996062,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 133,
+      "updates": 5719,
+      "val_auc": 0.7002780352177943,
+      "mean_risk": 0.6375046310036682,
+      "risk_variance": 0.01018864532738388,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 134,
+      "updates": 5762,
+      "val_auc": 0.6989434661723819,
+      "mean_risk": 0.651407940443172,
+      "risk_variance": 0.01059188561778281,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 135,
+      "updates": 5805,
+      "val_auc": 0.6972752548656164,
+      "mean_risk": 0.6169091303681218,
+      "risk_variance": 0.008140716651491117,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 136,
+      "updates": 5848,
+      "val_auc": 0.6963855421686748,
+      "mean_risk": 0.6508976553761682,
+      "risk_variance": 0.012605181221091655,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 137,
+      "updates": 5891,
+      "val_auc": 0.6939388322520853,
+      "mean_risk": 0.6395936816237694,
+      "risk_variance": 0.010465274300486271,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 138,
+      "updates": 5934,
+      "val_auc": 0.6958665430954587,
+      "mean_risk": 0.6185058424639147,
+      "risk_variance": 0.0071273313267784496,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 139,
+      "updates": 5977,
+      "val_auc": 0.6918999073215941,
+      "mean_risk": 0.6460314358389655,
+      "risk_variance": 0.00940474121495865,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 140,
+      "updates": 6020,
+      "val_auc": 0.6939759036144578,
+      "mean_risk": 0.6232290039228838,
+      "risk_variance": 0.0056242113970457405,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 141,
+      "updates": 6063,
+      "val_auc": 0.6950880444856349,
+      "mean_risk": 0.6144342775954756,
+      "risk_variance": 0.011170033763105991,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 142,
+      "updates": 6106,
+      "val_auc": 0.694050046339203,
+      "mean_risk": 0.6086278634015904,
+      "risk_variance": 0.007795193193889518,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 143,
+      "updates": 6149,
+      "val_auc": 0.6930861909175162,
+      "mean_risk": 0.6018785113512084,
+      "risk_variance": 0.009021457631827743,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 144,
+      "updates": 6192,
+      "val_auc": 0.6806302131603336,
+      "mean_risk": 0.6269997614760732,
+      "risk_variance": 0.010942351597799813,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 145,
+      "updates": 6235,
+      "val_auc": 0.6770342910101946,
+      "mean_risk": 0.62671624921089,
+      "risk_variance": 0.010217840493686084,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 146,
+      "updates": 6278,
+      "val_auc": 0.685560704355885,
+      "mean_risk": 0.5980402161908704,
+      "risk_variance": 0.006071574781926664,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 147,
+      "updates": 6321,
+      "val_auc": 0.6859684893419833,
+      "mean_risk": 0.6308877821578536,
+      "risk_variance": 0.010721210937908624,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 148,
+      "updates": 6364,
+      "val_auc": 0.6901575532900834,
+      "mean_risk": 0.613892501869867,
+      "risk_variance": 0.008558193805985739,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 149,
+      "updates": 6407,
+      "val_auc": 0.6855977757182576,
+      "mean_risk": 0.5955343274183051,
+      "risk_variance": 0.008792026245807159,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 150,
+      "updates": 6450,
+      "val_auc": 0.6865616311399443,
+      "mean_risk": 0.6453542175681092,
+      "risk_variance": 0.008556467276568403,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 151,
+      "updates": 6493,
+      "val_auc": 0.6824467099165894,
+      "mean_risk": 0.6319817152134207,
+      "risk_variance": 0.009912383731700681,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 152,
+      "updates": 6536,
+      "val_auc": 0.6856348470806303,
+      "mean_risk": 0.6120496329873107,
+      "risk_variance": 0.005549944179228775,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 153,
+      "updates": 6579,
+      "val_auc": 0.6893790546802595,
+      "mean_risk": 0.6070729258448578,
+      "risk_variance": 0.0109118678620229,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 154,
+      "updates": 6622,
+      "val_auc": 0.6909360518999074,
+      "mean_risk": 0.6306243635887323,
+      "risk_variance": 0.00722469481949046,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 155,
+      "updates": 6665,
+      "val_auc": 0.685152919369787,
+      "mean_risk": 0.594637239395186,
+      "risk_variance": 0.007480079371734289,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 156,
+      "updates": 6708,
+      "val_auc": 0.6862279888785912,
+      "mean_risk": 0.6194210482198138,
+      "risk_variance": 0.006832347342953103,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 157,
+      "updates": 6751,
+      "val_auc": 0.6845597775718257,
+      "mean_risk": 0.5911658336949903,
+      "risk_variance": 0.007906420299806023,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 158,
+      "updates": 6794,
+      "val_auc": 0.6865245597775719,
+      "mean_risk": 0.6098109719365142,
+      "risk_variance": 0.008892942596016943,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 159,
+      "updates": 6837,
+      "val_auc": 0.6792585727525486,
+      "mean_risk": 0.6007269198118255,
+      "risk_variance": 0.00873391556164871,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 160,
+      "updates": 6880,
+      "val_auc": 0.6840407784986098,
+      "mean_risk": 0.6094021901141765,
+      "risk_variance": 0.011115191054430366,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 161,
+      "updates": 6923,
+      "val_auc": 0.6793327154772938,
+      "mean_risk": 0.619735250639361,
+      "risk_variance": 0.007947032910959573,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 162,
+      "updates": 6966,
+      "val_auc": 0.6842261353104727,
+      "mean_risk": 0.6149934024311775,
+      "risk_variance": 0.0077167282967165254,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 163,
+      "updates": 7009,
+      "val_auc": 0.6850787766450417,
+      "mean_risk": 0.603732498579247,
+      "risk_variance": 0.00713804145262461,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 164,
+      "updates": 7052,
+      "val_auc": 0.6902687673772011,
+      "mean_risk": 0.5932771937791691,
+      "risk_variance": 0.0052426107156988595,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 165,
+      "updates": 7095,
+      "val_auc": 0.6889341983317887,
+      "mean_risk": 0.5955000928668088,
+      "risk_variance": 0.006090396058585846,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 166,
+      "updates": 7138,
+      "val_auc": 0.6883781278962001,
+      "mean_risk": 0.6032509845356608,
+      "risk_variance": 0.00858427002604426,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 167,
+      "updates": 7181,
+      "val_auc": 0.6872659870250232,
+      "mean_risk": 0.6110332282476647,
+      "risk_variance": 0.011623583234261874,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 168,
+      "updates": 7224,
+      "val_auc": 0.6881927710843375,
+      "mean_risk": 0.6006326820961264,
+      "risk_variance": 0.007921478520681513,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 169,
+      "updates": 7267,
+      "val_auc": 0.691047265987025,
+      "mean_risk": 0.5691907717738041,
+      "risk_variance": 0.007749678727715184,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 170,
+      "updates": 7310,
+      "val_auc": 0.6908989805375348,
+      "mean_risk": 0.6066028856953909,
+      "risk_variance": 0.011798693009189074,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 171,
+      "updates": 7353,
+      "val_auc": 0.690194624652456,
+      "mean_risk": 0.5865659602852755,
+      "risk_variance": 0.008664721734835757,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 172,
+      "updates": 7396,
+      "val_auc": 0.6891195551436515,
+      "mean_risk": 0.6004594093145326,
+      "risk_variance": 0.007846746017749802,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 173,
+      "updates": 7439,
+      "val_auc": 0.6923447636700649,
+      "mean_risk": 0.5989038770975068,
+      "risk_variance": 0.007936201969633993,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 174,
+      "updates": 7482,
+      "val_auc": 0.6850787766450417,
+      "mean_risk": 0.6136450892270997,
+      "risk_variance": 0.009316836108980148,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 175,
+      "updates": 7525,
+      "val_auc": 0.6864133456904541,
+      "mean_risk": 0.6077614807805349,
+      "risk_variance": 0.008895459022104936,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 176,
+      "updates": 7568,
+      "val_auc": 0.6922335495829471,
+      "mean_risk": 0.5904352068901062,
+      "risk_variance": 0.009257610664801262,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 177,
+      "updates": 7611,
+      "val_auc": 0.6941612604263206,
+      "mean_risk": 0.5958778213622958,
+      "risk_variance": 0.005752664268523531,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 178,
+      "updates": 7654,
+      "val_auc": 0.6930491195551436,
+      "mean_risk": 0.5884249127188395,
+      "risk_variance": 0.012682253450446846,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 179,
+      "updates": 7697,
+      "val_auc": 0.6904911955514365,
+      "mean_risk": 0.6218008572279021,
+      "risk_variance": 0.007357439867561435,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 180,
+      "updates": 7740,
+      "val_auc": 0.6833734939759036,
+      "mean_risk": 0.6167330014151197,
+      "risk_variance": 0.011471071402580534,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 181,
+      "updates": 7783,
+      "val_auc": 0.6910843373493976,
+      "mean_risk": 0.5907419490259748,
+      "risk_variance": 0.009305888976763696,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 182,
+      "updates": 7826,
+      "val_auc": 0.6953104726598702,
+      "mean_risk": 0.6028006236220516,
+      "risk_variance": 0.011692930765072327,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 183,
+      "updates": 7869,
+      "val_auc": 0.6982020389249305,
+      "mean_risk": 0.6322077658287314,
+      "risk_variance": 0.007164615273969571,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 184,
+      "updates": 7912,
+      "val_auc": 0.7015384615384617,
+      "mean_risk": 0.6024056146311205,
+      "risk_variance": 0.009747326022946699,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 185,
+      "updates": 7955,
+      "val_auc": 0.7084708063021316,
+      "mean_risk": 0.6002196586409281,
+      "risk_variance": 0.009206177151882426,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 186,
+      "updates": 7998,
+      "val_auc": 0.7067284522706209,
+      "mean_risk": 0.606805567131486,
+      "risk_variance": 0.01092985724505715,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 187,
+      "updates": 8041,
+      "val_auc": 0.7024652455977758,
+      "mean_risk": 0.590648659439974,
+      "risk_variance": 0.010519290906660018,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 188,
+      "updates": 8084,
+      "val_auc": 0.7016126042632067,
+      "mean_risk": 0.596290121937907,
+      "risk_variance": 0.009423054675882964,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 189,
+      "updates": 8127,
+      "val_auc": 0.7026135310472659,
+      "mean_risk": 0.6001517530097518,
+      "risk_variance": 0.005865737509317791,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 190,
+      "updates": 8170,
+      "val_auc": 0.7075069508804449,
+      "mean_risk": 0.6026781949886056,
+      "risk_variance": 0.009486122407864504,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 191,
+      "updates": 8213,
+      "val_auc": 0.711177015755329,
+      "mean_risk": 0.5758881471877875,
+      "risk_variance": 0.007820524790851628,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 192,
+      "updates": 8256,
+      "val_auc": 0.7039481000926784,
+      "mean_risk": 0.601854878109555,
+      "risk_variance": 0.012068101034010185,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 193,
+      "updates": 8299,
+      "val_auc": 0.7035032437442076,
+      "mean_risk": 0.5804150970869286,
+      "risk_variance": 0.007536766646120838,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 194,
+      "updates": 8342,
+      "val_auc": 0.7007970342910103,
+      "mean_risk": 0.5838614050732103,
+      "risk_variance": 0.009641243123511221,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 195,
+      "updates": 8385,
+      "val_auc": 0.7025023169601482,
+      "mean_risk": 0.5683534845363262,
+      "risk_variance": 0.009082550433726452,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 196,
+      "updates": 8428,
+      "val_auc": 0.6984615384615385,
+      "mean_risk": 0.5823134987853295,
+      "risk_variance": 0.010768537936452197,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 197,
+      "updates": 8471,
+      "val_auc": 0.6983132530120482,
+      "mean_risk": 0.590622583100962,
+      "risk_variance": 0.008340689461355856,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 198,
+      "updates": 8514,
+      "val_auc": 0.6982020389249305,
+      "mean_risk": 0.5985656394514927,
+      "risk_variance": 0.01109298202336081,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 199,
+      "updates": 8557,
+      "val_auc": 0.6967562557924003,
+      "mean_risk": 0.5975198011065639,
+      "risk_variance": 0.006732493780027441,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 200,
+      "updates": 8600,
+      "val_auc": 0.6996848934198332,
+      "mean_risk": 0.6038693439128787,
+      "risk_variance": 0.013258918953788664,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 201,
+      "updates": 8643,
+      "val_auc": 0.700129749768304,
+      "mean_risk": 0.5731131760186927,
+      "risk_variance": 0.00551816148341197,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 202,
+      "updates": 8686,
+      "val_auc": 0.7026876737720111,
+      "mean_risk": 0.598359096188878,
+      "risk_variance": 0.006146291138525949,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 203,
+      "updates": 8729,
+      "val_auc": 0.6995736793327155,
+      "mean_risk": 0.5926107175128404,
+      "risk_variance": 0.01158851374473374,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 204,
+      "updates": 8772,
+      "val_auc": 0.6981278962001854,
+      "mean_risk": 0.599808368571969,
+      "risk_variance": 0.01055947706261704,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 205,
+      "updates": 8815,
+      "val_auc": 0.7027618164967563,
+      "mean_risk": 0.6154906514079072,
+      "risk_variance": 0.014919763824277758,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 206,
+      "updates": 8858,
+      "val_auc": 0.7123632993512512,
+      "mean_risk": 0.5782959107742753,
+      "risk_variance": 0.005019823112005788,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 207,
+      "updates": 8901,
+      "val_auc": 0.7082483781278962,
+      "mean_risk": 0.5841440405956534,
+      "risk_variance": 0.012856965479160366,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 208,
+      "updates": 8944,
+      "val_auc": 0.7050231696014829,
+      "mean_risk": 0.5816358695196551,
+      "risk_variance": 0.006442747156206467,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 209,
+      "updates": 8987,
+      "val_auc": 0.7066172381835033,
+      "mean_risk": 0.5855489719745725,
+      "risk_variance": 0.010778806391605285,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 210,
+      "updates": 9030,
+      "val_auc": 0.7060611677479147,
+      "mean_risk": 0.5806187703165897,
+      "risk_variance": 0.006421227443343807,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 211,
+      "updates": 9073,
+      "val_auc": 0.7019091751621873,
+      "mean_risk": 0.6059619756632073,
+      "risk_variance": 0.008949492059831607,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 212,
+      "updates": 9116,
+      "val_auc": 0.701241890639481,
+      "mean_risk": 0.607335448958153,
+      "risk_variance": 0.010525864246262884,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 213,
+      "updates": 9159,
+      "val_auc": 0.7024652455977758,
+      "mean_risk": 0.6062937080860138,
+      "risk_variance": 0.010698248455429526,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 214,
+      "updates": 9202,
+      "val_auc": 0.7027247451343838,
+      "mean_risk": 0.5943515668081683,
+      "risk_variance": 0.007904705527967371,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 215,
+      "updates": 9245,
+      "val_auc": 0.7041705282669138,
+      "mean_risk": 0.5780974328517914,
+      "risk_variance": 0.00832581523377749,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 216,
+      "updates": 9288,
+      "val_auc": 0.7058016682113069,
+      "mean_risk": 0.5770121085089307,
+      "risk_variance": 0.011431246282230176,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 217,
+      "updates": 9331,
+      "val_auc": 0.7048007414272474,
+      "mean_risk": 0.594610524732013,
+      "risk_variance": 0.009602401626314394,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 218,
+      "updates": 9374,
+      "val_auc": 0.7052826691380908,
+      "mean_risk": 0.5854488431021224,
+      "risk_variance": 0.008498287417085014,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 219,
+      "updates": 9417,
+      "val_auc": 0.706468952734013,
+      "mean_risk": 0.5653347192808639,
+      "risk_variance": 0.007377975880444865,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 220,
+      "updates": 9460,
+      "val_auc": 0.7033920296570898,
+      "mean_risk": 0.5922000137872474,
+      "risk_variance": 0.01042723149708594,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 221,
+      "updates": 9503,
+      "val_auc": 0.7017238183503245,
+      "mean_risk": 0.5666838697222776,
+      "risk_variance": 0.007260710347805417,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 222,
+      "updates": 9546,
+      "val_auc": 0.6953104726598702,
+      "mean_risk": 0.5869774873866591,
+      "risk_variance": 0.007168465235873703,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 223,
+      "updates": 9589,
+      "val_auc": 0.6944207599629287,
+      "mean_risk": 0.5736758403999861,
+      "risk_variance": 0.009016899088575968,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 224,
+      "updates": 9632,
+      "val_auc": 0.6983873957367934,
+      "mean_risk": 0.571536851483722,
+      "risk_variance": 0.0063001290656207265,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 225,
+      "updates": 9675,
+      "val_auc": 0.7056163113994439,
+      "mean_risk": 0.5917997595875762,
+      "risk_variance": 0.011057491647828465,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 226,
+      "updates": 9718,
+      "val_auc": 0.7089898053753476,
+      "mean_risk": 0.592911163041758,
+      "risk_variance": 0.007406347181623185,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 227,
+      "updates": 9761,
+      "val_auc": 0.7090639481000928,
+      "mean_risk": 0.5676263806431793,
+      "risk_variance": 0.00851720040241902,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 228,
+      "updates": 9804,
+      "val_auc": 0.7083595922150139,
+      "mean_risk": 0.5667258889176124,
+      "risk_variance": 0.010015807140261195,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 229,
+      "updates": 9847,
+      "val_auc": 0.7018721037998147,
+      "mean_risk": 0.5872904692971429,
+      "risk_variance": 0.010196624345716172,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 230,
+      "updates": 9890,
+      "val_auc": 0.695421686746988,
+      "mean_risk": 0.5924215074195418,
+      "risk_variance": 0.009326896485892872,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 231,
+      "updates": 9933,
+      "val_auc": 0.6898980537534756,
+      "mean_risk": 0.616462518309438,
+      "risk_variance": 0.00830120874459596,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 232,
+      "updates": 9976,
+      "val_auc": 0.6927525486561631,
+      "mean_risk": 0.5730232679566671,
+      "risk_variance": 0.006929680785991729,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 233,
+      "updates": 10019,
+      "val_auc": 0.6994624652455979,
+      "mean_risk": 0.5664083347764126,
+      "risk_variance": 0.007222995548058967,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 234,
+      "updates": 10062,
+      "val_auc": 0.7047265987025023,
+      "mean_risk": 0.5743952192539392,
+      "risk_variance": 0.007449320787452243,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 235,
+      "updates": 10105,
+      "val_auc": 0.7063206672845227,
+      "mean_risk": 0.5744496965131094,
+      "risk_variance": 0.007547961552708604,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 236,
+      "updates": 10148,
+      "val_auc": 0.7081371640407785,
+      "mean_risk": 0.553892448891041,
+      "risk_variance": 0.008138692301145056,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 237,
+      "updates": 10191,
+      "val_auc": 0.7071733086190918,
+      "mean_risk": 0.5586522034434385,
+      "risk_variance": 0.011248155627754386,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 238,
+      "updates": 10234,
+      "val_auc": 0.7041705282669137,
+      "mean_risk": 0.580294263224269,
+      "risk_variance": 0.008125330276317433,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 239,
+      "updates": 10277,
+      "val_auc": 0.7096570898980539,
+      "mean_risk": 0.562715282273847,
+      "risk_variance": 0.006324113613767316,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 240,
+      "updates": 10320,
+      "val_auc": 0.7110287303058387,
+      "mean_risk": 0.5779875343622163,
+      "risk_variance": 0.00956112099591464,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 241,
+      "updates": 10363,
+      "val_auc": 0.7093605189990733,
+      "mean_risk": 0.5773685865624006,
+      "risk_variance": 0.007291527879207806,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 242,
+      "updates": 10406,
+      "val_auc": 0.7076181649675626,
+      "mean_risk": 0.5506714277489241,
+      "risk_variance": 0.007394437147710701,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 243,
+      "updates": 10449,
+      "val_auc": 0.7075440222428175,
+      "mean_risk": 0.5665436539539072,
+      "risk_variance": 0.011274364873114855,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 244,
+      "updates": 10492,
+      "val_auc": 0.7046524559777572,
+      "mean_risk": 0.5519379564495974,
+      "risk_variance": 0.007228654508885355,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 245,
+      "updates": 10535,
+      "val_auc": 0.706468952734013,
+      "mean_risk": 0.5786359628965688,
+      "risk_variance": 0.007493827938010644,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 246,
+      "updates": 10578,
+      "val_auc": 0.7099165894346616,
+      "mean_risk": 0.5909087463866832,
+      "risk_variance": 0.010137379479390295,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 247,
+      "updates": 10621,
+      "val_auc": 0.7130305838739575,
+      "mean_risk": 0.5505740434624428,
+      "risk_variance": 0.007413223161386425,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 248,
+      "updates": 10664,
+      "val_auc": 0.7104355885078777,
+      "mean_risk": 0.6158491172069727,
+      "risk_variance": 0.007602461918628081,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 249,
+      "updates": 10707,
+      "val_auc": 0.7079147358665431,
+      "mean_risk": 0.5669900733371114,
+      "risk_variance": 0.010542735044414575,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 250,
+      "updates": 10750,
+      "val_auc": 0.7083225208526414,
+      "mean_risk": 0.5612039448216904,
+      "risk_variance": 0.0070261772396110625,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 251,
+      "updates": 10793,
+      "val_auc": 0.7081000926784059,
+      "mean_risk": 0.5701557314673136,
+      "risk_variance": 0.006797750535465745,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 252,
+      "updates": 10836,
+      "val_auc": 0.6973493975903614,
+      "mean_risk": 0.5766230183978414,
+      "risk_variance": 0.013814377130159322,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 253,
+      "updates": 10879,
+      "val_auc": 0.7005004633920296,
+      "mean_risk": 0.5862913360429365,
+      "risk_variance": 0.008244808447184475,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 254,
+      "updates": 10922,
+      "val_auc": 0.7020945319740499,
+      "mean_risk": 0.5804525440515473,
+      "risk_variance": 0.007872612348343631,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 255,
+      "updates": 10965,
+      "val_auc": 0.7059870250231696,
+      "mean_risk": 0.5653085798718208,
+      "risk_variance": 0.007940890050720822,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 256,
+      "updates": 11008,
+      "val_auc": 0.7060240963855421,
+      "mean_risk": 0.5638200238693593,
+      "risk_variance": 0.01164682918112089,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 257,
+      "updates": 11051,
+      "val_auc": 0.7067284522706209,
+      "mean_risk": 0.5944525426210359,
+      "risk_variance": 0.0073538596044473645,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 258,
+      "updates": 11094,
+      "val_auc": 0.7114365152919371,
+      "mean_risk": 0.5748221839583197,
+      "risk_variance": 0.006708184795507107,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 259,
+      "updates": 11137,
+      "val_auc": 0.7121037998146431,
+      "mean_risk": 0.5644545423430066,
+      "risk_variance": 0.009593569554705176,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 260,
+      "updates": 11180,
+      "val_auc": 0.7093975903614458,
+      "mean_risk": 0.5626718304878058,
+      "risk_variance": 0.007878906803017704,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 261,
+      "updates": 11223,
+      "val_auc": 0.7042075996292864,
+      "mean_risk": 0.5665284568487212,
+      "risk_variance": 0.008268089915899572,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 262,
+      "updates": 11266,
+      "val_auc": 0.7093234476367007,
+      "mean_risk": 0.6113003686416981,
+      "risk_variance": 0.008071695751023735,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 263,
+      "updates": 11309,
+      "val_auc": 0.7105468025949954,
+      "mean_risk": 0.5833360933980276,
+      "risk_variance": 0.00830337140800915,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 264,
+      "updates": 11352,
+      "val_auc": 0.7139202965708991,
+      "mean_risk": 0.5772643227909886,
+      "risk_variance": 0.010815778839641584,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 265,
+      "updates": 11395,
+      "val_auc": 0.7078035217794255,
+      "mean_risk": 0.5858111887477165,
+      "risk_variance": 0.009715566320035705,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 266,
+      "updates": 11438,
+      "val_auc": 0.7060240963855421,
+      "mean_risk": 0.5705512193746345,
+      "risk_variance": 0.009613367986973974,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 267,
+      "updates": 11481,
+      "val_auc": 0.7045412418906395,
+      "mean_risk": 0.57941695008167,
+      "risk_variance": 0.0048132242978843566,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 268,
+      "updates": 11524,
+      "val_auc": 0.6989805375347543,
+      "mean_risk": 0.5717471678589665,
+      "risk_variance": 0.009704537395249182,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 269,
+      "updates": 11567,
+      "val_auc": 0.7003892493049119,
+      "mean_risk": 0.6074155388876449,
+      "risk_variance": 0.00920598101828186,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 270,
+      "updates": 11610,
+      "val_auc": 0.7069138090824838,
+      "mean_risk": 0.5845768347729084,
+      "risk_variance": 0.006899226170042069,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 271,
+      "updates": 11653,
+      "val_auc": 0.7126598702502317,
+      "mean_risk": 0.5839420771876047,
+      "risk_variance": 0.009809738154048276,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 272,
+      "updates": 11696,
+      "val_auc": 0.7055792400370714,
+      "mean_risk": 0.5663827193337817,
+      "risk_variance": 0.007799357490377356,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 273,
+      "updates": 11739,
+      "val_auc": 0.7070250231696015,
+      "mean_risk": 0.5785566935705584,
+      "risk_variance": 0.010281781551172974,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 274,
+      "updates": 11782,
+      "val_auc": 0.706209453197405,
+      "mean_risk": 0.5613974027855452,
+      "risk_variance": 0.007524692455273569,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 275,
+      "updates": 11825,
+      "val_auc": 0.7101390176088971,
+      "mean_risk": 0.5773397947466651,
+      "risk_variance": 0.008825750784152724,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 276,
+      "updates": 11868,
+      "val_auc": 0.708359592215014,
+      "mean_risk": 0.5590530717095663,
+      "risk_variance": 0.00886602713561377,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 277,
+      "updates": 11911,
+      "val_auc": 0.7058758109360519,
+      "mean_risk": 0.5761318782041239,
+      "risk_variance": 0.008128404327825868,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 278,
+      "updates": 11954,
+      "val_auc": 0.71032437442076,
+      "mean_risk": 0.5705389117085656,
+      "risk_variance": 0.008329300601512523,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 279,
+      "updates": 11997,
+      "val_auc": 0.7125115848007414,
+      "mean_risk": 0.5246944268082463,
+      "risk_variance": 0.008336561317822427,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 280,
+      "updates": 12040,
+      "val_auc": 0.7129935125115848,
+      "mean_risk": 0.5721704779669295,
+      "risk_variance": 0.009439518702112215,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 281,
+      "updates": 12083,
+      "val_auc": 0.7107321594068583,
+      "mean_risk": 0.5722726417142291,
+      "risk_variance": 0.0065950109268209664,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 282,
+      "updates": 12126,
+      "val_auc": 0.7099165894346617,
+      "mean_risk": 0.5690482938012411,
+      "risk_variance": 0.011719209845195595,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 283,
+      "updates": 12169,
+      "val_auc": 0.704578313253012,
+      "mean_risk": 0.575447364601978,
+      "risk_variance": 0.008656292148818762,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 284,
+      "updates": 12212,
+      "val_auc": 0.7036886005560704,
+      "mean_risk": 0.5523207152998725,
+      "risk_variance": 0.006982037178267789,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 285,
+      "updates": 12255,
+      "val_auc": 0.7052826691380909,
+      "mean_risk": 0.5635361415009166,
+      "risk_variance": 0.008772980456638452,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 286,
+      "updates": 12298,
+      "val_auc": 0.7077664504170529,
+      "mean_risk": 0.5934810777043187,
+      "risk_variance": 0.009578492436090992,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 287,
+      "updates": 12341,
+      "val_auc": 0.7085449490268767,
+      "mean_risk": 0.5828556217426477,
+      "risk_variance": 0.006955225815704051,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 288,
+      "updates": 12384,
+      "val_auc": 0.7071362372567193,
+      "mean_risk": 0.5636293167291686,
+      "risk_variance": 0.010166656048250991,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 289,
+      "updates": 12427,
+      "val_auc": 0.7069138090824839,
+      "mean_risk": 0.5820042532543803,
+      "risk_variance": 0.006801524367188523,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 290,
+      "updates": 12470,
+      "val_auc": 0.7048748841519926,
+      "mean_risk": 0.569416927736859,
+      "risk_variance": 0.00923218195742493,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 291,
+      "updates": 12513,
+      "val_auc": 0.7017608897126969,
+      "mean_risk": 0.5608673733334208,
+      "risk_variance": 0.009329654599749247,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 292,
+      "updates": 12556,
+      "val_auc": 0.7061353104726599,
+      "mean_risk": 0.5444372954756714,
+      "risk_variance": 0.011156233823152603,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 293,
+      "updates": 12599,
+      "val_auc": 0.7069508804448563,
+      "mean_risk": 0.5639719103657922,
+      "risk_variance": 0.005232241532550773,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 294,
+      "updates": 12642,
+      "val_auc": 0.7085078776645043,
+      "mean_risk": 0.5617153124753819,
+      "risk_variance": 0.009322233560808472,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 295,
+      "updates": 12685,
+      "val_auc": 0.7071362372567191,
+      "mean_risk": 0.5435203299965969,
+      "risk_variance": 0.008088743873634294,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 296,
+      "updates": 12728,
+      "val_auc": 0.705097312326228,
+      "mean_risk": 0.5740875795830128,
+      "risk_variance": 0.007028219679246239,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 297,
+      "updates": 12771,
+      "val_auc": 0.7035032437442076,
+      "mean_risk": 0.5681470251360605,
+      "risk_variance": 0.01327616824524147,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 298,
+      "updates": 12814,
+      "val_auc": 0.6998331788693234,
+      "mean_risk": 0.5648902890294097,
+      "risk_variance": 0.008880431229364825,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 299,
+      "updates": 12857,
+      "val_auc": 0.710398517145505,
+      "mean_risk": 0.5308121290317801,
+      "risk_variance": 0.005779438991762724,
+      "eligible_for_selection": true
+    },
+    {
+      "epoch": 300,
+      "updates": 12900,
+      "val_auc": 0.7096941612604263,
+      "mean_risk": 0.558925117171088,
+      "risk_variance": 0.008045403031471408,
+      "eligible_for_selection": true
+    }
+  ],
+  "training_domains": [
+    "central",
+    "west"
+  ],
+  "steps_per_epoch": 43,
+  "domainbed_source_sha": "b93c22a1cfc3b2428398272c1a116c8de1f4139e"
+}

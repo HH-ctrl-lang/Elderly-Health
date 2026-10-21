@@ -1,0 +1,25 @@
+{
+  "algorithm": "VREx (binary tabular adaptation)",
+  "source_algorithm": "DomainBed/VREx",
+  "source_commit": "b93c22a1cfc3b2428398272c1a116c8de1f4139e",
+  "domainbed_default_vrex_lambda": 10.0,
+  "domainbed_default_anneal_steps": 500,
+  "domainbed_license": "MIT",
+  "config": {
+    "seed": 42,
+    "device": "cpu",
+    "threads": 2,
+    "epochs": 300,
+    "per_environment_batch_size": 32,
+    "learning_rate": 0.0003,
+    "weight_decay": 1e-05,
+    "positive_weight": 3.0,
+    "vrex_lambda": 10.0,
+    "penalty_anneal_steps": 500,
+    "patience": 80,
+    "selection_start_epoch": 91
+  },
+  "environment_granularity": "region",
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "holdout_mode": "loro"
+}
