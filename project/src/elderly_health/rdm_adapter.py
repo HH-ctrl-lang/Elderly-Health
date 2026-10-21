@@ -56,6 +56,8 @@ class RDMSettings:
         for name in ("rdm_penalty_anneal_iters", "seed"):
             if type(getattr(self, name)) is not int or getattr(self, name) < 0:
                 raise ValueError(f"{name} must be a nonnegative integer")
+        if self.per_environment_batch_size < 2:
+            raise ValueError("RDM needs at least two samples per source domain minibatch")
         if self.selection_start_epoch > self.epochs:
             raise ValueError("selection_start_epoch must not exceed epochs")
         for name in ("learning_rate", "rdm_lr", "positive_weight"):
