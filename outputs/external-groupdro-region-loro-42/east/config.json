@@ -1,0 +1,24 @@
+{
+  "algorithm": "GroupDRO (binary tabular adaptation)",
+  "source_algorithm": "Sagawa et al. GroupDRO loss.py",
+  "source_commit": "cbbc1c5b06844e46b87e264326b56056d2a437d1",
+  "groupdro_reference_step_size": 0.01,
+  "groupdro_reference_note": "Official loss.py compute_robust_loss",
+  "source_license": "MIT (project/external/GROUPDRO_LICENSE.txt)",
+  "config": {
+    "seed": 42,
+    "device": "cpu",
+    "threads": 2,
+    "epochs": 300,
+    "per_environment_batch_size": 32,
+    "learning_rate": 0.0003,
+    "weight_decay": 1e-05,
+    "positive_weight": 3.0,
+    "robust_step_size": 0.01,
+    "patience": 80,
+    "selection_start_epoch": 91
+  },
+  "environment_granularity": "region",
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "holdout_mode": "loro"
+}
