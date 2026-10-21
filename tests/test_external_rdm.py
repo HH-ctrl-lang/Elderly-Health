@@ -57,6 +57,8 @@ class RDMAdapterTests(unittest.TestCase):
         self.assertEqual(model.update_count.item(), 2)
 
     def test_cpu_source_only_training_and_selection(self):
+        import torch
+
         from elderly_health.data import SplitData
         from elderly_health.rdm_adapter import RDMSettings, fit_rdm
 
