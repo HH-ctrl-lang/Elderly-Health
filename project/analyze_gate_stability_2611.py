@@ -1,10 +1,9 @@
-"""2611 / Task 1, step 2: stability of CausalGate feature rankings.
+"""2611 / 任务1，第2步：CausalGate特征排序的稳定性。
 
-Run from the repository root after completing step 1:
-    python project/analyze_gate_stability_2611.py
+在完成第1步后，从代码仓库根目录运行：
+python project/analyze_gate_stability_2611.py
 
-Reads only aggregate gate scores. Does not load or retrain a model, and
-never accesses individual-level health records.
+仅读取聚合后的门控分数。不加载或重新训练模型，且绝不访问个体级健康记录。
 """
 import argparse
 from itertools import combinations

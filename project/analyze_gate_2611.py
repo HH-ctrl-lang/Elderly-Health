@@ -1,9 +1,6 @@
-"""2611 / Task 1: summarize existing CausalGate scores without retraining.
+"""2611 / 任务1：总结现有CausalGate分数
 
-From the repository root:
-    python project/analyze_gate_2611.py --output outputs/analysis_2611/gate_step1
-
-Only aggregate model-level gate values are exported; no individual records.
+仅导出聚合后的模型级门控值；不包含单条记录。
 """
 import argparse
 import json
