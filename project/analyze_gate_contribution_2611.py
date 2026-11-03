@@ -1,12 +1,10 @@
-"""Experiment 2611: measure feature reliance using fixed V5 checkpoints.
+"""任务1，第3步：使用固定的V5检查点衡量特征依赖度。
 
-No retraining or parameter tuning. Permute each normalized feature *within site*
-on source validation and unseen-region test splits, for main and zc-only heads.
-The reported AUC / AP changes are descriptive predictive reliance, not causality.
+不重新训练，也不进行参数调优。在源验证集和未见区域测试划分上，对每个归一化特征在站点内进行置换，分别针对主预测头和仅zc预测头。所报告的AUC/AP变化是描述性的预测依赖，而非因果关系。
 
-From the repository root:
-    git lfs pull
-    python project/analyze_gate_contribution_2611.py
+从代码仓库根目录运行：
+git lfs pull
+python project/analyze_gate_contribution_2611.py
 """
 import argparse
 import json

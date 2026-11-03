@@ -1,4 +1,7 @@
-"""2611 / 任务1：总结现有CausalGate分数
+"""2611 / 任务1，第1步：总结现有CausalGate分数
+
+从代码仓库根目录执行：
+python project/analyze_gate_2611.py --output outputs/analysis_2611/gate_step1
 
 仅导出聚合后的模型级门控值；不包含单条记录。
 """
