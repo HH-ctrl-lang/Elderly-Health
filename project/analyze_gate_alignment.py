@@ -3,10 +3,10 @@
 研究目标：
 1. 比较门控权重与置换AUC/AUPRC变化的排名是否一致。
 2. 对比来源验证集、留出地区测试集和两个预测头。
-3. 整理若干预先指定的典型特征，形成任务1阶段小结。
+3. 导出逐特征对照表、相关性汇总表和散点图。
 
-运行：python project/任务1_第4步_门控与预测贡献对照.py
-说明：只读取任务1前三步的汇总CSV，不训练、不改变模型、不读取个人样本。
+运行：python project/analyze_gate_alignment.py
+说明：只读取任务1第1步和第3步的汇总CSV，不训练、不改变模型、不读取个人样本。
 """
 from pathlib import Path
 
@@ -31,7 +31,7 @@ KEY_FEATURES = (
     "residence", "depression", "sleep_duration",
 )
 
-# 图表优先使用可用的中文字体；未安装时使用英文绘图标题，避免方框乱码。
+# 任务1，第4步：图表优先使用可用的中文字体；未安装时使用英文标题，避免方框乱码。
 FONT_NAMES = (
     "Microsoft YaHei", "SimHei", "Noto Sans CJK SC",
     "Noto Sans CJK JP", "WenQuanYi Micro Hei", "PingFang SC",
@@ -49,7 +49,7 @@ def configure_font():
 
 
 def load_tables():
-    # 只提取三个留一地区折；站点折留待跨环境稳定性分析使用。
+    # 任务1，第4步：只提取三个留一地区折，与第3步的预测贡献结果对应。
     matrix = pd.read_csv(GATE_FILE, encoding="utf-8-sig", index_col=0)
     region_keys = ["region:" + name for name in REGIONS]
     if not all(name in matrix.index for name in region_keys):
@@ -67,7 +67,7 @@ def load_tables():
     if not np.isfinite(gate["gate_weight"]).all():
         raise ValueError("门控表包含无效数字")
 
-    # 置换数据必须完整：3地区 × 2集合 × 2预测头 × 19特征。
+    # 任务1，第4步：检查置换结果是否包含3地区、2种数据集、2个预测头和19个特征。
     imp = pd.read_csv(CONTRIBUTION_FILE, encoding="utf-8-sig")
     keys = ["region", "subset", "head", "feature"]
     if len(imp) != 3 * 2 * 2 * 19 or imp.duplicated(keys).any():
@@ -93,7 +93,7 @@ def load_tables():
 
 
 def summarize_correlations(joined):
-    # 相关系数只比较同一地区、同一预测头下19个特征的排序。
+    # 任务1，第4步：只在同一地区、同一数据集和同一预测头内比较19个特征。
     rows = []
     for (region, subset, head), group in joined.groupby(
         ["region", "subset", "head"], sort=False
@@ -115,7 +115,7 @@ def summarize_correlations(joined):
 
 
 def plot_alignment(joined, head, use_cn):
-    # 每张图三列分别表示三个留出地区；横轴是门控值，纵轴是AUC下降量。
+    # 任务1，第4步：每张图分别展示三个留出地区，横轴为门控值，纵轴为AUC下降量。
     fig, axes = plt.subplots(1, 3, figsize=(16.8, 5.5), sharex=True, sharey=True)
     short = {
         "if_use_mobile_phone": "mobile",
@@ -162,60 +162,6 @@ def plot_alignment(joined, head, use_cn):
     plt.close(fig)
 
 
-def write_report(correlations, joined):
-    # 报告中的数字只来自CSV；不将相关性解释成因果效应。
-    lines = [
-        "# 任务1，第4步：门控分配与预测贡献一致性分析",
-        "",
-        "## 一、分析方法",
-        "",
-        "使用任务1第1步的连续门控权重与第3步的特征置换结果，"
-        "分别在东部、中部、西部、来源验证集和留出测试集、main与zc预测头中，"
-        "计算19个特征的门控权重与AUC/AUPRC下降量之间的Spearman排名相关系数。",
-        "",
-        "AUC下降量 = 原始AUC - 打乱该特征后的AUC。正值表示预测排序变差；"
-        "负值表示置换后排序反而改善。门控分数衡量输入在两条分支间的分配，"
-        "不等于因果重要性或最终预测贡献。",
-        "",
-        "## 二、留出地区测试集的结果",
-        "",
-        "| 留出地区 | 主头：门控/AUC排名相关 | zc头：门控/AUC排名相关 |",
-        "|---|---:|---:|",
-    ]
-    for region in REGIONS:
-        test = correlations[
-            (correlations["留出地区"] == region) & (correlations["数据集"] == "test")
-        ]
-        main = test[test["预测头"] == "main"].iloc[0]
-        zc = test[test["预测头"] == "zc"].iloc[0]
-        lines.append(
-            f"| {region} | {main['门控与AUC下降_Spearman']:.3f} | "
-            f"{zc['门控与AUC下降_Spearman']:.3f} |"
-        )
-    lines.extend([
-        "",
-        "## 三、解释与限制",
-        "",
-        "- 三个地区的门控排名与置换预测贡献并非高度一致；不能把0.5以上当作真实因果变量。",
-        "- 应同时查看IADL、年龄、是否使用手机、城乡居住类型等对照案例，而不是只看Top-5。",
-        "- 置换在原站点内部完成，尽量保留站点分布，但可能破坏变量间的真实相关结构。",
-        "- 来源验证集与留出测试集的作用可能不同，表明存在跨环境的不稳定性，尚不能确定具体原因。",
-        "- 五次置换的标准差只描述随机置换的波动，不是训练种子间方差或置信区间。",
-        "- 所有训练模型均固定，不依据留出测试集调整门控或模型参数。",
-        "- **结论范围：描述性模型诊断，不识别因果效应。**",
-        "",
-        "## 四、后续研究建议",
-        "",
-        "任务1可以先归档小结。下一阶段按照导师要求，"
-        "优先分析东部与中、西部的阳性率、19个变量分布、缺失情况和标签内差异，"
-        "再判断预测效果较差是否与地区数据分布差异有关。",
-        "",
-    ])
-    (OUTPUT / "任务1_第4步_阶段小结.md").write_text(
-        "\n".join(lines), encoding="utf-8"
-    )
-
-
 def main():
     if OUTPUT.exists():
         raise FileExistsError(
@@ -239,11 +185,10 @@ def main():
     use_cn = configure_font()
     for head in HEADS:
         plot_alignment(joined, head, use_cn)
-    write_report(correlation, joined)
     print("任务1，第4步：完成门控与预测贡献的一致性分析")
     print("处理地区：东部、中部、西部；19个特征，2种预测头，2个数据集")
     print("输出目录：", OUTPUT)
-    print("下一步：阅读中文阶段小结与两张散点图，不要根据测试集重新选特征。")
+    print("任务1，第4步：已完成数据对照和图片输出；阶段小结将在任务1全部分析完成后统一整理。")
 
 
 if __name__ == "__main__":
