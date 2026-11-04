@@ -231,7 +231,10 @@ def choose_source_validation_threshold(y, probabilities):
         key=lambda i: (youden[i], thresholds[i]),
         reverse=True,
     )[0]
-    return float(thresholds[index]), float(youden[index])
+    # 任务二：sklearn ROC按 >= 阈值判阳性；项目metrics按 > 阈值判断，
+    # 将阈值向下移动一个浮点单位，使探索性验证规则保持一致。
+    threshold = np.nextafter(float(thresholds[index]), -np.inf)
+    return float(threshold), float(youden[index])
 
 
 def calibration_bins(y, scores, region, model_name):
