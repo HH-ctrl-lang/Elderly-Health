@@ -1,0 +1,29 @@
+{
+  "experiment": "Task 2 Experiment 1C - Prediction Diagnostics",
+  "source_data_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "historical_baseline": "D:\\工作\\老年健康\\outputs\\v2-region-loro-selection91-42",
+  "weighted_experiment": "D:\\工作\\老年健康\\outputs\\analysis_2611\\experiment1b_covariate_reweighting",
+  "data_retrained": false,
+  "model_retrained": false,
+  "only_saved_weighted_model_inference": true,
+  "threshold_selected_on": "source_validation_only",
+  "threshold_selection": "Youden_J_exploratory",
+  "target_outcome_used_for_threshold_selection": false,
+  "target_outcome_used_for_evaluation": true,
+  "paired_bootstrap": {
+    "method": "two_stage_site_individual_with_replacement",
+    "replicates": 2000,
+    "seed": 20261104,
+    "note": "Only four sites per target region; intervals are exploratory and not definitive hypothesis tests."
+  },
+  "calibration": {
+    "method": "equal_frequency_bin_ECE",
+    "bins": 8,
+    "note": "ECE is descriptive and sensitive to grouping."
+  },
+  "python": "3.10.20",
+  "torch": "2.4.1+cpu",
+  "sklearn": "1.7.2",
+  "pandas": "2.3.3",
+  "numpy": "1.26.4"
+}
