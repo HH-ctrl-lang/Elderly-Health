@@ -59,18 +59,12 @@ def predict(model, x, device, batch_size=256, head="main"):
     return np.concatenate(probabilities).ravel()
 
 
-def fit(
-    train,
-    val,
-    config,
-    prior=None,
-    sample_weights=None,
-    validation_sample_weights=None,
-):
-    """Fit a model with optional source-sample and validation importance weights.
+def fit(train, val, config, prior=None, sample_weights=None):
+    """Fit a model with optional source-training-sample importance weights.
 
-    Weights are used only for outcome-prediction losses and validation selection.
-    The default None path is mathematically equivalent to the original unweighted fit.
+    Validation loss and AUC remain unweighted, preserving the historical checkpoint
+    selection rule. With sample_weights=None, the prediction loss is equivalent to
+    the original mean-reduced BCEWithLogitsLoss.
     """
     seed_everything(config.seed, config.threads)
     device = get_device(config.device)
@@ -102,16 +96,8 @@ def fit(
         if train_weights.sum() <= 0:
             raise ValueError("sample_weights must have a positive sum")
 
-    if validation_sample_weights is None:
-        val_weights = np.ones(len(val.x), dtype=np.float32)
-    else:
-        val_weights = np.asarray(validation_sample_weights, dtype=np.float32).reshape(-1)
-        if len(val_weights) != len(val.x):
-            raise ValueError("validation_sample_weights length must match validation rows")
-        if not np.isfinite(val_weights).all() or (val_weights < 0).any():
-            raise ValueError("validation_sample_weights must be finite and non-negative")
-        if val_weights.sum() <= 0:
-            raise ValueError("validation_sample_weights must have a positive sum")
+    # 任务二，实验一补充：将源域训练权重归一化为均值1，保持损失尺度可比。
+    train_weights = train_weights / train_weights.mean()
 
     dataset = TensorDataset(
         torch.as_tensor(train.x),
@@ -138,7 +124,6 @@ def fit(
     )
     val_x = torch.as_tensor(val.x, device=device)
     val_y = torch.as_tensor(val.y, device=device).unsqueeze(1)
-    val_weight_tensor = torch.as_tensor(val_weights, device=device)
     best_auc, best_state, best_epoch, stale = -float("inf"), None, 0, 0
     history = []
     causal = config.model != "baseline"
@@ -153,7 +138,7 @@ def fit(
 
             def weighted_prediction_loss(logits, targets):
                 per_sample = criterion(logits, targets).view(-1)
-                return (per_sample * batch_weights).sum() / batch_weights.sum()
+                return (per_sample * batch_weights).mean()
 
             if not causal:
                 components = {"prediction": weighted_prediction_loss(model(x), y)}
@@ -212,24 +197,14 @@ def fit(
         with torch.no_grad():
             logits = prediction_logits(model, val_x)
             val_probabilities = torch.sigmoid(logits).cpu().numpy().ravel()
-            val_per_sample_loss = criterion(logits, val_y).view(-1)
-            val_loss = (
-                (val_per_sample_loss * val_weight_tensor).sum()
-                / val_weight_tensor.sum()
-            ).item()
-            auc_unweighted = roc_auc_score(val.y, val_probabilities)
-            auc = roc_auc_score(
-                val.y,
-                val_probabilities,
-                sample_weight=val_weights,
-            )
+            val_loss = criterion(logits, val_y).mean().item()
+            auc = roc_auc_score(val.y, val_probabilities)
         scheduler.step(val_loss)
         record = {
             "epoch": epoch + 1,
             "val_auc": float(auc),
-            "val_auc_unweighted": float(auc_unweighted),
             "val_loss": val_loss,
-            "validation_weighted": validation_sample_weights is not None,
+            "validation_weighted": False,
         }
         record["eligible_for_selection"] = epoch + 1 >= first_selection_epoch
         record["sparse_ramp"] = (
