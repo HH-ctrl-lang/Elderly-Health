@@ -981,8 +981,13 @@ def run_region_fold(
     weight_diagnostics["effective_sample_size_ratio_train"] = (
         weight_diagnostics["effective_sample_size_train"] / len(train_weights)
     )
-    weight_diagnostics["train_weight_mean"] = float(train_weights.mean())
-    weight_diagnostics["train_weight_std"] = float(train_weights.std())
+    weight_diagnostics["train_weight_mean_before_fit_normalization"] = float(
+        train_weights.mean()
+    )
+    weight_diagnostics["train_weight_std_before_fit_normalization"] = float(
+        train_weights.std()
+    )
+    weight_diagnostics["train_weight_mean_after_fit_normalization"] = 1.0
     weight_diagnostics["mean_feature_js_before"] = float(
         balance_table["js_before"].mean()
     )
@@ -1391,6 +1396,7 @@ def main():
         "baseline_validation_selection": "unweighted validation AUC",
         "weighted_model_validation_selection": "unweighted validation AUC",
         "validation_sample_weights_used": False,
+        "training_sample_weights_normalized_to_mean_one": True,
         "weight_method": "cross-fitted domain-classifier density ratio",
         "domain_classifier": "L2 Logistic Regression",
         "domain_classifier_C": DOMAIN_CLASSIFIER_C,
