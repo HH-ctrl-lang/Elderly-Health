@@ -658,8 +658,8 @@ def main():
         raise FileNotFoundError(f"找不到输入数据：{args.data}")
     if not args.config.is_file():
         raise FileNotFoundError(f"找不到模型配置：{args.config}")
-    if args.output.exists():
-        raise FileExistsError(f"输出目录已存在，拒绝覆盖：{args.output}")
+    if args.output.exists() and not args.output.is_dir():
+        raise NotADirectoryError(f"输出路径不是目录：{args.output}")
 
     frame = read_raw(args.data, encoding=args.encoding)
     frame = attach_regions(frame)
