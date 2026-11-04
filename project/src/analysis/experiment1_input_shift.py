@@ -35,7 +35,6 @@ from sklearn.metrics import (
     roc_auc_score,
     roc_curve,
 )
-from sklearn.model_selection import StratifiedGroupKFold
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
 
@@ -498,43 +497,129 @@ def binary_metrics(y_true, probability, threshold=0.5):
     }
 
 
+def build_site_grouped_folds(frame):
+    """任务二，实验一：按地区分层分配监测点，构造可复现的4折分组交叉验证。
+
+    当前设计为东、中、西各4个监测点。每折从每个地区留出1个监测点，
+    因而测试集必定同时包含东部和非东部样本；其余9个监测点用于训练。
+    同一监测点的所有样本只会进入一个测试折，不会跨训练集和测试集。
+    """
+    site_table = (
+        frame[["environment_code", "region"]]
+        .drop_duplicates()
+        .sort_values(["region", "environment_code"])
+    )
+
+    if site_table["environment_code"].duplicated().any():
+        raise ValueError("同一监测点对应多个地区，无法构造分组交叉验证。")
+
+    rng = np.random.RandomState(RANDOM_SEED)
+    sites_by_region = {}
+
+    for region in ("east", "central", "west"):
+        sites = site_table.loc[
+            site_table["region"] == region, "environment_code"
+        ].astype(str).tolist()
+
+        if len(sites) != N_SPLITS:
+            raise ValueError(
+                f"{region}地区有{len(sites)}个监测点，"
+                f"当前{N_SPLITS}折设计要求每个地区恰好有{N_SPLITS}个监测点。"
+            )
+
+        # 任务二，实验一：仅打乱监测点分配，不拆分监测点内的个人样本。
+        rng.shuffle(sites)
+        sites_by_region[region] = sites
+
+    folds = []
+    all_test_sites = []
+
+    for fold_index in range(N_SPLITS):
+        # 任务二，实验一：每折从东、中、西各留出1个完整监测点。
+        test_sites_by_region = {
+            region: sites_by_region[region][fold_index]
+            for region in ("east", "central", "west")
+        }
+        test_sites = set(test_sites_by_region.values())
+
+        test_mask = frame["environment_code"].astype(str).isin(test_sites).to_numpy()
+        test_indices = np.flatnonzero(test_mask)
+        train_indices = np.flatnonzero(~test_mask)
+
+        train_sites = set(frame.iloc[train_indices]["environment_code"].astype(str))
+        actual_test_sites = set(
+            frame.iloc[test_indices]["environment_code"].astype(str)
+        )
+
+        if actual_test_sites != test_sites:
+            raise RuntimeError(
+                f"第{fold_index + 1}折监测点分配与样本索引不一致。"
+            )
+
+        if train_sites.intersection(actual_test_sites):
+            raise RuntimeError(f"第{fold_index + 1}折出现监测点交叉泄漏。")
+
+        test_regions = set(frame.iloc[test_indices]["region"])
+        train_regions = set(frame.iloc[train_indices]["region"])
+
+        if test_regions != {"east", "central", "west"}:
+            raise RuntimeError(
+                f"第{fold_index + 1}折测试集未覆盖三个地区。"
+            )
+
+        if train_regions != {"east", "central", "west"}:
+            raise RuntimeError(
+                f"第{fold_index + 1}折训练集未覆盖三个地区。"
+            )
+
+        folds.append(
+            {
+                "train_indices": train_indices,
+                "test_indices": test_indices,
+                "test_sites_by_region": test_sites_by_region,
+            }
+        )
+        all_test_sites.extend(actual_test_sites)
+
+    expected_sites = set(site_table["environment_code"].astype(str))
+    if len(all_test_sites) != len(expected_sites) or set(all_test_sites) != expected_sites:
+        raise RuntimeError("交叉验证分配未能保证每个监测点恰好作为测试组一次。")
+
+    return folds
+
+
 def evaluate_region_classifier(frame):
-    """任务二，实验一：按监测点分组进行4折地区识别交叉验证。"""
+    """任务二，实验一：按地区分层的监测点分组4折交叉验证。"""
     features = frame[FEATURES].copy()
     target = (frame["region"] == "east").astype(int).to_numpy()
     groups = frame["environment_code"].astype(str).to_numpy()
-
-    splitter = StratifiedGroupKFold(
-        n_splits=N_SPLITS,
-        shuffle=True,
-        random_state=RANDOM_SEED,
-    )
 
     base_model = build_region_classifier()
     oof_probability = np.full(len(frame), np.nan, dtype=float)
     fold_assignment = np.full(len(frame), -1, dtype=int)
     fold_rows = []
 
-    for fold, (train_indices, test_indices) in enumerate(
-        splitter.split(features, target, groups),
-        start=1,
-    ):
+    # 任务二，实验一：固定地区内监测点分配，保证每折都有三类地区的留出站点。
+    folds = build_site_grouped_folds(frame)
+
+    for fold, split in enumerate(folds, start=1):
+        train_indices = split["train_indices"]
+        test_indices = split["test_indices"]
+        test_sites_by_region = split["test_sites_by_region"]
+
         train_groups = set(groups[train_indices])
         test_groups = set(groups[test_indices])
 
-        # 任务二，实验一：确保同一监测点不会同时进入训练集和测试集。
         if train_groups.intersection(test_groups):
             raise RuntimeError(f"第{fold}折出现监测点交叉泄漏。")
 
         if set(np.unique(target[test_indices])) != {0, 1}:
-            raise RuntimeError(
-                f"第{fold}折测试集未同时包含东部和中西部监测点，"
-                "无法计算AUC；请检查分组划分。"
-            )
+            raise RuntimeError(f"第{fold}折测试集缺少地区类别，无法计算AUC。")
 
         if set(np.unique(target[train_indices])) != {0, 1}:
             raise RuntimeError(f"第{fold}折训练集缺少地区类别。")
 
+        # 任务二，实验一：每折独立克隆模型，预处理器只在该折训练数据上拟合。
         model = clone(base_model)
         model.fit(
             features.iloc[train_indices],
@@ -562,6 +647,9 @@ def evaluate_region_classifier(frame):
                 "test_site_count": len(test_groups),
                 "train_sites": ";".join(sorted(train_groups)),
                 "test_sites": ";".join(sorted(test_groups)),
+                "test_east_site": test_sites_by_region["east"],
+                "test_central_site": test_sites_by_region["central"],
+                "test_west_site": test_sites_by_region["west"],
                 **fold_result,
             }
         )
@@ -582,6 +670,7 @@ def evaluate_region_classifier(frame):
                 "classifier": "L2 Logistic Regression",
                 "features": len(FEATURES),
                 "feature_target": "east=1; central_or_west=0",
+                "cross_validation": "region-stratified site-grouped 4-fold",
                 "threshold": 0.5,
                 **overall_metrics,
             }
@@ -768,7 +857,7 @@ def run_experiment(data_path, output_root):
         "region_mapping": PROVINCE_TO_REGION,
         "classifier_target": "east=1; central_or_west=0",
         "health_outcome_read": False,
-        "cross_validation": "4-fold StratifiedGroupKFold",
+        "cross_validation": "4-fold region-stratified site-grouped split; one east, one central, one west site per test fold",
         "group_column": "environment_code",
         "classifier": "L2 Logistic Regression",
         "class_weight": "balanced",
