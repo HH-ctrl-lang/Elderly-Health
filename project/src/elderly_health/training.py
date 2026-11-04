@@ -59,7 +59,19 @@ def predict(model, x, device, batch_size=256, head="main"):
     return np.concatenate(probabilities).ravel()
 
 
-def fit(train, val, config, prior=None):
+def fit(
+    train,
+    val,
+    config,
+    prior=None,
+    sample_weights=None,
+    validation_sample_weights=None,
+):
+    """Fit a model with optional source-sample and validation importance weights.
+
+    Weights are used only for outcome-prediction losses and validation selection.
+    The default None path is mathematically equivalent to the original unweighted fit.
+    """
     seed_everything(config.seed, config.threads)
     device = get_device(config.device)
     env_map = {str(name): i for i, name in enumerate(sorted(set(train.env)))}
@@ -79,14 +91,40 @@ def fit(train, val, config, prior=None):
             gate_temperature=config.gate_temperature,
             joint=config.model == "v5",
         ).to(device)
+    if sample_weights is None:
+        train_weights = np.ones(len(train.x), dtype=np.float32)
+    else:
+        train_weights = np.asarray(sample_weights, dtype=np.float32).reshape(-1)
+        if len(train_weights) != len(train.x):
+            raise ValueError("sample_weights length must match training rows")
+        if not np.isfinite(train_weights).all() or (train_weights < 0).any():
+            raise ValueError("sample_weights must be finite and non-negative")
+        if train_weights.sum() <= 0:
+            raise ValueError("sample_weights must have a positive sum")
+
+    if validation_sample_weights is None:
+        val_weights = np.ones(len(val.x), dtype=np.float32)
+    else:
+        val_weights = np.asarray(validation_sample_weights, dtype=np.float32).reshape(-1)
+        if len(val_weights) != len(val.x):
+            raise ValueError("validation_sample_weights length must match validation rows")
+        if not np.isfinite(val_weights).all() or (val_weights < 0).any():
+            raise ValueError("validation_sample_weights must be finite and non-negative")
+        if val_weights.sum() <= 0:
+            raise ValueError("validation_sample_weights must have a positive sum")
+
     dataset = TensorDataset(
         torch.as_tensor(train.x),
         torch.as_tensor(train.y).unsqueeze(1),
         torch.tensor([env_map[e] for e in train.env], dtype=torch.long),
+        torch.as_tensor(train_weights),
     )
     generator = torch.Generator().manual_seed(config.seed)
     loader = DataLoader(dataset, batch_size=config.batch_size, shuffle=True, generator=generator)
-    criterion = nn.BCEWithLogitsLoss(pos_weight=torch.tensor([config.pos_weight], device=device))
+    criterion = nn.BCEWithLogitsLoss(
+        pos_weight=torch.tensor([config.pos_weight], device=device),
+        reduction="none",
+    )
     optimizer = torch.optim.Adam(
         model.parameters(),
         lr=config.learning_rate,
@@ -100,6 +138,7 @@ def fit(train, val, config, prior=None):
     )
     val_x = torch.as_tensor(val.x, device=device)
     val_y = torch.as_tensor(val.y, device=device).unsqueeze(1)
+    val_weight_tensor = torch.as_tensor(val_weights, device=device)
     best_auc, best_state, best_epoch, stale = -float("inf"), None, 0, 0
     history = []
     causal = config.model != "baseline"
@@ -108,17 +147,25 @@ def fit(train, val, config, prior=None):
     for epoch in range(config.epochs):
         model.train()
         totals = {}
-        for x, y, environment in loader:
+        for x, y, environment, batch_weights in loader:
             x, y, environment = x.to(device), y.to(device), environment.to(device)
+            batch_weights = batch_weights.to(device)
+
+            def weighted_prediction_loss(logits, targets):
+                per_sample = criterion(logits, targets).view(-1)
+                return (per_sample * batch_weights).mean()
+
             if not causal:
-                components = {"prediction": criterion(model(x), y)}
+                components = {"prediction": weighted_prediction_loss(model(x), y)}
                 loss = components["prediction"]
             else:
                 logits, env_logits, zc, zs, mask = model(x)
-                components = {"prediction": criterion(logits, y)}
+                components = {"prediction": weighted_prediction_loss(logits, y)}
                 loss = components["prediction"]
                 if config.model == "v5":
-                    components["zc_prediction"] = criterion(model.predictor_zc(zc), y)
+                    components["zc_prediction"] = weighted_prediction_loss(
+                        model.predictor_zc(zc), y
+                    )
                     loss = loss + components["zc_prediction"]
                 sparse_ramp = ramp(epoch, config.sparse_start, config.ramp_epochs)
                 invariant_ramp = ramp(epoch, config.irm_start, config.ramp_epochs)
@@ -164,10 +211,26 @@ def fit(train, val, config, prior=None):
         model.eval()
         with torch.no_grad():
             logits = prediction_logits(model, val_x)
-            val_loss = criterion(logits, val_y).item()
-            auc = roc_auc_score(val.y, torch.sigmoid(logits).cpu().numpy().ravel())
+            val_probabilities = torch.sigmoid(logits).cpu().numpy().ravel()
+            val_per_sample_loss = criterion(logits, val_y).view(-1)
+            val_loss = (
+                (val_per_sample_loss * val_weight_tensor).sum()
+                / val_weight_tensor.sum()
+            ).item()
+            auc_unweighted = roc_auc_score(val.y, val_probabilities)
+            auc = roc_auc_score(
+                val.y,
+                val_probabilities,
+                sample_weight=val_weights,
+            )
         scheduler.step(val_loss)
-        record = {"epoch": epoch + 1, "val_auc": float(auc), "val_loss": val_loss}
+        record = {
+            "epoch": epoch + 1,
+            "val_auc": float(auc),
+            "val_auc_unweighted": float(auc_unweighted),
+            "val_loss": val_loss,
+            "validation_weighted": validation_sample_weights is not None,
+        }
         record["eligible_for_selection"] = epoch + 1 >= first_selection_epoch
         record["sparse_ramp"] = (
             ramp(epoch, config.sparse_start, config.ramp_epochs) if causal else 0.0
