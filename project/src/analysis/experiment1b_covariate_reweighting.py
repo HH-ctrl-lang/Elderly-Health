@@ -301,6 +301,7 @@ def estimate_density_ratio(source_frame, target_frame, seed):
 
     domain_predictions = pd.DataFrame(
         {
+            "sample_id": domain_frame["sample_id"].to_numpy(),
             "environment_code": domain_sites,
             "region": domain_regions,
             "domain_label": domain_y,
@@ -396,7 +397,7 @@ def run_region_fold(frame, held_out_region, config, output_dir, seed):
     ).sort_values("sample_id")
 
     (
-        source_weights,
+        _source_weights,
         weight_table,
         domain_predictions,
         domain_fold_metrics,
