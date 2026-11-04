@@ -304,9 +304,11 @@ def load_historical_baseline(
     if training_record.get("device") != expected_config.device:
         raise RuntimeError(f"{held_out_region}历史baseline训练设备不一致。")
 
-    metrics_record = json.loads(
+    metrics_document = json.loads(
         (fold_dir / "metrics.json").read_text(encoding="utf-8")
-    )["main"]
+    )
+    metrics_record = metrics_document["main"]
+    per_site_metrics = metrics_document.get("per_site", {})
 
     predictions = pd.read_csv(
         fold_dir / "representations_test.csv",
@@ -411,7 +413,6 @@ def load_historical_baseline(
     )
 
     # 任务二，实验一补充：核对历史per-site汇总与逐样本预测的样本量和阳性率。
-    per_site_metrics = metrics_record.get("per_site", {})
     observed_sites = set(predictions["environment_code"].astype(str))
     if observed_sites != set(per_site_metrics):
         raise RuntimeError(
