@@ -331,7 +331,6 @@ def estimate_density_ratio(source_frame, target_frame, seed):
     }
 
     return (
-        normalized_weights.astype(np.float32),
         weight_table,
         domain_predictions,
         pd.DataFrame(fold_rows),
@@ -397,7 +396,6 @@ def run_region_fold(frame, held_out_region, config, output_dir, seed):
     ).sort_values("sample_id")
 
     (
-        _source_weights,
         weight_table,
         domain_predictions,
         domain_fold_metrics,
