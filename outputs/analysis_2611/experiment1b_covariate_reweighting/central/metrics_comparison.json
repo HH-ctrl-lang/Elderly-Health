@@ -1,0 +1,32 @@
+{
+  "unweighted_baseline_reused": {
+    "auc": 0.7406627263581488,
+    "auprc": 0.22546364441341757,
+    "accuracy": 0.7916145181476846,
+    "balanced_accuracy": 0.6822715136975701,
+    "f1": 0.31901840490797545,
+    "precision": 0.22478386167146974,
+    "recall": 0.5492957746478874,
+    "log_loss": 0.4406116655505315,
+    "brier": 0.1394792688329053,
+    "n": 1598,
+    "positive_rate": 0.08886107802391052,
+    "threshold": 0.5
+  },
+  "importance_weighted": {
+    "auc": 0.7344282038384151,
+    "auprc": 0.21637018204867284,
+    "accuracy": 0.7884856070087609,
+    "balanced_accuracy": 0.6773767605633803,
+    "f1": 0.3130081300813008,
+    "precision": 0.22,
+    "recall": 0.5422535211267606,
+    "log_loss": 0.43792646810751173,
+    "brier": 0.13888606771665393,
+    "n": 1598,
+    "positive_rate": 0.08886107634543179,
+    "threshold": 0.5
+  },
+  "baseline_retrained": false,
+  "validation_checkpoint_selection_weighted": false
+}

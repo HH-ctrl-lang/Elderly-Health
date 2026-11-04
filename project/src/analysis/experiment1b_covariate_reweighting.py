@@ -519,7 +519,7 @@ def estimate_density_ratio(source_frame, target_frame, seed):
     target_frame为目标地区无标签特征。
     目标地区健康标签不会进入本函数。
     """
-    selected_columns = FEATURES + [ENVIRONMENT, REGION, "sample_id"]
+    selected_columns = list(FEATURES) + [ENVIRONMENT, REGION, "sample_id"]
 
     source = source_frame[selected_columns].copy().reset_index(drop=True)
     target = target_frame[selected_columns].copy().reset_index(drop=True)
@@ -539,7 +539,7 @@ def estimate_density_ratio(source_frame, target_frame, seed):
     # 任务二，实验一补充：只合并19个特征、监测点和地区信息。
     domain_frame = pd.concat([source, target], ignore_index=True)
 
-    domain_x = domain_frame[FEATURES].copy()
+    domain_x = domain_frame[list(FEATURES)].copy()
     domain_y = domain_frame["domain_label"].to_numpy(dtype=int)
     domain_sites = domain_frame[ENVIRONMENT].astype(str).to_numpy()
     domain_regions = domain_frame[REGION].astype(str).to_numpy()
