@@ -91,6 +91,13 @@ METRIC_KEYS = [
     "brier",
     "positive_rate",
 ]
+PREDICTION_METRIC_KEYS = [
+    "auc",
+    "auprc",
+    "log_loss",
+    "brier",
+    "positive_rate",
+]
 
 
 # ==================== 二、通用函数 ====================
@@ -157,15 +164,22 @@ def effective_sample_size(weights):
     return float(weights.sum() ** 2 / denominator)
 
 
-def assert_metric_match(reference, actual, context, atol=2e-6):
-    """任务二，实验一补充：检查历史汇总指标与历史逐样本预测能否对应。"""
+def assert_metric_match(
+    reference,
+    actual,
+    context,
+    keys=None,
+    atol=2e-6,
+):
+    """任务二，实验一补充：检查历史指标与保存预测能否对应。"""
+    keys = METRIC_KEYS if keys is None else keys"
     if int(reference["n"]) != int(actual["n"]):
         raise RuntimeError(
             f"{context}样本数不一致：metrics.json={reference['n']}，"
             f"逐样本预测重算={actual['n']}。"
         )
 
-    for key in METRIC_KEYS:
+    for key in keys:
         left = reference.get(key)
         right = actual.get(key)
 
@@ -368,12 +382,15 @@ def load_historical_baseline(
     if not np.isfinite(baseline_probability).all():
         raise RuntimeError(f"{held_out_region}历史baseline预测概率存在非有限值。")
 
-    # 任务二，实验一补充：从逐样本预测重新计算指标，核对历史metrics.json。
-    recomputed_metrics = metrics(expected_y, baseline_probability)
+    # 任务二，实验一补充：从逐样本预测重算不受阈值影响的指标。
+    # CSV预测概率保存为有限小数位，故不使用它重算阈值型指标作严格核验。
+    prediction_metrics = metrics(expected_y, baseline_probability)
     assert_metric_match(
         metrics_record,
-        recomputed_metrics,
-        f"{held_out_region}历史baseline",
+        prediction_metrics,
+        f"{held_out_region}历史baseline逐样本预测",
+        keys=PREDICTION_METRIC_KEYS,
+        atol=1e-5,
     )
 
     summary_rows = summary_table.loc[
@@ -389,9 +406,37 @@ def load_historical_baseline(
     summary_record = summary_rows.iloc[0].to_dict()
     assert_metric_match(
         summary_record,
-        recomputed_metrics,
+        metrics_record,
         f"{held_out_region}历史summary.csv",
     )
+
+    # 任务二，实验一补充：核对历史per-site汇总与逐样本预测的样本量和阳性率。
+    per_site_metrics = metrics_record.get("per_site", {})
+    observed_sites = set(predictions["environment_code"].astype(str))
+    if observed_sites != set(per_site_metrics):
+        raise RuntimeError(
+            f"{held_out_region}历史baseline的per-site指标与预测文件站点不一致。"
+        )
+
+    for site, site_metrics in per_site_metrics.items():
+        site_rows = predictions.loc[
+            predictions["environment_code"].astype(str) == str(site)
+        ]
+        site_positive_rate = float(
+            site_rows["cognitive_impairment"].astype(int).mean()
+        )
+        if int(site_metrics["n"]) != len(site_rows):
+            raise RuntimeError(
+                f"{held_out_region}/{site}历史per-site样本数不一致。"
+            )
+        if not np.isclose(
+            float(site_metrics["positive_rate"]),
+            site_positive_rate,
+            atol=1e-6,
+        ):
+            raise RuntimeError(
+                f"{held_out_region}/{site}历史per-site阳性率不一致。"
+            )
 
     artifact_hashes = {
         path.name: sha256_file(path)
@@ -411,11 +456,18 @@ def load_historical_baseline(
         "test_sample_count": int(len(predictions)),
         "test_prediction_file": str(fold_dir / "representations_test.csv"),
         "artifact_sha256": artifact_hashes,
-        "metrics_recomputed_from_saved_predictions": recomputed_metrics,
+        "metrics_from_historical_metrics_json": metrics_record,
+        "prediction_metrics_recomputed": prediction_metrics,
         "historical_metrics_verified": True,
     }
 
-    return baseline_probability, recomputed_metrics, predictions, manifest
+    return (
+        baseline_probability,
+        metrics_record,
+        per_site_metrics,
+        predictions,
+        manifest,
+    )
 
 
 # ==================== 四、域分类器与密度比估计 ====================
@@ -806,6 +858,7 @@ def run_region_fold(
     (
         probability_unweighted,
         result_unweighted,
+        baseline_per_site_metrics,
         baseline_predictions,
         baseline_manifest,
     ) = load_historical_baseline(
@@ -999,14 +1052,15 @@ def run_region_fold(
 
     # 任务二，实验一补充：监测点层面使用同一测试样本做配对比较。
     site_metric_rows = []
-    site_metric_rows.extend(
-        evaluate_by_site(
-            target_split,
-            probability_unweighted,
-            "MLP_unweighted_historical_reused",
-            held_out_region,
+    for site, site_metrics in baseline_per_site_metrics.items():
+        site_metric_rows.append(
+            {
+                "held_out_region": held_out_region,
+                "site_code": str(site),
+                "model": "MLP_unweighted_historical_reused",
+                **site_metrics,
+            }
         )
-    )
     site_metric_rows.extend(
         evaluate_by_site(
             target_split,
