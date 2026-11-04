@@ -118,6 +118,120 @@ def build_domain_classifier():
     )
 
 
+def normalize_category(value):
+    """任务二，实验一补充：将数值编码转换为类别标签，显式保留缺失类别。"""
+    if pd.isna(value):
+        return "<MISSING>"
+
+    number = float(value)
+    if number.is_integer():
+        return str(int(number))
+
+    return format(number, ".8g")
+
+
+def js_divergence(count_a, count_b):
+    """任务二，实验一补充：计算类别分布的Jensen-Shannon散度。"""
+    count_a = np.asarray(count_a, dtype=float)
+    count_b = np.asarray(count_b, dtype=float)
+
+    if count_a.sum() <= 0 or count_b.sum() <= 0:
+        return np.nan
+
+    p = count_a / count_a.sum()
+    q = count_b / count_b.sum()
+    midpoint = (p + q) / 2
+
+    mask_p = p > 0
+    mask_q = q > 0
+
+    kl_p = np.sum(p[mask_p] * np.log2(p[mask_p] / midpoint[mask_p]))
+    kl_q = np.sum(q[mask_q] * np.log2(q[mask_q] / midpoint[mask_q]))
+
+    return float((kl_p + kl_q) / 2)
+
+
+def evaluate_distribution_balance(source_frame, target_frame, source_weights):
+    """任务二，实验一补充：比较加权前后源域与目标域的特征分布。
+
+    该函数只比较输入特征分布，不读取任何健康结局标签。
+    缺失值作为独立类别参与分布比较。
+    """
+    source_weights = np.asarray(source_weights, dtype=float).reshape(-1)
+
+    if len(source_weights) != len(source_frame):
+        raise ValueError("分布平衡权重数量与源域样本数不一致。")
+
+    rows = []
+
+    for feature in FEATURES:
+        source_values = source_frame[feature].map(normalize_category).to_numpy()
+        target_values = target_frame[feature].map(normalize_category).to_numpy()
+
+        categories = sorted(
+            set(source_values).union(set(target_values)),
+            key=lambda value: (value == "<MISSING>", value),
+        )
+
+        source_mask = {
+            category: source_values == category for category in categories
+        }
+        target_mask = {
+            category: target_values == category for category in categories
+        }
+
+        source_counts = np.asarray(
+            [source_mask[category].sum() for category in categories],
+            dtype=float,
+        )
+        weighted_source_counts = np.asarray(
+            [
+                source_weights[source_mask[category]].sum()
+                for category in categories
+            ],
+            dtype=float,
+        )
+        target_counts = np.asarray(
+            [target_mask[category].sum() for category in categories],
+            dtype=float,
+        )
+
+        source_distribution = source_counts / source_counts.sum()
+        weighted_distribution = (
+            weighted_source_counts / weighted_source_counts.sum()
+        )
+        target_distribution = target_counts / target_counts.sum()
+
+        js_before = js_divergence(source_counts, target_counts)
+        js_after = js_divergence(weighted_source_counts, target_counts)
+
+        max_difference_before = float(
+            np.max(np.abs(source_distribution - target_distribution))
+        )
+        max_difference_after = float(
+            np.max(np.abs(weighted_distribution - target_distribution))
+        )
+
+        rows.append(
+            {
+                "feature": feature,
+                "js_before": js_before,
+                "js_after": js_after,
+                "js_reduction": js_before - js_after,
+                "max_category_difference_before": max_difference_before,
+                "max_category_difference_after": max_difference_after,
+                "source_missing_rate": float(
+                    (source_values == "<MISSING>").mean()
+                ),
+                "target_missing_rate": float(
+                    (target_values == "<MISSING>").mean()
+                ),
+            }
+        )
+
+    return pd.DataFrame(rows)
+
+
 def estimate_density_ratio(source_frame, target_frame, seed):
     """任务二，实验一补充：按监测点交叉拟合目标域/源域密度比。
 
@@ -408,6 +522,28 @@ def run_region_fold(frame, held_out_region, config, output_dir, seed):
     # 任务二，实验一补充：建立样本ID到密度比权重的映射。
     weight_map = weight_table.set_index("sample_id")["weight_normalized"]
 
+    # 任务二，实验一补充：先验证加权是否真正缩小了特征分布距离。
+    source_balance_weights = weight_map.loc[
+        source_unlabeled["sample_id"]
+    ].to_numpy(dtype=float)
+    balance_table = evaluate_distribution_balance(
+        source_unlabeled,
+        target_frame,
+        source_balance_weights,
+    )
+    weight_diagnostics["mean_feature_js_before"] = float(
+        balance_table["js_before"].mean()
+    )
+    weight_diagnostics["mean_feature_js_after"] = float(
+        balance_table["js_after"].mean()
+    )
+    weight_diagnostics["mean_feature_js_reduction"] = float(
+        balance_table["js_reduction"].mean()
+    )
+    weight_diagnostics["features_with_js_reduction"] = int(
+        (balance_table["js_reduction"] > 0).sum()
+    )
+
     # 任务二，实验一补充：所有预处理参数仅在源域训练集拟合。
     splits, preprocessor = prepare_splits(
         [train_frame, validation_frame, target_frame],
@@ -485,6 +621,11 @@ def run_region_fold(frame, held_out_region, config, output_dir, seed):
     # 任务二，实验一补充：保存源域权重、域分类折外预测及折分配。
     weight_table.to_csv(
         output_dir / "source_sample_weights.csv",
+        index=False,
+        encoding="utf-8-sig",
+    )
+    balance_table.to_csv(
+        output_dir / "feature_balance_before_after.csv",
         index=False,
         encoding="utf-8-sig",
     )
@@ -584,6 +725,34 @@ def run_region_fold(frame, held_out_region, config, output_dir, seed):
     fig.savefig(output_dir / "weight_distribution.png", dpi=300)
     plt.close(fig)
 
+    # 任务二，实验一补充：绘制加权前后特征JS距离对照。
+    balance_plot = balance_table.sort_values("js_before", ascending=False).head(12)
+    balance_plot = balance_plot.sort_values("js_before")
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    positions = np.arange(len(balance_plot))
+    width = 0.38
+    ax.barh(
+        positions - width / 2,
+        balance_plot["js_before"],
+        height=width,
+        label="Before weighting",
+    )
+    ax.barh(
+        positions + width / 2,
+        balance_plot["js_after"],
+        height=width,
+        label="After weighting",
+    )
+    ax.set_yticks(positions)
+    ax.set_yticklabels(balance_plot["feature"])
+    ax.set_xlabel("Jensen-Shannon Divergence (bits)")
+    ax.set_title(f"Feature distribution balance: {held_out_region}")
+    ax.legend()
+    fig.tight_layout()
+    fig.savefig(output_dir / "feature_balance_before_after.png", dpi=300)
+    plt.close(fig)
+
     # 任务二，实验一补充：绘制目标地区预测概率对照。
     fig, ax = plt.subplots(figsize=(8, 5))
     ax.hist(
@@ -627,7 +796,7 @@ def run_region_fold(frame, held_out_region, config, output_dir, seed):
         },
     )
 
-    return metric_rows, site_metric_rows, weight_diagnostics
+    return metric_rows, site_metric_rows, weight_diagnostics, balance_table
 
 
 # ==================== 四、主程序与实验记录 ====================
@@ -691,6 +860,7 @@ def main():
     all_metrics = []
     all_site_metrics = []
     all_weight_diagnostics = []
+    all_balance_rows = []
 
     print("=" * 70)
     print("任务二，实验一补充：跨地区协变量偏移加权实验")
@@ -707,7 +877,7 @@ def main():
 
         fold_output = output_root / held_out_region
 
-        metric_rows, site_rows, weight_diagnostics = run_region_fold(
+        metric_rows, site_rows, weight_diagnostics, balance_table = run_region_fold(
             frame,
             held_out_region,
             config,
@@ -717,6 +887,8 @@ def main():
 
         all_metrics.extend(metric_rows)
         all_site_metrics.extend(site_rows)
+        balance_table.insert(0, "held_out_region", held_out_region)
+        all_balance_rows.extend(balance_table.to_dict(orient="records"))
 
         all_weight_diagnostics.append(
             {
@@ -741,6 +913,7 @@ def main():
     metrics_table = pd.DataFrame(all_metrics)
     site_table = pd.DataFrame(all_site_metrics)
     weight_table = pd.DataFrame(all_weight_diagnostics)
+    balance_summary_table = pd.DataFrame(all_balance_rows)
 
     metrics_table.to_csv(
         output_root / "region_model_comparison.csv",
@@ -754,6 +927,11 @@ def main():
     )
     weight_table.to_csv(
         output_root / "region_weight_diagnostics.csv",
+        index=False,
+        encoding="utf-8-sig",
+    )
+    balance_summary_table.to_csv(
+        output_root / "region_feature_balance_summary.csv",
         index=False,
         encoding="utf-8-sig",
     )
