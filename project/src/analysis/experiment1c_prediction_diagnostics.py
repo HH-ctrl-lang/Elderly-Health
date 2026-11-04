@@ -138,9 +138,9 @@ def verify_predictions(frame, split, region):
     return aligned.reset_index()
 
 
-def load_and_align_baseline_validation(region, val_split):
+def load_and_align_baseline_validation(region, val_split, historical_root):
     """任务二，补充诊断：复用历史未加权MLP源域验证预测。"""
-    path = HISTORICAL_ROOT / region / "baseline" / "representations_val.csv"
+    path = historical_root / region / "baseline" / "representations_val.csv"
     val = pd.read_csv(path, encoding="utf-8-sig")
 
     if val["sample_id"].duplicated().any() or len(val) != len(val_split.y):
@@ -172,13 +172,15 @@ def load_and_align_baseline_validation(region, val_split):
     return aligned["y_prob"].to_numpy(dtype=float)
 
 
-def weighted_validation_predictions(region, val_split, test_split, saved_test):
+def weighted_validation_predictions(
+    region, val_split, test_split, saved_test, weighted_root
+):
     """任务二，补充诊断：加载既有checkpoint，仅在源域验证集推理。
 
     同时核对目标地区推理与已提交的保存预测一致，以验证预处理、
     网络结构、checkpoint和样本顺序没有发生变化。
     """
-    checkpoint_path = WEIGHTED_ROOT / region / "model_weighted.pt"
+    checkpoint_path = weighted_root / region / "model_weighted.pt"
     checkpoint = torch.load(
         checkpoint_path,
         map_location="cpu",
@@ -380,9 +382,8 @@ def main():
     parser.add_argument("--output", type=Path, default=OUTPUT_DIR)
     args = parser.parse_args()
 
-    global HISTORICAL_ROOT, WEIGHTED_ROOT
-    HISTORICAL_ROOT = args.historical
-    WEIGHTED_ROOT = args.weighted
+    historical_root = args.historical
+    weighted_root = args.weighted
 
     if args.output.exists():
         raise FileExistsError(
@@ -390,7 +391,7 @@ def main():
         )
 
     metadata = load_json(
-        WEIGHTED_ROOT / "experiment_metadata.json"
+        weighted_root / "experiment_metadata.json"
     )
     actual_hash = sha256_file(args.data)
     if metadata["input_sha256"] != actual_hash:
@@ -427,7 +428,7 @@ def main():
         )
 
         saved = pd.read_csv(
-            WEIGHTED_ROOT / region / "target_predictions.csv",
+            weighted_root / region / "target_predictions.csv",
             encoding="utf-8-sig",
         )
         target = verify_predictions(saved, test_split, region)
@@ -437,10 +438,10 @@ def main():
         new_test = target["probability_weighted"].to_numpy(dtype=float)
 
         old_val = load_and_align_baseline_validation(
-            region, val_split
+            region, val_split, historical_root
         )
         new_val, consistency_error, best_epoch = weighted_validation_predictions(
-            region, val_split, test_split, target
+            region, val_split, test_split, target, weighted_root
         )
 
         t_old, j_old = choose_source_validation_threshold(
@@ -553,8 +554,8 @@ def main():
         {
             "experiment": "Task 2 Experiment 1C - Prediction Diagnostics",
             "source_data_sha256": actual_hash,
-            "historical_baseline": str(HISTORICAL_ROOT.resolve()),
-            "weighted_experiment": str(WEIGHTED_ROOT.resolve()),
+            "historical_baseline": str(historical_root.resolve()),
+            "weighted_experiment": str(weighted_root.resolve()),
             "data_retrained": False,
             "model_retrained": False,
             "only_saved_weighted_model_inference": True,
