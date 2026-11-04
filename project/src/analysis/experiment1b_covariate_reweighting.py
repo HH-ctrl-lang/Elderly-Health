@@ -13,17 +13,14 @@
 - 只有在特征-结局条件关系近似稳定且具有足够分布重叠时，密度比加权才有合理依据。
 """
 
-from dataclasses import replace
-from datetime import datetime
-from pathlib import Path
 import hashlib
 import json
 import sys
+from dataclasses import replace
+from datetime import datetime
+from pathlib import Path
 
 import matplotlib
-
-matplotlib.use("Agg")
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -36,24 +33,26 @@ from sklearn.metrics import roc_auc_score
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
 
+plt.switch_backend("Agg")
+
 # 任务二，实验一补充：加载项目现有的数据、模型和评估流程。
 PROJECT = Path(__file__).resolve().parents[2]
 REPOSITORY_ROOT = PROJECT.parent
 sys.path.insert(0, str(PROJECT / "src"))
 
-from elderly_health.config import TrainConfig
-from elderly_health.data import (
+from elderly_health.config import TrainConfig  # noqa: E402
+from elderly_health.data import (  # noqa: E402
     ENVIRONMENT,
     FEATURES,
-    REGION,
     PROVINCE_TO_REGION,
+    REGION,
     attach_regions,
     held_out_split,
     prepare_splits,
     read_raw,
 )
-from elderly_health.evaluation import metrics
-from elderly_health.training import fit, get_device, predict
+from elderly_health.evaluation import metrics  # noqa: E402
+from elderly_health.training import fit, get_device, predict  # noqa: E402
 
 
 # ==================== 一、实验配置 ====================
