@@ -172,7 +172,7 @@ def assert_metric_match(
     atol=2e-6,
 ):
     """任务二，实验一补充：检查历史指标与保存预测能否对应。"""
-    keys = METRIC_KEYS if keys is None else keys"
+    keys = METRIC_KEYS if keys is None else keys
     if int(reference["n"]) != int(actual["n"]):
         raise RuntimeError(
             f"{context}样本数不一致：metrics.json={reference['n']}，"
