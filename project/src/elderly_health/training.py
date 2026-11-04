@@ -153,7 +153,7 @@ def fit(
 
             def weighted_prediction_loss(logits, targets):
                 per_sample = criterion(logits, targets).view(-1)
-                return (per_sample * batch_weights).mean()
+                return (per_sample * batch_weights).sum() / batch_weights.sum()
 
             if not causal:
                 components = {"prediction": weighted_prediction_loss(model(x), y)}
