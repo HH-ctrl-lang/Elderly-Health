@@ -151,7 +151,7 @@ def load_data(path):
     return frame
 
 
-def load_saved_model(model_dir, model_name):
+def load_saved_model(model_dir, model_name, expected_data_hash):
     """任务二，实验三：从历史LORO目录加载已训练模型和预处理器。"""
     config_path = model_dir / "config.json"
     checkpoint_path = model_dir / "best_model.pt"
@@ -169,7 +169,7 @@ def load_saved_model(model_dir, model_name):
         weights_only=True,
     )
 
-    if config_record.get("input_sha256") != sha256_file(DATA_PATH):
+    if config_record.get("input_sha256") != expected_data_hash:
         raise RuntimeError(f"{model_dir}使用的数据版本与当前输入不一致。")
 
     if config_record.get("feature_names") != list(FEATURES):
@@ -192,7 +192,7 @@ def load_saved_model(model_dir, model_name):
     with preprocessor_path.open("rb") as stream:
         preprocessor = pickle.load(stream)
 
-    if tuple(preprocessor.feature_names_in_) != tuple(FEATURES):
+    if tuple(preprocessor.imputer.feature_names_in_) != tuple(FEATURES):
         raise RuntimeError(f"{model_dir}预处理器特征顺序不一致。")
 
     if model_name == "baseline":
@@ -291,7 +291,7 @@ def load_saved_predictions(model_dir, target_frame):
 
 # ==================== 四、基准预测核验 ====================
 
-def load_fold_context(frame, region, model_name):
+def load_fold_context(frame, region, model_name, model_root, expected_data_hash):
     """任务二，实验三：加载留出地区模型、预处理器和测试样本。"""
     train_frame, val_frame, target_frame = held_out_split(
         frame,
@@ -300,8 +300,8 @@ def load_fold_context(frame, region, model_name):
         column=REGION,
     )
 
-    model_dir = MODEL_ROOT / region / model_name
-    artifacts = load_saved_model(model_dir, model_name)
+    model_dir = model_root / region / model_name
+    artifacts = load_saved_model(model_dir, model_name, expected_data_hash)
 
     raw_x = target_frame[list(FEATURES)].copy()
     transformed_x = artifacts["preprocessor"].transform(raw_x)
@@ -698,7 +698,12 @@ def create_figures(summary, stability, rank_stability, gate_table, output_dir):
 
     # 任务二，实验三：V5 gate与经验置换重要性对照。
     if not gate_table.empty:
-        merged = gate_table.merge(
+        gate_mean = (
+            gate_table.groupby(["model", "feature"])["gate_score"]
+            .agg(gate_score="mean", gate_score_std="std")
+            .reset_index()
+        )
+        merged = gate_mean.merge(
             stability.loc[stability["model"] == "v5"],
             on=["model", "feature"],
             how="inner",
@@ -785,7 +790,9 @@ def main():
     for region in REGIONS:
         for model_name in MODELS:
             model_dir = args.model_root / region / model_name
-            context = load_fold_context(frame, region, model_name)
+            context = load_fold_context(
+                frame, region, model_name, args.model_root, data_hash
+            )
             contexts[(region, model_name)] = context
 
             baseline_rows.append(
