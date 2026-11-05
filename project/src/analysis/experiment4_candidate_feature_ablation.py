@@ -630,7 +630,6 @@ def main():
     all_metrics = []
     all_site_metrics = []
     all_gate_rows = []
-    all_training_rows = []
     all_config_rows = []
 
     # 任务二，实验四：在任何训练开始前固定所有地区的样本划分。
@@ -647,6 +646,30 @@ def main():
     total_conditions = len(REGIONS) * len(MODELS) * (
         1 + len(ABLATION_GROUPS)
     )
+
+    # 任务二，实验四：预先创建固定目录并写入运行状态，避免训练中途失败后
+    # 将不完整目录误认为正式结果；失败时status会保留为running。
+    args.output.mkdir(parents=True, exist_ok=False)
+    write_json(
+        args.output / "experiment_status.json",
+        {
+            "status": "running",
+            "expected_training_runs": total_conditions,
+            "completed_training_runs": 0,
+            "seed": SEED,
+        },
+    )
+    dictionary_detail.to_csv(
+        args.output / "candidate_variable_dictionary_rows.csv",
+        index=False,
+        encoding="utf-8-sig",
+    )
+    dictionary_summary.to_csv(
+        args.output / "candidate_variable_dictionary_audit.csv",
+        index=False,
+        encoding="utf-8-sig",
+    )
+
     print("=" * 72)
     print("任务二，实验四：候选因果特征组受控消融")
     print("=" * 72)
@@ -700,6 +723,20 @@ def main():
 
                 all_metrics.append(metric_row)
                 all_site_metrics.extend(site_rows)
+                write_json(
+                    args.output / "experiment_status.json",
+                    {
+                        "status": "running",
+                        "expected_training_runs": total_conditions,
+                        "completed_training_runs": len(all_metrics),
+                        "last_completed": {
+                            "region": region,
+                            "model": model_name,
+                            "condition": condition_name,
+                        },
+                        "seed": SEED,
+                    },
+                )
 
                 if gate_scores is not None:
                     all_gate_rows.extend(
@@ -736,19 +773,7 @@ def main():
     deltas = build_ablation_deltas(metrics_table, site_table)
     cross_region = summarize_cross_region(deltas)
 
-    # 任务二，实验四：所有训练完成后创建固定输出目录，避免半成品被误认为完整结果。
-    args.output.mkdir(parents=True, exist_ok=False)
-
-    dictionary_detail.to_csv(
-        args.output / "candidate_variable_dictionary_rows.csv",
-        index=False,
-        encoding="utf-8-sig",
-    )
-    dictionary_summary.to_csv(
-        args.output / "candidate_variable_dictionary_audit.csv",
-        index=False,
-        encoding="utf-8-sig",
-    )
+    # 任务二，实验四：固定输出目录在训练前已创建，正式汇总在此写入。
     metrics_table.to_csv(
         args.output / "region_model_ablation_metrics.csv",
         index=False,
@@ -835,6 +860,15 @@ def main():
         ],
     }
     write_json(args.output / "experiment_metadata.json", metadata)
+    write_json(
+        args.output / "experiment_status.json",
+        {
+            "status": "completed",
+            "expected_training_runs": total_conditions,
+            "completed_training_runs": len(metrics_table),
+            "seed": SEED,
+        },
+    )
 
     print("\n" + "=" * 72)
     print("实验四完成")
