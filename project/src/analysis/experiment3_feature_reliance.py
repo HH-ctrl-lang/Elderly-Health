@@ -582,7 +582,9 @@ def correlate_shift_and_reliance(summary, shift_path):
         shift[list(required)],
         on=["site_code", "feature"],
         how="inner",
-        validate="one_to_one",
+        # 左表包含baseline和V5两种模型，因此每个site-feature有两行；
+        # 右表每个site-feature只有一行，属于多对一合并。
+        validate="many_to_one",
     )
 
     rows = []
