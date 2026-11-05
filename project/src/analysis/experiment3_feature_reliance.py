@@ -563,8 +563,9 @@ def correlate_shift_and_reliance(summary, shift_path):
     # 任务二，实验三：CSV可能把纯数字监测点代码推断为int64，
     # 而置换结果中的site_code为字符串；统一为六位代码字符串后再合并。
     shift["site_code"] = (
-        shift["site_code"].astype(str).str.strip()
-        .str.replace(r"\\.0$", "", regex=True)
+        pd.to_numeric(shift["site_code"], errors="raise")
+        .astype("int64")
+        .astype(str)
         .str.zfill(6)
     )
     required = {"site_code", "feature", "js_divergence_bits"}
