@@ -1,0 +1,170 @@
+{
+  "experiment": "Task 2 Experiment 4 - Candidate Causal Feature Ablation",
+  "research_goal": "Identify medically plausible, cross-environment stable candidate health features; predictive ablation is evidence about model reliance, not causal proof.",
+  "data_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "config_sha256": "f1fd047055b3b24aba2d6a3c33e026aece539ef4912c7f72bd918ee6e7f4d6db",
+  "dictionary_sha256": "43b27802f95ec53c127ec506b78052e8dd9be14894cf4bfc0ccd2cf0e51cc9a2",
+  "sample_count": 4769,
+  "site_count": 12,
+  "features": [
+    "residence",
+    "age",
+    "gender",
+    "education",
+    "marital_status",
+    "living_alone",
+    "wealth",
+    "chronic_disease",
+    "social_activity",
+    "IADL",
+    "depression",
+    "sleep_quality",
+    "sleep_duration",
+    "physical_activity",
+    "if_use_mobile_phone",
+    "using_phone_year",
+    "hours_phone_per_day",
+    "smoke",
+    "alcohol"
+  ],
+  "regions": [
+    "east",
+    "central",
+    "west"
+  ],
+  "models": [
+    "baseline",
+    "v5"
+  ],
+  "seed": 42,
+  "split": "same held_out_split(seed=42, column=environment_region) for all conditions",
+  "preprocessing": "feature-subset median imputation and StandardScaler; fit on source training rows only",
+  "full_feature_control": "retrained in the same run for each region/model with the same seed and configuration as the corresponding ablation conditions",
+  "ablation_groups": {
+    "iadl_single": {
+      "features": [
+        "IADL"
+      ],
+      "hypothesis": "功能状态/可能的结局近端信息",
+      "risk": "需检查IADL量表与认知结局是否存在测量构念重叠，以及IADL是否可能位于认知变化的下游路径。"
+    },
+    "depression_sleep": {
+      "features": [
+        "depression",
+        "sleep_duration"
+      ],
+      "hypothesis": "心理与睡眠健康信息",
+      "risk": "两变量可能受共同健康状态或未测量因素影响。"
+    },
+    "phone_use_bundle": {
+      "features": [
+        "if_use_mobile_phone",
+        "using_phone_year",
+        "hours_phone_per_day"
+      ],
+      "hypothesis": "数字设备使用与生活方式信息",
+      "risk": "手机使用可能同时反映年龄、教育、社会参与和环境条件。"
+    },
+    "socioeconomic_context": {
+      "features": [
+        "residence",
+        "education",
+        "wealth"
+      ],
+      "hypothesis": "社会经济与环境代理信息",
+      "risk": "这些变量可能既包含真实社会决定因素，也包含样本构成/环境代理信息。"
+    }
+  },
+  "v5_sparsity_policy": "Preserve historical sparsity='mean' and lambda_sparse; target_sparsity is inactive in mean mode, so no dimension-dependent retuning is introduced.",
+  "target_labels_used_for_training": false,
+  "target_labels_used_for_checkpoint_selection": false,
+  "target_labels_used_for_final_evaluation": true,
+  "dictionary_coding_direction_confirmed": false,
+  "dictionary_matches": [
+    {
+      "feature": "IADL",
+      "dictionary_match_found": true,
+      "matched_row_count": 14,
+      "aliases_searched": "IADL;日间功能障碍;工具性日常生活;日常生活能力;家务",
+      "coding_direction_confirmed": false,
+      "manual_review_required": true
+    },
+    {
+      "feature": "depression",
+      "dictionary_match_found": true,
+      "matched_row_count": 20,
+      "aliases_searched": "depression;是否抑郁;抑郁",
+      "coding_direction_confirmed": false,
+      "manual_review_required": true
+    },
+    {
+      "feature": "sleep_duration",
+      "dictionary_match_found": true,
+      "matched_row_count": 1,
+      "aliases_searched": "sleep_duration;睡眠时长;睡眠时间",
+      "coding_direction_confirmed": false,
+      "manual_review_required": true
+    },
+    {
+      "feature": "if_use_mobile_phone",
+      "dictionary_match_found": true,
+      "matched_row_count": 4,
+      "aliases_searched": "if_use_mobile_phone;是否使用手机;使用手机",
+      "coding_direction_confirmed": false,
+      "manual_review_required": true
+    },
+    {
+      "feature": "using_phone_year",
+      "dictionary_match_found": false,
+      "matched_row_count": 0,
+      "aliases_searched": "using_phone_year;手机使用年限;使用手机年限",
+      "coding_direction_confirmed": false,
+      "manual_review_required": true
+    },
+    {
+      "feature": "hours_phone_per_day",
+      "dictionary_match_found": false,
+      "matched_row_count": 0,
+      "aliases_searched": "hours_phone_per_day;每日手机使用;每天使用手机",
+      "coding_direction_confirmed": false,
+      "manual_review_required": true
+    },
+    {
+      "feature": "residence",
+      "dictionary_match_found": true,
+      "matched_row_count": 2,
+      "aliases_searched": "residence;居住类型;城乡;居住地",
+      "coding_direction_confirmed": false,
+      "manual_review_required": true
+    },
+    {
+      "feature": "education",
+      "dictionary_match_found": true,
+      "matched_row_count": 3,
+      "aliases_searched": "education;受教育程度;教育程度;文化程度",
+      "coding_direction_confirmed": false,
+      "manual_review_required": true
+    },
+    {
+      "feature": "wealth",
+      "dictionary_match_found": true,
+      "matched_row_count": 4,
+      "aliases_searched": "wealth;财富状况;家庭财富;收入",
+      "coding_direction_confirmed": false,
+      "manual_review_required": true
+    }
+  ],
+  "python": "3.10.20",
+  "torch": "2.4.1+cpu",
+  "numpy": "1.26.4",
+  "pandas": "2.3.3",
+  "sklearn": "1.7.2",
+  "training_runs": 30,
+  "limitations": [
+    "One random seed is used to preserve comparability with historical LORO; repeat seeds are needed for robustness.",
+    "Ablation changes model input information and may alter optimization; paired same-seed controls reduce but do not eliminate this issue.",
+    "IADL may be outcome-proximal or share measurement constructs with cognition; dictionary and clinical review are required.",
+    "A performance decrease after ablation shows predictive reliance, not a causal effect.",
+    "Only three held-out regions and twelve monitoring sites are available."
+  ]
+}
