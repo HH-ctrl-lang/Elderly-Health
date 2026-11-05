@@ -1,0 +1,124 @@
+{
+  "experiment": "Task 2 Experiment 3 - Feature Reliance and Cross-Site Stability",
+  "data_file": "D:\\工作\\老年健康\\project\\data\\data_mission2.csv",
+  "data_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "model_root": "D:\\工作\\老年健康\\outputs\\v2-region-loro-selection91-42",
+  "shift_detail_file": "D:\\工作\\老年健康\\outputs\\analysis_2611\\experiment2_site_heterogeneity\\site_feature_shift_detail.csv",
+  "shift_detail_sha256": "276357caf4b71b24c3194d7857f02fa3b5dcd0aa59a81242e89e7cfcef337269",
+  "models": [
+    "baseline",
+    "v5"
+  ],
+  "regions": [
+    "east",
+    "central",
+    "west"
+  ],
+  "features": [
+    "residence",
+    "age",
+    "gender",
+    "education",
+    "marital_status",
+    "living_alone",
+    "wealth",
+    "chronic_disease",
+    "social_activity",
+    "IADL",
+    "depression",
+    "sleep_quality",
+    "sleep_duration",
+    "physical_activity",
+    "if_use_mobile_phone",
+    "using_phone_year",
+    "hours_phone_per_day",
+    "smoke",
+    "alcohol"
+  ],
+  "permutations_per_site_feature_model": 30,
+  "random_seed": 20261105,
+  "permutation_unit": "raw feature column values within each held-out monitoring site",
+  "preprocessing": "historical fold-specific saved preprocessor; no refit",
+  "joint_permutation_groups": {
+    "phone_use_bundle": [
+      "if_use_mobile_phone",
+      "using_phone_year",
+      "hours_phone_per_day"
+    ]
+  },
+  "baseline_prediction_tolerance": 2e-05,
+  "models_retrained": false,
+  "target_labels_used_for_permutation": false,
+  "target_labels_used_only_for_metrics": true,
+  "permutation_importance_definition": {
+    "delta_auc": "baseline AUC minus permuted AUC; positive means predictive discrimination decreases",
+    "delta_auprc": "baseline AUPRC minus permuted AUPRC; positive means ranking quality decreases",
+    "delta_brier": "permuted Brier minus baseline Brier; positive means probability error increases",
+    "delta_log_loss": "permuted log loss minus baseline log loss; positive means probability error increases"
+  },
+  "limitations": [
+    "Permutation importance is predictive reliance, not a causal effect.",
+    "Single-feature permutation can disrupt correlations among inputs.",
+    "The phone-use bundle is jointly permuted to retain within-bundle structure.",
+    "Only 12 monitoring sites are available; stability summaries are exploratory.",
+    "Permutation-repeat quantiles describe permutation variability, not population confidence intervals.",
+    "Only persisted baseline MLP and V5 checkpoints are included; other model variants are not silently substituted."
+  ],
+  "model_artifacts": [
+    {
+      "held_out_region": "east",
+      "model": "baseline",
+      "model_directory": "D:\\工作\\老年健康\\outputs\\v2-region-loro-selection91-42\\east\\baseline",
+      "best_epoch": 1,
+      "checkpoint_sha256": "9a1fe7e93c72a022a5d75816770dcdb4c1dbca0ae0dda46a2cf64dbff8de7ce0",
+      "preprocessor_sha256": "5e84ffa988a81af1f8ba5756a33bb548d8e114f5035dfb231f1b3d78cf77350f",
+      "prediction_max_abs_error": 6.390579221360326e-08
+    },
+    {
+      "held_out_region": "east",
+      "model": "v5",
+      "model_directory": "D:\\工作\\老年健康\\outputs\\v2-region-loro-selection91-42\\east\\v5",
+      "best_epoch": 144,
+      "checkpoint_sha256": "a7237dc8b4aeda3dae3d95484c857ff4aa6eba83b5595d439b6c2248dcacacb9",
+      "preprocessor_sha256": "5e84ffa988a81af1f8ba5756a33bb548d8e114f5035dfb231f1b3d78cf77350f",
+      "prediction_max_abs_error": 1.2208663940915798e-07
+    },
+    {
+      "held_out_region": "central",
+      "model": "baseline",
+      "model_directory": "D:\\工作\\老年健康\\outputs\\v2-region-loro-selection91-42\\central\\baseline",
+      "best_epoch": 17,
+      "checkpoint_sha256": "a1b0f957bc34d63ed4ebe765987194c3ed84594c927bf093a33aec88f36d8f9e",
+      "preprocessor_sha256": "b79a5ddac5f8a6df44cbab467eea20e9f78518649470be45eae4de87bf400620",
+      "prediction_max_abs_error": 8.68904114215141e-08
+    },
+    {
+      "held_out_region": "central",
+      "model": "v5",
+      "model_directory": "D:\\工作\\老年健康\\outputs\\v2-region-loro-selection91-42\\central\\v5",
+      "best_epoch": 118,
+      "checkpoint_sha256": "38e412c1248f9f1a0d089dfab3a92836c5d9a2198d6790b4665068b3d56b15f1",
+      "preprocessor_sha256": "b79a5ddac5f8a6df44cbab467eea20e9f78518649470be45eae4de87bf400620",
+      "prediction_max_abs_error": 1.2074645994175626e-07
+    },
+    {
+      "held_out_region": "west",
+      "model": "baseline",
+      "model_directory": "D:\\工作\\老年健康\\outputs\\v2-region-loro-selection91-42\\west\\baseline",
+      "best_epoch": 10,
+      "checkpoint_sha256": "3baa5bd389fb00aca3cab38cce695eb2d0498f463bd7aaf7db5708e7e40a54f8",
+      "preprocessor_sha256": "40d645936d2e315f5bd81c4359b657dc79f8b3b3b46dd9c752dd5cc555e6dad3",
+      "prediction_max_abs_error": 7.196502682660366e-08
+    },
+    {
+      "held_out_region": "west",
+      "model": "v5",
+      "model_directory": "D:\\工作\\老年健康\\outputs\\v2-region-loro-selection91-42\\west\\v5",
+      "best_epoch": 92,
+      "checkpoint_sha256": "27e8288eedbb4a73f862ec19c034866c46eae6fc4c8a7ff1563ff34a14245622",
+      "preprocessor_sha256": "40d645936d2e315f5bd81c4359b657dc79f8b3b3b46dd9c752dd5cc555e6dad3",
+      "prediction_max_abs_error": 1.2362060541892816e-07
+    }
+  ],
+  "python_note": "This script reuses saved checkpoints and preprocessors and does not train models."
+}
