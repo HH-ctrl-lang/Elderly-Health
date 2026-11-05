@@ -71,6 +71,9 @@ OUTPUT_DIR = (
 REGIONS = ("east", "central", "west")
 MODELS = ("baseline", "v5")
 SEED = 42
+EXPECTED_DATA_SHA256 = (
+    "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de"
+)
 
 # 每次只移除一组，避免把多个不同机制混在同一个消融对照中。
 ABLATION_GROUPS = {
@@ -608,6 +611,12 @@ def main():
         args.dictionary
     )
 
+    data_hash = sha256_file(args.data)
+    if data_hash != EXPECTED_DATA_SHA256:
+        raise RuntimeError(
+            "当前数据SHA256与此前LORO基线不一致，不能进行受控消融比较。"
+        )
+
     frame = attach_regions(read_raw(args.data, encoding="gbk"))
     config_values = json.loads(args.config.read_text(encoding="utf-8"))
     base_config = TrainConfig(**config_values)
@@ -680,7 +689,7 @@ def main():
     print("每个地区/模型均包含同轮次全特征对照，不复用不同随机初始化的旧模型。")
     print("目标地区标签仅用于最终测试评价。")
 
-    # 所有字典审计和配置先写入内存，正式训练结束后一次性创建输出目录。
+    # 所有地区的划分先固定，再创建正式运行目录并开始训练。
     for region in REGIONS:
         frames = region_frames[region]
 
@@ -813,7 +822,7 @@ def main():
             "Identify medically plausible, cross-environment stable candidate health "
             "features; predictive ablation is evidence about model reliance, not causal proof."
         ),
-        "data_sha256": sha256_file(args.data),
+        "data_sha256": data_hash,
         "config_sha256": sha256_file(args.config),
         "dictionary_sha256": sha256_file(args.dictionary),
         "sample_count": int(len(frame)),
