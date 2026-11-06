@@ -1,0 +1,178 @@
+{
+  "task": "Task 3 Step 1: Monitoring-site failure diagnostics",
+  "data_file": "D:\\工作\\老年健康\\project\\data\\data_mission2.csv",
+  "data_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "model_names": [
+    "MLP",
+    "V5",
+    "RDM",
+    "VREx",
+    "GroupDRO"
+  ],
+  "regions": [
+    "east",
+    "central",
+    "west"
+  ],
+  "site_count": 12,
+  "samples": 4769,
+  "features": [
+    "residence",
+    "age",
+    "gender",
+    "education",
+    "marital_status",
+    "living_alone",
+    "wealth",
+    "chronic_disease",
+    "social_activity",
+    "IADL",
+    "depression",
+    "sleep_quality",
+    "sleep_duration",
+    "physical_activity",
+    "if_use_mobile_phone",
+    "using_phone_year",
+    "hours_phone_per_day",
+    "smoke",
+    "alcohol"
+  ],
+  "matched_pair_sites": [
+    "220202",
+    "360102"
+  ],
+  "low_prevalence_comparator_sites": [
+    "220421",
+    "640106"
+  ],
+  "random_seed": 26110301,
+  "label_permutations": 300,
+  "auc_bootstraps": 1000,
+  "individual_records_exported": false,
+  "models_retrained": false,
+  "all_saved_predictions_checked_by_sample_id_label_site": true,
+  "methodology": {
+    "site_auc": "ROC-AUC of each completed fixed LORO model at its held-out site",
+    "score_gap": "mean predicted probability in cases minus noncases",
+    "top_decile": "top ceil(0.1*n) risk scores within each site",
+    "feature_label_js": "JS between X given Y=1 and X given Y=0 within each site",
+    "null_js": "site-label permutation preserving the number of positive outcomes",
+    "bootstrap": "site-wise stratified fixed-model sampling; paired across models"
+  },
+  "limitations": [
+    "All site outcomes have already been explored; these are hypothesis-generating findings.",
+    "Only 17 positive subjects occur in both matched comparison sites.",
+    "AUC sampling intervals do not include training-seed variation or population-level site uncertainty.",
+    "Feature-label association is not the conditional P(Y|X,E) effect and is not causal.",
+    "Site-level feature associations can be unstable, with 19 multiple comparisons per site.",
+    "Prediction mean can be miscalibrated because the historical losses use positive class weights.",
+    "Matched pair is selected after reviewing earlier outcomes; it is exploratory, not confirmatory."
+  ],
+  "model_prediction_sources": [
+    {
+      "model": "MLP",
+      "held_out_region": "east",
+      "file": "outputs\\v2-region-loro-selection91-42\\east\\baseline\\representations_test.csv",
+      "sha256": "19f5865139a3cc1cbe8514732face347a4774abceb8b21d2fe24f348869a2701",
+      "test_rows": 1570
+    },
+    {
+      "model": "MLP",
+      "held_out_region": "central",
+      "file": "outputs\\v2-region-loro-selection91-42\\central\\baseline\\representations_test.csv",
+      "sha256": "01797bf6e4d863912fe0e24e1c8c22d00238ce715b0f78409086f6bfda6b297a",
+      "test_rows": 1598
+    },
+    {
+      "model": "MLP",
+      "held_out_region": "west",
+      "file": "outputs\\v2-region-loro-selection91-42\\west\\baseline\\representations_test.csv",
+      "sha256": "550ea98d748062fac2dc4172d82fab20fb7efefa68f2c27ecbb9a0f9476b2da6",
+      "test_rows": 1601
+    },
+    {
+      "model": "V5",
+      "held_out_region": "east",
+      "file": "outputs\\v2-region-loro-selection91-42\\east\\v5\\representations_test.csv",
+      "sha256": "6d9dd172949c70b8fda205c87eee6acd57d59271c604db04c663a697c7c036c1",
+      "test_rows": 1570
+    },
+    {
+      "model": "V5",
+      "held_out_region": "central",
+      "file": "outputs\\v2-region-loro-selection91-42\\central\\v5\\representations_test.csv",
+      "sha256": "1c02bfdefd975fd20d8408fd229250cd1abee12c6317b0ac535071d743822da1",
+      "test_rows": 1598
+    },
+    {
+      "model": "V5",
+      "held_out_region": "west",
+      "file": "outputs\\v2-region-loro-selection91-42\\west\\v5\\representations_test.csv",
+      "sha256": "9bbfacabfdff31674569868c69eb6a09865aae613acd40fb7d7e19f46168eb05",
+      "test_rows": 1601
+    },
+    {
+      "model": "RDM",
+      "held_out_region": "east",
+      "file": "outputs\\external-rdm-region-loro-42\\east\\predictions_test.csv",
+      "sha256": "61c9fd04e485d762c3f9396082f183e00d08944666f1a1384f0f2409087ef7b8",
+      "test_rows": 1570
+    },
+    {
+      "model": "RDM",
+      "held_out_region": "central",
+      "file": "outputs\\external-rdm-region-loro-42\\central\\predictions_test.csv",
+      "sha256": "c1a46b884ca98b6ec923b1cdc24ba4a5062e6bc5867b454e0e724773bce3bfba",
+      "test_rows": 1598
+    },
+    {
+      "model": "RDM",
+      "held_out_region": "west",
+      "file": "outputs\\external-rdm-region-loro-42\\west\\predictions_test.csv",
+      "sha256": "5569613ba69091c963f744686eed723c521acbf1287e4693496c721bdca63b2d",
+      "test_rows": 1601
+    },
+    {
+      "model": "VREx",
+      "held_out_region": "east",
+      "file": "outputs\\external-vrex-region-loro-42\\east\\predictions_test.csv",
+      "sha256": "17ffa6cc9363f7de79bb102cef6eac76721433ad3fbab6e3966507fa49c1e1fe",
+      "test_rows": 1570
+    },
+    {
+      "model": "VREx",
+      "held_out_region": "central",
+      "file": "outputs\\external-vrex-region-loro-42\\central\\predictions_test.csv",
+      "sha256": "b8b47820fab7a691548238d1b764e93e17d63bd1304b76885091f501b7e432da",
+      "test_rows": 1598
+    },
+    {
+      "model": "VREx",
+      "held_out_region": "west",
+      "file": "outputs\\external-vrex-region-loro-42\\west\\predictions_test.csv",
+      "sha256": "0ed9b56e2cd9dc2c97c11b35f2fbe32b6c7f6b0f5c074f3503ed5e4699f707b6",
+      "test_rows": 1601
+    },
+    {
+      "model": "GroupDRO",
+      "held_out_region": "east",
+      "file": "outputs\\external-groupdro-region-loro-42\\east\\predictions_test.csv",
+      "sha256": "09ab89e246aa672985d0afb56be3400727ddc12aea5d76d2ccc1d233c439c13f",
+      "test_rows": 1570
+    },
+    {
+      "model": "GroupDRO",
+      "held_out_region": "central",
+      "file": "outputs\\external-groupdro-region-loro-42\\central\\predictions_test.csv",
+      "sha256": "3481548176133c34c4d9384f0d8ac81fa2e88830518acaa86667121e42dd4512",
+      "test_rows": 1598
+    },
+    {
+      "model": "GroupDRO",
+      "held_out_region": "west",
+      "file": "outputs\\external-groupdro-region-loro-42\\west\\predictions_test.csv",
+      "sha256": "bd31b4568f97f9ea868abcd0d4f68b78dc29ba3b8eaa01b726d8bb9831f8f72a",
+      "test_rows": 1601
+    }
+  ]
+}
