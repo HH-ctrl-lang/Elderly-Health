@@ -1,0 +1,73 @@
+{
+  "task": "Task 3 Step 2 - V5 Representation Diagnostics",
+  "model": "V5 CausalDisentangledModel",
+  "model_root": "D:\\工作\\老年健康\\outputs\\v2-region-loro-selection91-42",
+  "regions": [
+    "east",
+    "central",
+    "west"
+  ],
+  "latent_dim_per_branch": 32,
+  "branches": [
+    "zc",
+    "zs"
+  ],
+  "expected_data_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "models_retrained": false,
+  "representations_reused": true,
+  "target_labels_used_only_for_prediction_metrics_and_class_separation": true,
+  "individual_records_exported": false,
+  "cross_fold_coordinate_comparison": false,
+  "source_reference": "Within each LORO fold, concatenate that fold's saved source train and validation representations; compare each held-out target site to this pool.",
+  "effective_rank": {
+    "participation_ratio": "(sum eigenvalues)^2 / sum(eigenvalues^2)",
+    "entropy_rank": "exp(-sum p_i log p_i)",
+    "active_dimension_threshold": 0.0001,
+    "zero_activation_threshold": 1e-08
+  },
+  "shift_metrics": [
+    "standardized_mean_shift_rms",
+    "mahalanobis_mean_shift",
+    "relative_covariance_frobenius_shift"
+  ],
+  "class_separation": "Standardized positive-negative latent centroid distance; descriptive, not causal.",
+  "branch_similarity": "Linear CKA between zc and zs for the same site samples.",
+  "limitations": [
+    "Low effective rank alone is not proof of representation collapse.",
+    "ReLU zero activations are expected and are not sufficient evidence of collapse.",
+    "Joint head versus zc-only head is not a direct zs-only ablation; predictor_joint can use interactions between zc and zs.",
+    "No zs-only prediction head is stored in the historical model.",
+    "Latent coordinates from different LORO folds are not directly comparable.",
+    "Source-target distribution distances are descriptive and do not identify causal mechanisms.",
+    "Positive-negative latent separation uses held-out labels and is an exploratory diagnostic."
+  ],
+  "fold_artifacts": {
+    "east": {
+      "config.json": "4d18613cfe6a308393ffe0dd7c61f8a8449b447d8d2e4ffb0c27f29cc48b3b3f",
+      "metrics.json": "4ab22972e6c3f3b6224a86c862011bc0d9a88fd387d18c250d299f47ad2b154d",
+      "training.json": "1cb4b7bcb2c76391c9c76d9b6d3c9fff4831c831190cf9adf7e8d71486b4a2d5",
+      "representations_train.csv": "4976276638e2f545cdbe63f5bb33cf5b2122675b83a12c52e676e970516a2d8b",
+      "representations_val.csv": "7bb5221a94c59dd8d0bf7b2a15e508f2e6b0eaf2634164bd6fa718da14b53540",
+      "representations_test.csv": "6d9dd172949c70b8fda205c87eee6acd57d59271c604db04c663a697c7c036c1",
+      "best_model.pt": "a7237dc8b4aeda3dae3d95484c857ff4aa6eba83b5595d439b6c2248dcacacb9"
+    },
+    "central": {
+      "config.json": "4d18613cfe6a308393ffe0dd7c61f8a8449b447d8d2e4ffb0c27f29cc48b3b3f",
+      "metrics.json": "ed95cea5a0cb1fe97917ba6738a8996538b72e384efe43eb4ed355e9a2501ee6",
+      "training.json": "614cddb6e2452e23ba1223f97eff11deea4639e722f40dfa0f15aea12f442d89",
+      "representations_train.csv": "84d72884e3280581009a71b89740cb0bdd37a2f0ff328b5e838a557fef771dbe",
+      "representations_val.csv": "ed328f5189b9f71994692ab13631a474d12beb5b27f348d8b776721e22bec6fc",
+      "representations_test.csv": "1c02bfdefd975fd20d8408fd229250cd1abee12c6317b0ac535071d743822da1",
+      "best_model.pt": "38e412c1248f9f1a0d089dfab3a92836c5d9a2198d6790b4665068b3d56b15f1"
+    },
+    "west": {
+      "config.json": "4d18613cfe6a308393ffe0dd7c61f8a8449b447d8d2e4ffb0c27f29cc48b3b3f",
+      "metrics.json": "f3fba7ba4c09ec54cb0ea61db04756195501b711bceb0774cbbb0becc0316e16",
+      "training.json": "96ac7825cfa90e94d02e08b788efee06f8c01d4014e065128a3009ec9138935b",
+      "representations_train.csv": "0b70d7cf0ce74f4db9e7169ff6c219abf156d1468e79ca50117f53b03c4b19c4",
+      "representations_val.csv": "1bdc7d992f26393f500b056983d2810509e0508d7e8fff03b493a1243e21da66",
+      "representations_test.csv": "9bbfacabfdff31674569868c69eb6a09865aae613acd40fb7d7e19f46168eb05",
+      "best_model.pt": "27e8288eedbb4a73f862ec19c034866c46eae6fc4c8a7ff1563ff34a14245622"
+    }
+  }
+}
