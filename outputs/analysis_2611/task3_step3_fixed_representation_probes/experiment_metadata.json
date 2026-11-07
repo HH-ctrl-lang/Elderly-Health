@@ -1,0 +1,79 @@
+{
+  "task": "Task 3 Step 3 - Fixed representation linear probes",
+  "held_out_region": "central",
+  "data_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "encoder_retrained": false,
+  "new_logistic_probes_fitted": true,
+  "spaces": {
+    "raw19": 19,
+    "zc": 32,
+    "zs": 32,
+    "zc_zs": 64
+  },
+  "feature_names": [
+    "residence",
+    "age",
+    "gender",
+    "education",
+    "marital_status",
+    "living_alone",
+    "wealth",
+    "chronic_disease",
+    "social_activity",
+    "IADL",
+    "depression",
+    "sleep_quality",
+    "sleep_duration",
+    "physical_activity",
+    "if_use_mobile_phone",
+    "using_phone_year",
+    "hours_phone_per_day",
+    "smoke",
+    "alcohol"
+  ],
+  "C_grid": [
+    0.001,
+    0.01,
+    0.1,
+    1.0,
+    10.0,
+    100.0
+  ],
+  "selected_C": {
+    "raw19": 0.001,
+    "zc": 0.001,
+    "zs": 0.001,
+    "zc_zs": 0.001
+  },
+  "seed": 26110303,
+  "bootstrap_repeats": 1000,
+  "split_counts": {
+    "train": 2695,
+    "validation": 476,
+    "test": 1598
+  },
+  "preprocessing": "Train-only median imputation for raw numeric codes; train-only standardization for all probe inputs.",
+  "selection": "Source validation ROC-AUC only; ties prefer smaller C; no refit on validation.",
+  "class_weight": null,
+  "individual_records_exported": false,
+  "historical_artifact_hashes": {
+    "config.json": "4d18613cfe6a308393ffe0dd7c61f8a8449b447d8d2e4ffb0c27f29cc48b3b3f",
+    "metrics.json": "ed95cea5a0cb1fe97917ba6738a8996538b72e384efe43eb4ed355e9a2501ee6",
+    "training.json": "614cddb6e2452e23ba1223f97eff11deea4639e722f40dfa0f15aea12f442d89",
+    "representations_train.csv": "84d72884e3280581009a71b89740cb0bdd37a2f0ff328b5e838a557fef771dbe",
+    "representations_val.csv": "ed328f5189b9f71994692ab13631a474d12beb5b27f348d8b776721e22bec6fc",
+    "representations_test.csv": "1c02bfdefd975fd20d8408fd229250cd1abee12c6317b0ac535071d743822da1",
+    "best_model.pt": "38e412c1248f9f1a0d089dfab3a92836c5d9a2198d6790b4665068b3d56b15f1"
+  },
+  "limitations": [
+    "Linear readability and source-to-target transfer are tested, not total information or causality.",
+    "Poor target performance may reflect conditional shift, finite samples, regularization or nonlinear structure.",
+    "Historical encoder already used source validation for checkpoint selection; this is exploratory reuse.",
+    "Numeric categorical codes are retained to match historical inputs; no new encoding comparison is introduced.",
+    "Spaces differ in dimension and representation; equal model family and selection rule do not make capacities identical.",
+    "Fixed-fit paired stratified bootstrap excludes training uncertainty; intervals are exploratory and unadjusted for multiplicity.",
+    "Only 17 positives in each focus site; focus sites were chosen after earlier results were inspected.",
+    "New unweighted logistic probes are not controlled replacements for the historical weighted neural prediction heads.",
+    "Target labels are never used to fit probes or choose hyperparameters."
+  ]
+}
