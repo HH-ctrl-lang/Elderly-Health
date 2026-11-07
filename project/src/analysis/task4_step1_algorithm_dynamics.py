@@ -25,6 +25,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from elderly_health.data import FEATURES
+
 PROJECT = Path(__file__).resolve().parents[2]
 ROOT = PROJECT.parent
 DATA_PATH = PROJECT / "data" / "data_mission2.csv"
@@ -279,6 +281,7 @@ def build_training_rows(records):
                 gate_rows.append({
                     "held_out_region": region,
                     "feature_index": index,
+                    "feature": FEATURES[index],
                     "gate_score": float(score),
                 })
 
@@ -361,32 +364,37 @@ def draw_comparison_figures(metrics_table, training_table, output):
         )
         plt.close(fig)
 
-    external = training_table.loc[
-        training_table["model"].isin(["RDM", "VREx", "GroupDRO"])
+    # 任务四 第一步：不同算法的优化量纲不同，分别绘图，不共用纵轴。
+    plot_specs = [
+        ("RDM", "matching_contribution_at_best", "MMD matching penalty contribution",
+         "rdm_matching_penalty_contribution.png"),
+        ("VREx", "variance_penalty_contribution_at_best", "Risk variance penalty contribution",
+         "vrex_variance_penalty_contribution.png"),
+        ("GroupDRO", "max_group_weight_at_best", "Maximum selected source-group weight",
+         "groupdro_max_group_weight.png"),
+        ("V5", "gate_mean_at_best", "Mean V5 gate score",
+         "v5_gate_mean_by_region.png"),
     ]
-    fig, ax = plt.subplots(figsize=(10, 5))
-    for model in ("RDM", "VREx", "GroupDRO"):
-        subset = external.loc[external["model"] == model]
-        if model == "RDM":
-            values = subset["matching_contribution_at_best"]
-            label = "RDM matching penalty contribution"
-        elif model == "VREx":
-            values = subset["variance_penalty_contribution_at_best"]
-            label = "VREx risk variance contribution"
-        else:
-            values = subset["max_group_weight_at_best"]
-            label = "GroupDRO maximum group weight"
-        ax.plot(subset["held_out_region"], values, marker="o", label=label)
-    ax.set_xlabel("Held-out region")
-    ax.set_title("Algorithm-specific optimization state at selected checkpoint")
-    ax.legend()
-    fig.tight_layout()
-    fig.savefig(
-        figure_dir / "algorithm_objective_state.png",
-        dpi=250,
-        bbox_inches="tight",
-    )
-    plt.close(fig)
+    for model, column, ylabel, filename in plot_specs:
+        subset = training_table.loc[
+            training_table["model"] == model
+        ].sort_values("held_out_region")
+        fig, ax = plt.subplots(figsize=(7, 4))
+        ax.plot(
+            subset["held_out_region"],
+            subset[column],
+            marker="o",
+        )
+        ax.set_xlabel("Held-out region")
+        ax.set_ylabel(ylabel)
+        ax.set_title(f"{model}: {ylabel}")
+        fig.tight_layout()
+        fig.savefig(
+            figure_dir / filename,
+            dpi=250,
+            bbox_inches="tight",
+        )
+        plt.close(fig)
 
 
 # ==================== 五、主程序 ====================
