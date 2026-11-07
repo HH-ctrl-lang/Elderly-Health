@@ -1,0 +1,46 @@
+{
+  "task": "Task 3 Step 5 - raw19 linear score contributions",
+  "held_out_region": "central",
+  "data_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "C": 0.001,
+  "seed": 26110305,
+  "probe_seed": 26110303,
+  "raw19_probe_reconstructed_once": true,
+  "hyperparameters_reselected": false,
+  "V5_retrained": false,
+  "source_train_only_fit": true,
+  "individual_records_exported": false,
+  "bootstraps": 1000,
+  "score_scale": "logistic decision_function (log odds), not probability or ROC-AUC",
+  "formula": "score = intercept + sum_j standardized_input_j * coefficient_j",
+  "contribution_gap": "mean contribution in positive group minus mean contribution in negative group",
+  "maximum_individual_additivity_error": 4.440892098500626e-16,
+  "intercept": -1.6867817260434474,
+  "phone_block_features": [
+    "if_use_mobile_phone",
+    "using_phone_year",
+    "hours_phone_per_day"
+  ],
+  "reference_artifacts": {
+    "config.json": "4d18613cfe6a308393ffe0dd7c61f8a8449b447d8d2e4ffb0c27f29cc48b3b3f",
+    "metrics.json": "ed95cea5a0cb1fe97917ba6738a8996538b72e384efe43eb4ed355e9a2501ee6",
+    "training.json": "614cddb6e2452e23ba1223f97eff11deea4639e722f40dfa0f15aea12f442d89",
+    "representations_train.csv": "84d72884e3280581009a71b89740cb0bdd37a2f0ff328b5e838a557fef771dbe",
+    "representations_val.csv": "ed328f5189b9f71994692ab13631a474d12beb5b27f348d8b776721e22bec6fc",
+    "representations_test.csv": "1c02bfdefd975fd20d8408fd229250cd1abee12c6317b0ac535071d743822da1",
+    "best_model.pt": "38e412c1248f9f1a0d089dfab3a92836c5d9a2198d6790b4665068b3d56b15f1"
+  },
+  "previous_metadata_sha256": "95d61423485044ed53fa0f1f82d430cf0f1bb0762dd7ca4455d2070dd4426716",
+  "previous_metrics_sha256": "69a94316faa864c1fb11e2c92bdb3518527a7637a9df0fc054da9408f6303eac",
+  "limitations": [
+    "Explains only the reconstructed step3 raw19 logistic probe, not V5's neural prediction heads.",
+    "Positive mean contribution gap helps average score separation but need not improve ROC-AUC; ROC-AUC is not additively decomposed.",
+    "Coefficients and contribution gaps are model descriptions, not causal effects or validated feature importance.",
+    "Correlated features share fitted weights; phone block is summed jointly and is not three independent findings.",
+    "Missing features use historical train-median imputation; this differs from step4 complete-case association summaries.",
+    "Bootstrap resamples positive and negative rows, preserving dependence across all features; coefficients and preprocessing stay fixed.",
+    "Intervals are exploratory and unadjusted for multiple comparisons; training, site-population and label uncertainty are excluded.",
+    "Numeric categories retain historical coding; clinical meanings are not inferred from coefficient signs.",
+    "No feature-removal experiment, counterfactual intervention, new tuning or target-label-based fitting is performed."
+  ]
+}
