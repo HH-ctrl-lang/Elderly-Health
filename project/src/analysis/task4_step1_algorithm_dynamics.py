@@ -17,6 +17,7 @@ training.json和metrics.json，不训练模型、不重新计算个人预测。
 
 import hashlib
 import json
+import sys
 from pathlib import Path
 
 import matplotlib
@@ -25,10 +26,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from elderly_health.data import FEATURES
-
 PROJECT = Path(__file__).resolve().parents[2]
 ROOT = PROJECT.parent
+sys.path.insert(0, str(PROJECT / "src"))
+
+from elderly_health.data import FEATURES
 DATA_PATH = PROJECT / "data" / "data_mission2.csv"
 OUTPUT_DIR = ROOT / "outputs" / "analysis_2611" / "task4_step1_algorithm_dynamics"
 
