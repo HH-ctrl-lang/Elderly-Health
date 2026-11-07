@@ -1,0 +1,210 @@
+{
+  "task": "Task 3 Step 4 - Feature-outcome association transfer",
+  "held_out_region": "central",
+  "data_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "models_trained": false,
+  "features_selected": false,
+  "source_reference": "historical source train only; validation shown separately",
+  "missing_policy": "feature-wise complete cases, class counts and missing counts exported; no imputation",
+  "scale": "fixed source-train sample SD (ddof=1), not pooled-within-class SD",
+  "groups": {
+    "SOURCE_TRAIN": 2695,
+    "SOURCE_VALIDATION": 476,
+    "SOURCE_SITE_110113": 328,
+    "SOURCE_SITE_110114": 349,
+    "SOURCE_SITE_371082": 346,
+    "SOURCE_SITE_371121": 319,
+    "SOURCE_SITE_450108": 341,
+    "SOURCE_SITE_450125": 338,
+    "SOURCE_SITE_640106": 338,
+    "SOURCE_SITE_640221": 336,
+    "220202": 400,
+    "360102": 400
+  },
+  "seed": 26110304,
+  "bootstrap_repeats": 1000,
+  "individual_records_exported": false,
+  "value_group_definitions": {
+    "residence": {
+      "method": "source_train_levels",
+      "levels": [
+        1,
+        2
+      ]
+    },
+    "age": {
+      "method": "source_train_levels",
+      "levels": [
+        1,
+        2
+      ]
+    },
+    "gender": {
+      "method": "source_train_levels",
+      "levels": [
+        1,
+        2
+      ]
+    },
+    "education": {
+      "method": "source_train_levels",
+      "levels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    "marital_status": {
+      "method": "source_train_levels",
+      "levels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    "living_alone": {
+      "method": "source_train_levels",
+      "levels": [
+        1,
+        2
+      ]
+    },
+    "wealth": {
+      "method": "source_train_levels",
+      "levels": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "chronic_disease": {
+      "method": "source_train_levels",
+      "levels": [
+        1,
+        2,
+        3
+      ]
+    },
+    "social_activity": {
+      "method": "source_train_levels",
+      "levels": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "IADL": {
+      "method": "source_train_levels",
+      "levels": [
+        1.0,
+        2.0,
+        3.0
+      ]
+    },
+    "depression": {
+      "method": "source_train_levels",
+      "levels": [
+        1.0,
+        2.0
+      ]
+    },
+    "sleep_quality": {
+      "method": "source_train_levels",
+      "levels": [
+        1.0,
+        2.0
+      ]
+    },
+    "sleep_duration": {
+      "method": "source_train_levels",
+      "levels": [
+        1,
+        2,
+        3
+      ]
+    },
+    "physical_activity": {
+      "method": "source_train_levels",
+      "levels": [
+        1,
+        2
+      ]
+    },
+    "if_use_mobile_phone": {
+      "method": "source_train_levels",
+      "levels": [
+        1,
+        2
+      ]
+    },
+    "using_phone_year": {
+      "method": "source_train_levels",
+      "levels": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "hours_phone_per_day": {
+      "method": "source_train_levels",
+      "levels": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "smoke": {
+      "method": "source_train_levels",
+      "levels": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "alcohol": {
+      "method": "source_train_levels",
+      "levels": [
+        1,
+        2
+      ]
+    }
+  },
+  "historical_artifact_hashes": {
+    "config.json": "4d18613cfe6a308393ffe0dd7c61f8a8449b447d8d2e4ffb0c27f29cc48b3b3f",
+    "metrics.json": "ed95cea5a0cb1fe97917ba6738a8996538b72e384efe43eb4ed355e9a2501ee6",
+    "training.json": "614cddb6e2452e23ba1223f97eff11deea4639e722f40dfa0f15aea12f442d89",
+    "representations_train.csv": "84d72884e3280581009a71b89740cb0bdd37a2f0ff328b5e838a557fef771dbe",
+    "representations_val.csv": "ed328f5189b9f71994692ab13631a474d12beb5b27f348d8b776721e22bec6fc",
+    "representations_test.csv": "1c02bfdefd975fd20d8408fd229250cd1abee12c6317b0ac535071d743822da1",
+    "best_model.pt": "38e412c1248f9f1a0d089dfab3a92836c5d9a2198d6790b4665068b3d56b15f1"
+  },
+  "limitations": [
+    "All associations are unadjusted and observational; no causal effect or full conditional-shift test is estimated.",
+    "For nominal categories, numeric-code direction depends on arbitrary encoding; use value-group rates for interpretation.",
+    "physical_activity provenance and smoke coding remain unresolved; no clinical direction is asserted.",
+    "Source pooling may mix within-site and between-site associations; source-site results are provided separately.",
+    "Bootstrap samples observed positive/negative values independently for each feature and group, treating source SD as fixed.",
+    "Intervals exclude site-population, training, missingness and source-scale uncertainty; they are unadjusted exploratory intervals.",
+    "Opposite point signs alone do not establish a genuine reversal; insignificant association is not evidence of absence.",
+    "Source-constant features are not estimable on this scale; a target-constant observed feature has gap zero if source SD is valid.",
+    "Value-group Wilson intervals are descriptive and unadjusted; sparse groups and 17 positives per target site limit precision.",
+    "No individual features, predictions or identifiers are exported; value-group outputs contain aggregate counts only."
+  ]
+}
