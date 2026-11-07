@@ -673,7 +673,12 @@ def draw_figures(metrics_table, spectrum_table, shift_table, separation_table, o
     plt.close(fig)
 
     # 图4：阳性/阴性表征中心距离。
-    sep_pivot = separation_table.pivot(
+    # 任务三 第2步：仅绘制目标站点，源域汇总在三个折中共用SOURCE_POOL标签。
+    # 若混入源域汇总，site_code与branch组合重复，会导致pivot报错。
+    target_separation = separation_table.loc[
+        separation_table["partition"] == "target_test"
+    ]
+    sep_pivot = target_separation.pivot(
         index="site_code",
         columns="branch",
         values="standardized_centroid_distance_rms",
