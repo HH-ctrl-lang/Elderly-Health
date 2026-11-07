@@ -1,0 +1,54 @@
+{
+  "task": "Task 3 Step 6 - Global diagnostics",
+  "data_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "models": [
+    "MLP",
+    "V5",
+    "RDM",
+    "VREx",
+    "GroupDRO"
+  ],
+  "regions": [
+    "east",
+    "central",
+    "west"
+  ],
+  "site_count": 12,
+  "models_trained": false,
+  "individual_records_read": false,
+  "individual_records_exported": false,
+  "source_result_hashes": {
+    "task3_step1_site_failure_diagnostics/site_model_score_diagnostics.csv": "fc8b7dec23ec53a55ca61716313200ebbee17aeac160abda96b839efcbea55b8",
+    "task3_step1_site_failure_diagnostics/site_feature_label_association.csv": "c3e68ef2309ba611ebb5cff75d8025d0a54fb5f8ae23bbb3f44ec43671c483ed",
+    "task3_step2_v5_representation_diagnostics/representation_spectrum_by_site.csv": "6fd6e9bcff45ac7a82c1170ee8128fa69c7b8c7b781f74c82ee8e577229ad594",
+    "task3_step2_v5_representation_diagnostics/source_target_representation_shift.csv": "ae8f539ccd6a2ee560f62abd996ca81948d57563f8ca8e2a8f7b46ea36767887",
+    "task3_step2_v5_representation_diagnostics/site_latent_class_separation.csv": "e164f06e445bf94d9ff1629fb234ef3df424c686c0c6aae5cef5391090225436",
+    "task3_step1_site_failure_diagnostics\\experiment_metadata.json": "48a5b6542a97d1577d12a5a7154d5070dd1f36a3f7b2b5259a9bf74695263c45",
+    "task3_step2_v5_representation_diagnostics\\experiment_metadata.json": "7c790098504d9066521153c32835354ad271b5e5f9a3a674e37b9d65c14c3e29"
+  },
+  "case_analysis_retained": {
+    "focus_sites": [
+      "220202",
+      "360102"
+    ],
+    "completed_steps": [
+      "task3_step3_fixed_representation_probes",
+      "task3_step4_feature_association_transfer",
+      "task3_step5_linear_score_contributions"
+    ],
+    "followup_status": "retained_as_optional_return_path_after_global_review"
+  },
+  "limitations": [
+    "Only reuses previous aggregated outputs; no new training, predictions or confirmatory experiment.",
+    "Region macro metrics are equal-weight means of four site metrics; ALL means 12 site metrics, not pooled-person metrics.",
+    "Cross-site average precision depends on prevalence; model comparisons at the same site are easier to interpret.",
+    "Model differences are descriptive point estimates without uncertainty or significance claims.",
+    "JS above the permutation null is an exploratory association strength measure, not a direction, conditional effect or causal effect.",
+    "Different features have different category counts and missingness; JS heatmap is not a causal-feature ranking.",
+    "Latent coordinates belong to separate fold models; plots separate the three regions and do not compare coordinate axes across folds.",
+    "Four target sites per region are insufficient for reliable regression or causal explanation; no correlation tests are added.",
+    "Low rank alone does not prove collapse; latent class separation does not measure all discriminative information.",
+    "Case-specific phone-feature findings have not been established for other sites or neural models.",
+    "Failure of one central-region site cannot explain the eastern-region results."
+  ]
+}
