@@ -44,6 +44,8 @@ OUTPUT_DIR = (
 REGIONS = ("east", "central", "west")
 BRANCHES = ("zc", "zs")
 LATENT_DIM = 32
+EXPECTED_TOTAL_SAMPLES = 4769
+EXPECTED_SITE_COUNT = 12
 EXPECTED_DATA_SHA256 = (
     "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de"
 )
@@ -722,10 +724,21 @@ def main():
 
     # 检查每个样本只在其所属留出折中作为target出现一次。
     target_ids = []
+    target_sites = set()
     for fold in folds.values():
         target_ids.extend(fold["test"]["sample_id"].astype(int).tolist())
+        target_sites.update(fold["test"]["environment_code"].astype(str).unique())
     if len(target_ids) != len(set(target_ids)):
         raise ValueError("三个留出地区测试集sample_id存在重复。")
+    if len(target_ids) != EXPECTED_TOTAL_SAMPLES:
+        raise ValueError(
+            f"三个留出折测试样本合计应为{EXPECTED_TOTAL_SAMPLES}，"
+            f"实际为{len(target_ids)}。"
+        )
+    if len(target_sites) != EXPECTED_SITE_COUNT:
+        raise ValueError(
+            f"目标监测点应为{EXPECTED_SITE_COUNT}个，实际为{len(target_sites)}。"
+        )
 
     results = {
         "spectrum": [],
