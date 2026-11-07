@@ -204,6 +204,36 @@ def load_fold(region, model_root):
     ):
         raise ValueError(f"{region}训练记录最佳轮次不一致。")
 
+    # 任务三 第2步：用历史metrics.json复核表征CSV中的两个预测头。
+    test_y = test["cognitive_impairment"].to_numpy(dtype=int)
+    prediction_checks = []
+    for head_name, column, reference_name in (
+        ("joint_zc_plus_zs", "y_prob", "main"),
+        ("zc_only", "zc_prob", "zc"),
+    ):
+        computed = safe_prediction_metrics(
+            test_y, test[column].to_numpy(dtype=float)
+        )
+        reference = metrics_record[reference_name]
+        for metric_name in ("auc", "auprc", "brier", "log_loss"):
+            expected = float(reference[metric_name])
+            observed = float(computed[metric_name])
+            difference = observed - expected
+            if not np.isclose(observed, expected, atol=5e-5, rtol=0):
+                raise RuntimeError(
+                    f"{region}/{head_name}/{metric_name}与历史metrics.json不一致："
+                    f"CSV={observed:.8f}, JSON={expected:.8f}"
+                )
+            prediction_checks.append({
+                "held_out_region": region,
+                "prediction_head": head_name,
+                "metric": metric_name,
+                "metrics_json_value": expected,
+                "representation_csv_value": observed,
+                "absolute_difference": abs(difference),
+                "passed": True,
+            })
+
     artifacts = {}
     for name in (
         "config.json",
@@ -229,6 +259,7 @@ def load_fold(region, model_root):
         "test_sites": test_sites,
         "config": config,
         "metrics": metrics_record,
+        "prediction_checks": prediction_checks,
         "training": training_record,
         "artifacts": artifacts,
     }
@@ -668,18 +699,21 @@ def main():
         "metrics": [],
         "separation": [],
         "similarity": [],
+        "prediction_checks": [],
     }
     for region in REGIONS:
         print(f"分析V5表征：留出地区 {region}", flush=True)
         fold_result = analyze_fold(folds[region])
-        for key in results:
+        for key in ("spectrum", "shift", "metrics", "separation", "similarity"):
             results[key].extend(fold_result[key])
+        results["prediction_checks"].extend(folds[region]["prediction_checks"])
 
     spectrum_table = pd.DataFrame(results["spectrum"])
     shift_table = pd.DataFrame(results["shift"])
     metrics_table = pd.DataFrame(results["metrics"])
     separation_table = pd.DataFrame(results["separation"])
     similarity_table = pd.DataFrame(results["similarity"])
+    prediction_check_table = pd.DataFrame(results["prediction_checks"])
     head_delta_table = summarize_prediction_heads(metrics_table)
 
     # 只聚合不依赖坐标轴方向的谱指标；不合并不同fold的latent坐标。
@@ -708,6 +742,7 @@ def main():
         ("joint_vs_zc_head_comparison.csv", head_delta_table),
         ("site_latent_class_separation.csv", separation_table),
         ("site_zc_zs_similarity.csv", similarity_table),
+        ("fold_prediction_head_validation.csv", prediction_check_table),
     )
     for filename, table in outputs:
         table.to_csv(
