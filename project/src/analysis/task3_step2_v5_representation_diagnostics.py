@@ -459,7 +459,7 @@ def analyze_fold(fold):
     partitions = [
         ("source_train", fold["train"]),
         ("source_validation", fold["validation"]),
-        ("source_pool_train_val", source),
+        ("source_pool_train_val_site", source),
     ]
 
     for partition_name, partition in partitions:
@@ -475,11 +475,43 @@ def analyze_fold(fold):
                     **spectrum,
                 })
 
-    # 目标站点：计算表征谱、预测头表现、类别分离和分支相似度。
+    # 任务三 第2步：单独保留源域合并分布，供目标站点偏移比较。
     source_values = {
         branch: source[latent_columns(branch)].to_numpy(dtype=float)
         for branch in BRANCHES
     }
+    for branch in BRANCHES:
+        spectrum_rows.append({
+            "held_out_region": region,
+            "partition": "source_pool_train_val",
+            "site_code": "SOURCE_POOL",
+            "branch": branch,
+            **representation_spectrum(source_values[branch]),
+        })
+        source_labels = source["cognitive_impairment"].to_numpy(dtype=int)
+        separation_rows.append({
+            "held_out_region": region,
+            "site_code": "SOURCE_POOL",
+            "partition": "source_pool_train_val",
+            "branch": branch,
+            **standardized_centroid_separation(
+                source_values[branch],
+                source_labels,
+            ),
+        })
+
+    similarity_rows.append({
+        "held_out_region": region,
+        "site_code": "SOURCE_POOL",
+        "partition": "source_pool_train_val",
+        "n": int(len(source)),
+        "linear_cka_zc_zs": linear_cka(
+            source_values["zc"],
+            source_values["zs"],
+        ),
+    })
+
+    # 目标站点：计算表征谱、预测头表现、类别分离和分支相似度。
 
     for site, group in test.groupby("environment_code"):
         site = str(site)
@@ -515,6 +547,7 @@ def analyze_fold(fold):
             separation_rows.append({
                 "held_out_region": region,
                 "site_code": site,
+                "partition": "target_test",
                 "branch": branch,
                 **separation,
             })
@@ -522,6 +555,7 @@ def analyze_fold(fold):
         similarity_rows.append({
             "held_out_region": region,
             "site_code": site,
+            "partition": "target_test",
             "n": int(len(group)),
             "linear_cka_zc_zs": linear_cka(
                 group[latent_columns("zc")].to_numpy(dtype=float),
