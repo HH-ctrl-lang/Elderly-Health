@@ -86,8 +86,28 @@ def vrex_risk_loss(logits, targets, environment_ids, positive_weight=3.0, penalt
     return mean_risk + penalty_weight * variance, mean_risk, variance
 
 
-def fit_vrex(train, val, settings):
+def apply_learning_rate_drop(optimizer, step, drop_step, drop_factor):
+    """任务四 第3步：仅改变指定更新前的学习率，不新建优化器或清空Adam状态。"""
+    if drop_step is None or step != drop_step:
+        return None
+    before = [group["lr"] for group in optimizer.param_groups]
+    for group in optimizer.param_groups:
+        group["lr"] *= drop_factor
+    return {"step_zero_based": step, "learning_rates_before": before,
+            "learning_rates_after": [group["lr"] for group in optimizer.param_groups],
+            "optimizer_reset": False}
+
+
+def fit_vrex(train, val, settings, *, lr_drop_step=None, lr_drop_factor=1.0):
     """Fit VREx with environment-balanced minibatches and validation-only selection."""
+    # 任务四 第3步：默认调用保持历史行为；对照只额外改变学习率。
+    if lr_drop_step is not None:
+        if type(lr_drop_step) is not int or lr_drop_step <= settings.penalty_anneal_steps:
+            raise ValueError("Learning-rate drop must follow the original Adam reset")
+        if not math.isfinite(lr_drop_factor) or not 0 < lr_drop_factor < 1:
+            raise ValueError("Learning-rate drop factor must lie in (0,1)")
+    elif lr_drop_factor != 1.0:
+        raise ValueError("Drop factor requires an explicit drop step")
     seed_everything(settings.seed, settings.threads)
     device = get_device(settings.device)
     domains = sorted(set(map(str, train.env)))
@@ -117,6 +137,7 @@ def fit_vrex(train, val, settings):
     step = 0
     best_auc, best_epoch, best_state, stale = -float("inf"), 0, None, 0
     history = []
+    lr_events = []
 
     for epoch in range(1, settings.epochs + 1):
         model.train()
@@ -125,6 +146,9 @@ def fit_vrex(train, val, settings):
             if step == settings.penalty_anneal_steps:
                 # DomainBed resets Adam at the regularization weight transition.
                 optimizer = new_optimizer()
+            event = apply_learning_rate_drop(optimizer, step, lr_drop_step, lr_drop_factor)
+            if event is not None:
+                lr_events.append({"epoch": epoch, **event})
             batch_ids = []
             batch_envs = []
             for env_id, positions in enumerate(domain_positions):
@@ -164,6 +188,7 @@ def fit_vrex(train, val, settings):
             "mean_risk": total_risk / steps_per_epoch,
             "risk_variance": total_penalty / steps_per_epoch,
             "eligible_for_selection": selectable,
+            "learning_rate_end": optimizer.param_groups[0]["lr"],
         })
         if selectable:
             if val_auc > best_auc:
@@ -187,4 +212,7 @@ def fit_vrex(train, val, settings):
         "training_domains": domains,
         "steps_per_epoch": steps_per_epoch,
         "domainbed_source_sha": DOMAINBED_SHA,
+        "learning_rate_intervention": {"drop_step": lr_drop_step,
+                                       "factor": lr_drop_factor, "events": lr_events},
     }
+
