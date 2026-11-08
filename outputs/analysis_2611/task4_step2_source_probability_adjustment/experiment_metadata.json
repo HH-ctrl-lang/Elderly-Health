@@ -1,0 +1,78 @@
+{
+  "task": "Task 4 Step 2 - Source-validation intercept-only probability adjustment",
+  "data_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "models_retrained": false,
+  "model_parameters_frozen": true,
+  "adjustment_parameters_fitted": "One intercept per model and fold, source validation only; slope fixed at 1",
+  "adjustment_objective": "Unweighted source-validation binary log-loss",
+  "target_labels_used_for_fitting": false,
+  "individual_records_exported": false,
+  "input_artifact_hashes": {
+    "east/RDM": {
+      "config.json": "fa800b31c1e0180c4f900fa0ba352ceb37796da8aeddb8ee0d7ec2b3834e53be",
+      "training.json": "e5150079f3be97a573f0188fcb7fe8e764e8017afdea62c61bb453e9f1081018",
+      "best_model.pt": "e3a3c9e7ff6bb7fe6f6968ab0f2bbb55c68ba6df9629d056ea21cc9bae741c31",
+      "predictions_test.csv": "61c9fd04e485d762c3f9396082f183e00d08944666f1a1384f0f2409087ef7b8"
+    },
+    "east/VREx": {
+      "config.json": "4d716b9c5afe06f9684372b69113d306bd2f6f193761db4aa8e29b9a99f58390",
+      "training.json": "79b0b8a172beb9ae174900ddf705258480c0b0515d47e6083de1da24be7e9140",
+      "best_model.pt": "eb9accf706bd82af791b8710c34e934e3894edcd511045c55f57c8a3eada35d4",
+      "predictions_test.csv": "17ffa6cc9363f7de79bb102cef6eac76721433ad3fbab6e3966507fa49c1e1fe"
+    },
+    "east/GroupDRO": {
+      "config.json": "7b062b146814cb34861b68e3e0a337b765bb65735aa316e8352df9b0df50601e",
+      "training.json": "ad639ac2ec13b97bc1044554b78a98709f08da269fdb51da9274de9bd8624f26",
+      "best_model.pt": "35290d304b06bebb8b07bfa362968606f75c167736cdd23673a5da184ee9d8f5",
+      "predictions_test.csv": "09ab89e246aa672985d0afb56be3400727ddc12aea5d76d2ccc1d233c439c13f"
+    },
+    "central/RDM": {
+      "config.json": "fa800b31c1e0180c4f900fa0ba352ceb37796da8aeddb8ee0d7ec2b3834e53be",
+      "training.json": "55ba2afb5d8a4c3da5b12dba30299f737000bf33a4dd259c70a13a7d36f55ec8",
+      "best_model.pt": "506d91075c5069bc7c8d308643b508461f53c6e91a68f8ff92e299f3e301f816",
+      "predictions_test.csv": "c1a46b884ca98b6ec923b1cdc24ba4a5062e6bc5867b454e0e724773bce3bfba"
+    },
+    "central/VREx": {
+      "config.json": "4d716b9c5afe06f9684372b69113d306bd2f6f193761db4aa8e29b9a99f58390",
+      "training.json": "31fa74b0fb77f0c8fe2edd49f8b2f18c5a3a6301d5b3c6b05ddbd44de3c4c7cf",
+      "best_model.pt": "843e43c6dd1f5faba653404ff11126a1cd0ae3a6b12fa654f8b60135c64f682b",
+      "predictions_test.csv": "b8b47820fab7a691548238d1b764e93e17d63bd1304b76885091f501b7e432da"
+    },
+    "central/GroupDRO": {
+      "config.json": "7b062b146814cb34861b68e3e0a337b765bb65735aa316e8352df9b0df50601e",
+      "training.json": "fd095790c10160d79adc0c6850866a20149cf44119b9cd5a90474c4007d2fff2",
+      "best_model.pt": "169a1027c86a246d3d2c85901ea8ddf2c02a1a12462c737d9e6b2383e7a2a101",
+      "predictions_test.csv": "3481548176133c34c4d9384f0d8ac81fa2e88830518acaa86667121e42dd4512"
+    },
+    "west/RDM": {
+      "config.json": "fa800b31c1e0180c4f900fa0ba352ceb37796da8aeddb8ee0d7ec2b3834e53be",
+      "training.json": "e87056226e43893b2627c631130b2bc9ad8a472c51a89465c82efb52478de5f6",
+      "best_model.pt": "7a1150085d8f0ba7e30797ab2f327c64ab529d79527758354c252a2df1cdbd2e",
+      "predictions_test.csv": "5569613ba69091c963f744686eed723c521acbf1287e4693496c721bdca63b2d"
+    },
+    "west/VREx": {
+      "config.json": "4d716b9c5afe06f9684372b69113d306bd2f6f193761db4aa8e29b9a99f58390",
+      "training.json": "d776a8dfe75572037d65f0b816f6e34707a073489292249c42dad539951d582d",
+      "best_model.pt": "1471ff6bddeed2753f109e73fc7161de3827157fe369f3510bebb415aeb85b1e",
+      "predictions_test.csv": "0ed9b56e2cd9dc2c97c11b35f2fbe32b6c7f6b0f5c074f3503ed5e4699f707b6"
+    },
+    "west/GroupDRO": {
+      "config.json": "7b062b146814cb34861b68e3e0a337b765bb65735aa316e8352df9b0df50601e",
+      "training.json": "ecd36846941cf408a2f30bb56bf7f234b07e9e1aed02cbfb27a949478eb98130",
+      "best_model.pt": "eeadcf41486bdbb896c1575a2fec018d45d700b8a9daeeb24b540d3f0ec9e600",
+      "predictions_test.csv": "bd31b4568f97f9ea868abcd0d4f68b78dc29ba3b8eaa01b726d8bb9831f8f72a"
+    }
+  },
+  "historical_site_metrics_sha256": "fc8b7dec23ec53a55ca61716313200ebbee17aeac160abda96b839efcbea55b8",
+  "limitations": [
+    "Source-validation calibration may fail to transfer to held-out regions; target error can increase.",
+    "Only overall log-odds level is adjusted, not calibration slope, feature relationships or the original learning rate.",
+    "AUC and average precision must stay unchanged in every evaluated group; checks stop on violations.",
+    "The same historical source validation was used for checkpoint selection; calibration is exploratory reuse, not an independent calibration cohort.",
+    "This is not a controlled algorithm-objective ablation and cannot attribute a difference to RDM or VREx mechanisms.",
+    "Before/after differences are descriptive; no new confidence intervals or general superiority claims are added.",
+    "Site macros are equal-weight means of site metrics; pooled-region metrics are separately named.",
+    "No target prevalence or target outcome is used to select the adjustment or its size.",
+    "The 220202/360102 case direction remains available for later research."
+  ]
+}
