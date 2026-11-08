@@ -1,0 +1,45 @@
+{
+  "task": "Task 5 Step 1: ICLR2025 Section5.2 mechanism pilot",
+  "paper": "https://proceedings.iclr.cc/paper_files/paper/2025/file/85381f4549b5ddf1d48e2e287d7d3d15-Paper-Conference.pdf",
+  "reproduction_level": "independent_downscaled_mechanism_reproduction",
+  "health_data_used": false,
+  "latent_truth_used_for_autoencoder_training": false,
+  "checkpoint_selection": "fixed final epoch; no oracle latent selection",
+  "samples_per_environment": 6000,
+  "test_samples_per_environment": 2000,
+  "epochs": 100,
+  "batch_size_per_environment": 256,
+  "mmd_weight": 1.0,
+  "mmd_kernel_gammas": [
+    0.5,
+    1.0,
+    2.0
+  ],
+  "seed": 42,
+  "nintervention_means": [
+    4.3218681456678905,
+    3.316635319256157,
+    4.575793759734148
+  ],
+  "torch_version": "2.4.1+cpu",
+  "script_sha256": "294342d9c38dabbd00cd0b860c8f545687eea40bfc3d9d08686ef0ddee413a32",
+  "paper_training_budget": {
+    "samples": 200000,
+    "epochs": 500,
+    "batch_size": 4000
+  },
+  "deviations": [
+    "Reduced CPU training budget; not a replication of published numerical scores.",
+    "Mixing: three invertible 3x3 layers instead of unspecified random wide invertible MLP.",
+    "Training-only observed-data standardization; fixed LeakyReLU slope 0.2.",
+    "Explicit fixed Gaussian kernel mixture and fixed KRR settings; these details are not fully specified in the paper.",
+    "Added reconstruction-only baseline and independent probe evaluation; no parameter search."
+  ],
+  "limitations": [
+    "Known continuous synthetic SCM, not discrete health features.",
+    "Invariance block indices are supplied, not discovered from site labels.",
+    "Block recovery is not individual factor identification or causal-graph recovery.",
+    "MMD reduction alone is not successful disentanglement; check information preservation.",
+    "Three shift trials are descriptive and do not validate general superiority."
+  ]
+}
