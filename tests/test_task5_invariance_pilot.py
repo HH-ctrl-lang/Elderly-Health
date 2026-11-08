@@ -13,6 +13,18 @@ SPEC.loader.exec_module(PILOT)
 
 
 class InvariancePilotTests(unittest.TestCase):
+    def test_explicit_weight_keeps_historical_defaults(self):
+        """任务五 第2步：历史0/1调用不变，新权重仅接受有限非负数。"""
+        self.assertEqual(PILOT.resolve_mmd_weight(PILOT.ARMS[0]), 0.0)
+        self.assertEqual(PILOT.resolve_mmd_weight(PILOT.ARMS[1]), 1.0)
+        self.assertEqual(PILOT.resolve_mmd_weight("new", 0.1), 0.1)
+        self.assertEqual(PILOT.resolve_mmd_weight("new", 10), 10.0)
+        for weight in (-1, float("nan"), float("inf")):
+            with self.assertRaises(ValueError):
+                PILOT.resolve_mmd_weight("new", weight)
+        with self.assertRaises(ValueError):
+            PILOT.resolve_mmd_weight("unknown")
+
     def test_nintervention_keeps_old_descendant(self):
         """任务五 第1步：防止错误地把nintervention写成向下游传播的do干预。"""
         old = PILOT.latent_sample(2000, 7)
