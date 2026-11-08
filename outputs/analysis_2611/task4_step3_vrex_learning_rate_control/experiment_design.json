@@ -1,0 +1,81 @@
+{
+  "data_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "features": [
+    "residence",
+    "age",
+    "gender",
+    "education",
+    "marital_status",
+    "living_alone",
+    "wealth",
+    "chronic_disease",
+    "social_activity",
+    "IADL",
+    "depression",
+    "sleep_quality",
+    "sleep_duration",
+    "physical_activity",
+    "if_use_mobile_phone",
+    "using_phone_year",
+    "hours_phone_per_day",
+    "smoke",
+    "alcohol"
+  ],
+  "arms": [
+    "original_lr",
+    "drop_lr_20x"
+  ],
+  "drop_step_zero_based": 1500,
+  "drop_factor": 0.05,
+  "extra_optimizer_reset": false,
+  "source_artifacts": {
+    "east": {
+      "historical_files": {
+        "config.json": "4d716b9c5afe06f9684372b69113d306bd2f6f193761db4aa8e29b9a99f58390",
+        "training.json": "79b0b8a172beb9ae174900ddf705258480c0b0515d47e6083de1da24be7e9140",
+        "best_model.pt": "eb9accf706bd82af791b8710c34e934e3894edcd511045c55f57c8a3eada35d4",
+        "predictions_test.csv": "17ffa6cc9363f7de79bb102cef6eac76721433ad3fbab6e3966507fa49c1e1fe"
+      },
+      "rdm_config_sha256": "fa800b31c1e0180c4f900fa0ba352ceb37796da8aeddb8ee0d7ec2b3834e53be",
+      "historical_reconstruction_max_error": 1.1621810913631236e-07
+    },
+    "central": {
+      "historical_files": {
+        "config.json": "4d716b9c5afe06f9684372b69113d306bd2f6f193761db4aa8e29b9a99f58390",
+        "training.json": "31fa74b0fb77f0c8fe2edd49f8b2f18c5a3a6301d5b3c6b05ddbd44de3c4c7cf",
+        "best_model.pt": "843e43c6dd1f5faba653404ff11126a1cd0ae3a6b12fa654f8b60135c64f682b",
+        "predictions_test.csv": "b8b47820fab7a691548238d1b764e93e17d63bd1304b76885091f501b7e432da"
+      },
+      "rdm_config_sha256": "fa800b31c1e0180c4f900fa0ba352ceb37796da8aeddb8ee0d7ec2b3834e53be",
+      "historical_reconstruction_max_error": 8.689193720101684e-08
+    },
+    "west": {
+      "historical_files": {
+        "config.json": "4d716b9c5afe06f9684372b69113d306bd2f6f193761db4aa8e29b9a99f58390",
+        "training.json": "d776a8dfe75572037d65f0b816f6e34707a073489292249c42dad539951d582d",
+        "best_model.pt": "1471ff6bddeed2753f109e73fc7161de3827157fe369f3510bebb415aeb85b1e",
+        "predictions_test.csv": "0ed9b56e2cd9dc2c97c11b35f2fbe32b6c7f6b0f5c074f3503ed5e4699f707b6"
+      },
+      "rdm_config_sha256": "fa800b31c1e0180c4f900fa0ba352ceb37796da8aeddb8ee0d7ec2b3834e53be",
+      "historical_reconstruction_max_error": 8.467178347348892e-08
+    }
+  },
+  "code_sha256": {
+    "runner": "c83a49f646df28a0f1ec343c774a6a9b194a490585676c829f4b6197a053da67",
+    "vrex_adapter": "c3e2997e83a8b181120106617c53ccf556affbbbdfb623ad3483baa1ac1ddc0b"
+  },
+  "runtime": {
+    "python": "3.10.20 | packaged by Anaconda, Inc. | (main, Mar 11 2026, 17:42:35) [MSC v.1942 64 bit (AMD64)]",
+    "torch": "2.4.1+cpu",
+    "numpy": "1.26.4"
+  },
+  "selection": "source validation AUC from epoch 91, patience 80; identical between arms",
+  "individual_records_exported": false,
+  "limitations": [
+    "One seed only; exploratory sensitivity analysis, not algorithm superiority.",
+    "Matches RDM drop timing and ratio, but deliberately does not copy its Adam reset.",
+    "Separate validation-selected checkpoints allow early-stopping effects to be part of the intervention.",
+    "Source validation reused for probability adjustment; no target labels used for fitting.",
+    "No new confidence intervals; cannot attribute results to risk-distribution versus variance constraints."
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "settings": {
+    "seed": 42,
+    "device": "cpu",
+    "threads": 2,
+    "epochs": 300,
+    "per_environment_batch_size": 32,
+    "learning_rate": 0.0003,
+    "weight_decay": 1e-05,
+    "positive_weight": 3.0,
+    "vrex_lambda": 10.0,
+    "penalty_anneal_steps": 500,
+    "patience": 80,
+    "selection_start_epoch": 91
+  },
+  "intervention": {}
+}
