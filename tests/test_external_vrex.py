@@ -15,6 +15,49 @@ TORCH_AVAILABLE = importlib.util.find_spec("torch") is not None
 
 @unittest.skipUnless(TORCH_AVAILABLE, "PyTorch not installed")
 class VRExAdapterTests(unittest.TestCase):
+    def test_learning_rate_drop_preserves_adam_state(self):
+        """任务四 第3步：学习率干预必须保留Adam动量和更新次数。"""
+        import torch
+        from elderly_health.vrex_adapter import apply_learning_rate_drop
+
+        parameter = torch.nn.Parameter(torch.tensor([1.0]))
+        optimizer = torch.optim.Adam([parameter], lr=3e-4)
+        parameter.square().sum().backward()
+        optimizer.step()
+        state = optimizer.state[parameter]
+        before = {k: v.clone() for k, v in state.items()}
+        self.assertIsNone(apply_learning_rate_drop(optimizer, 1499, 1500, 0.05))
+        event = apply_learning_rate_drop(optimizer, 1500, 1500, 0.05)
+        self.assertAlmostEqual(optimizer.param_groups[0]["lr"], 1.5e-5)
+        self.assertFalse(event["optimizer_reset"])
+        self.assertIs(state, optimizer.state[parameter])
+        for key, value in before.items():
+            torch.testing.assert_close(state[key], value, rtol=0, atol=0)
+        self.assertIsNone(apply_learning_rate_drop(optimizer, 1501, 1500, 0.05))
+
+    def test_learning_rate_control_has_identical_training_prefix(self):
+        """任务四 第3步：用合成数据检查两组在干预前相同、只执行一次降速。"""
+        from elderly_health.data import SplitData
+        from elderly_health.vrex_adapter import VRExSettings, fit_vrex
+
+        rng = np.random.default_rng(41)
+        x = rng.normal(size=(160, 19)).astype(np.float32)
+        y = np.tile([0.0, 1.0], 80).astype(np.float32)
+        env = np.tile(np.repeat(["east", "west"], 40), 2)
+        ids = np.arange(160)
+        train = SplitData(x[:128], y[:128], env[:128], ids[:128])
+        val = SplitData(x[128:], y[128:], env[128:], ids[128:])
+        settings = VRExSettings(epochs=3, selection_start_epoch=1, patience=3,
+                                threads=1, per_environment_batch_size=8, penalty_anneal_steps=2)
+        _, control = fit_vrex(train, val, settings)
+        _, treatment = fit_vrex(train, val, settings, lr_drop_step=10, lr_drop_factor=0.05)
+        self.assertEqual(control["history"][0], treatment["history"][0])
+        self.assertEqual(len(treatment["learning_rate_intervention"]["events"]), 1)
+        self.assertEqual(control["learning_rate_intervention"]["events"], [])
+        self.assertAlmostEqual(treatment["history"][-1]["learning_rate_end"], 1.5e-5)
+        with self.assertRaises(ValueError):
+            fit_vrex(train, val, settings, lr_drop_step=2, lr_drop_factor=0.05)
+
     def test_risk_variance_matches_domainbed_objective(self):
         import torch
         from torch.nn import functional as F
@@ -73,3 +116,4 @@ class VRExAdapterTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
