@@ -88,8 +88,21 @@ def build_autoencoder():
     return nn.ModuleDict({"encoder": network(), "decoder": network()})
 
 
-def fit_model(train_x, arm, epochs, batch_size, seed):
+def resolve_mmd_weight(arm, mmd_weight=None):
+    """任务五 第2步：显式指定约束强度；默认调用保持第1步的0/1权重。"""
+    if mmd_weight is None:
+        if arm not in ARMS:
+            raise ValueError("未知实验组，需要显式指定MMD权重。")
+        return float(arm == ARMS[1])
+    weight = float(mmd_weight)
+    if not math.isfinite(weight) or weight < 0:
+        raise ValueError("MMD权重必须为有限非负数。")
+    return weight
+
+
+def fit_model(train_x, arm, epochs, batch_size, seed, *, mmd_weight=None):
     """任务五 第1步：只接收观测x，不接收真实z；两组初始化与批次相同。"""
+    weight = resolve_mmd_weight(arm, mmd_weight)
     import torch
     torch.manual_seed(seed)
     torch.set_num_threads(2)
@@ -99,7 +112,6 @@ def fit_model(train_x, arm, epochs, batch_size, seed):
     generator = torch.Generator().manual_seed(seed+1)
     domains = [torch.as_tensor(x) for x in train_x]
     history = []
-    weight = float(arm == ARMS[1])
     initial_hash = hashlib.sha256(b"".join(p.detach().numpy().tobytes() for p in model.parameters())).hexdigest()
     for epoch in range(1, epochs+1):
         totals = np.zeros(3)
