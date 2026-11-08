@@ -1,0 +1,47 @@
+{
+  "task": "Task 5 Step 2: MMD weight control",
+  "mmd_weights": [
+    0.0,
+    0.1,
+    1.0,
+    10.0
+  ],
+  "new_training_weights": [
+    0.1,
+    10.0
+  ],
+  "reused_frozen_weights": [
+    0.0,
+    1.0
+  ],
+  "health_data_used": false,
+  "source_files_sha256": {
+    "experiment_metadata.json": "1bd76c5b23b867bb5f2a7bfd05188e93e417aa73ae00b920ae9e84a5ef0d3fb2",
+    "completion.json": "1992e59f583be3b4b8bbb03cb88168aba177c5a74f59ab70171112c9e1c5e73d",
+    "latent_recovery.csv": "d1f4608230a132a91ea0711433d46b04230abe7bd00e323a8491b44374fb2c12",
+    "trial_0_reconstruction_only.pt": "3b144780f0d034eacc5e6ea5fb3d4689666ecbbc55e010751df054b0084d517a",
+    "trial_0_reconstruction_plus_mmd.pt": "5a3cd1e79cbaecafedc88505c5d103d55a1a6025136e5508b14463056d206f68",
+    "trial_1_reconstruction_only.pt": "da5484e5c259592d9c5b77c0afc2b8b916a92b1be42b4bed753370adf2154348",
+    "trial_1_reconstruction_plus_mmd.pt": "5bebac64ac7b056fb3812489ea4ed37e426e925e626e3851e1870e49b619a096",
+    "trial_2_reconstruction_only.pt": "1eb19915f861f880a77dc4abd0c1253671a852699de43fc8504d24d49fc550ab",
+    "trial_2_reconstruction_plus_mmd.pt": "de8a5dbd4378961da59b79f1402ba76504459b0ce4c57756bccaf74c8fcfbd6d"
+  },
+  "unchanged_budget": {
+    "samples_per_environment": 6000,
+    "test_samples_per_environment": 2000,
+    "epochs": 100,
+    "batch_size_per_environment": 256
+  },
+  "code_sha256": {
+    "runner": "13e7561d56cd4607600080262098c1d6bc6b0893e41e4ebf32a27b85690e86e5",
+    "shared_pilot": "0fca87ef3b23d1287596582212c26267a63017d12e537dc52b68b5daa4a1bfcf"
+  },
+  "torch_version": "2.4.1+cpu",
+  "numpy_version": "1.26.4",
+  "limitations": [
+    "Exploratory sensitivity analysis with three shifts, not exact paper-number reproduction.",
+    "Latent truth is used only by frozen evaluation probes, never by autoencoder fitting.",
+    "No weight selection, no winner-only reporting, and no claim of transfer to discrete health data.",
+    "Cannot explain effects of kernel bandwidth, training duration or probe capacity because they are held fixed."
+  ]
+}
