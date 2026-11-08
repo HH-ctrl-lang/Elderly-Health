@@ -1,0 +1,55 @@
+{
+  "paper": "https://proceedings.mlr.press/v306/saengkyongam26a.html",
+  "checked_pdf_version": "arXiv:2602.17187v2, 2026-06-17; equations 9,10 and Section6.1",
+  "reproduction_level": "independent_binary_prediction_adaptation_not_published_benchmark_replication",
+  "gammas": [
+    0.0,
+    0.01,
+    0.1,
+    1.0,
+    10.0
+  ],
+  "selection": "pooled source validation AUC; exact tie chooses smaller gamma; zero allowed",
+  "seed": 42,
+  "input_features": [
+    "residence",
+    "age",
+    "gender",
+    "education",
+    "marital_status",
+    "living_alone",
+    "wealth",
+    "chronic_disease",
+    "social_activity",
+    "IADL",
+    "depression",
+    "sleep_quality",
+    "sleep_duration",
+    "physical_activity",
+    "if_use_mobile_phone",
+    "using_phone_year",
+    "hours_phone_per_day",
+    "smoke",
+    "alcohol"
+  ],
+  "ridge": 1e-05,
+  "loss": "unweighted binary cross entropy; equal source sites; unpenalized intercept",
+  "penalty_environments": "eight source training sites, not target sites",
+  "individual_records_exported": false,
+  "data_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "historical_reference_sha256": "fc8b7dec23ec53a55ca61716313200ebbee17aeac160abda96b839efcbea55b8",
+  "code_sha256": {
+    "runner": "5c7441368698ae905807955043b097bbf84818f32b6dd2a27174bcce3918b959",
+    "adapter": "5c9f85e6fec59a249fe2a82ec6a35f30ad44b9c77f9d4bb4235b2b9216644064"
+  },
+  "limitations": [
+    "No causal representation split and no causal identification claim.",
+    "Anti-causal SCM and environment-independent outcome assumptions are not established for the health data.",
+    "No target features are used to estimate environment moments; no target labels used for selection.",
+    "All source sites are labeled here, unlike the paper's main few-labeled-many-unlabeled setting.",
+    "Binary log-loss, free intercept and fixed small ridge are explicit adaptations; squared-loss robustness theorems do not automatically transfer.",
+    "Numeric codes are retained; changes in category means/covariances need not reflect causal perturbations.",
+    "Historical MLP differs in architecture, grouping and positive weighting; compare ranking only as a reference.",
+    "One split; assess value before further repetitions or parameter searches."
+  ]
+}
