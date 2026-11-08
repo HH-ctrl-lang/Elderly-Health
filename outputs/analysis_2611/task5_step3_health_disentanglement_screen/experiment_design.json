@@ -1,0 +1,43 @@
+{
+  "task": "Task 5 Step 3: Limited health-data candidate screening",
+  "data_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "settings": {
+    "seed": 42,
+    "epochs": 300,
+    "selection_start_epoch": 91,
+    "patience": 80,
+    "learning_rate": 0.0003,
+    "weight_decay": 1e-05,
+    "positive_weight": 3.0,
+    "per_environment_batch_size": 32,
+    "mmd_per_class_environment": 16,
+    "prediction_block_dim": 8,
+    "residual_block_dim": 8,
+    "reconstruction_weight": 1.0,
+    "threads": 2,
+    "device": "cpu"
+  },
+  "arms": {
+    "two_block_control": 0.0,
+    "two_block_conditional_mmd": 0.1
+  },
+  "historical_mlp_reference_sha256": "fc8b7dec23ec53a55ca61716313200ebbee17aeac160abda96b839efcbea55b8",
+  "code_sha256": {
+    "runner": "27bd6e2db5401826355d61a794bca20c36c8974fd51ca5ef63baf8711c0c5d58",
+    "adapter": "465a17506cce2c1e2962d1627dbfb69d7fd5c3c198797dc888d409af3ef7941b"
+  },
+  "torch_version": "2.4.1+cpu",
+  "individual_records_exported": false,
+  "primary_evaluation": "Equal-site macro AUC and AUPRC on all 12 held-out sites; report all regions and sites",
+  "practical_attention_threshold": "Macro AUC increase about 0.01 is a screening signal only; also inspect AUPRC, regional losses and historical MLP. No automatic pass decision.",
+  "limitations": [
+    "Inspired adaptation, not a faithful paper replication or causal identification.",
+    "Class-conditional source alignment is an extra hypothesis and can still remove useful information.",
+    "Residual block is not guaranteed to be environment-only or independent of prediction block.",
+    "Prediction-block LayerNorm limits simple overall rescaling freedom but does not guarantee freedom from collapse.",
+    "Numeric coding and standardized MSE reconstruction are retained for this limited paired screen; categorical-code distances have no clinical interpretation.",
+    "One seed and one nonzero weight; no target data used for fitting or hyperparameter selection.",
+    "Historical MLP differs in architecture and training; it is a practical reference, not the mechanism control.",
+    "Source validation reused for intercept adjustment; probability differences remain exploratory."
+  ]
+}
