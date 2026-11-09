@@ -1,0 +1,106 @@
+{
+  "completed": true,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "versions": {
+    "python": "3.10.20",
+    "torch": "2.4.1+cpu",
+    "sklearn": "1.7.2"
+  },
+  "split_seed": 42,
+  "training_seeds": [
+    42,
+    43,
+    44
+  ],
+  "arms": {
+    "full": [],
+    "mask_marital": [
+      "marital_status"
+    ],
+    "mask_age": [
+      "age"
+    ],
+    "mask_marital_age": [
+      "marital_status",
+      "age"
+    ],
+    "random_pair_1": [
+      "IADL",
+      "alcohol"
+    ],
+    "random_pair_2": [
+      "sleep_duration",
+      "social_activity"
+    ],
+    "random_pair_3": [
+      "gender",
+      "living_alone"
+    ]
+  },
+  "target_used_for_training_or_selection": false,
+  "code_sha256": "e9007ca04ce8be1f7701f3d8ec6cf5a3b6f7a2a35aebe1fa0157ea65e159e420",
+  "primary_contrast": "mask_marital_age vs full and random pairs, matched_source_auc_epoch; inspect all seeds and four counties",
+  "limitation": "围绕已观察东部结果提出假设，属于探索性验证。屏蔽效应不是临床因果效应；微小不稳定变化不构成根因证据。",
+  "reproduction_audits": [
+    {
+      "seed": 42,
+      "policy": "matched_source_auc_epoch",
+      "reproduced": true
+    },
+    {
+      "seed": 42,
+      "policy": "matched_source_loss_epoch",
+      "reproduced": true
+    },
+    {
+      "seed": 42,
+      "policy": "own_source_auc",
+      "reproduced": true
+    },
+    {
+      "seed": 42,
+      "policy": "own_source_loss",
+      "reproduced": true
+    },
+    {
+      "seed": 43,
+      "policy": "matched_source_auc_epoch",
+      "reproduced": true
+    },
+    {
+      "seed": 43,
+      "policy": "matched_source_loss_epoch",
+      "reproduced": true
+    },
+    {
+      "seed": 43,
+      "policy": "own_source_auc",
+      "reproduced": true
+    },
+    {
+      "seed": 43,
+      "policy": "own_source_loss",
+      "reproduced": true
+    },
+    {
+      "seed": 44,
+      "policy": "matched_source_auc_epoch",
+      "reproduced": true
+    },
+    {
+      "seed": 44,
+      "policy": "matched_source_loss_epoch",
+      "reproduced": true
+    },
+    {
+      "seed": 44,
+      "policy": "own_source_auc",
+      "reproduced": true
+    },
+    {
+      "seed": 44,
+      "policy": "own_source_loss",
+      "reproduced": true
+    }
+  ]
+}
