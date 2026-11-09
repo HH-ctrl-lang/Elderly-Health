@@ -1,0 +1,49 @@
+{
+  "completed": true,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "sites": [
+    "110113",
+    "371082"
+  ],
+  "outer_folds": 4,
+  "inner_validation_fraction": 0.2,
+  "matched_class_counts": {
+    "train": {
+      "0": 190,
+      "1": 20
+    },
+    "val": {
+      "0": 47,
+      "1": 5
+    }
+  },
+  "source_split_seed": 42,
+  "models": [
+    "logistic",
+    "shallow_tree",
+    "mlp"
+  ],
+  "source_full_class_counts": {
+    "train": {
+      "0": 2349,
+      "1": 370
+    },
+    "val": {
+      "0": 415,
+      "1": 65
+    }
+  },
+  "target_labels_used_for_local_supervised_diagnostic": true,
+  "outer_test_used_for_fitting_or_selection": false,
+  "python": "3.10.20",
+  "torch": "2.4.1+cpu",
+  "sklearn": "1.7.2",
+  "code_sha256": "513797f4e8373a075c529823bd8f0085734e83cf2de279ba3f36c3724c73d8ec",
+  "limitations": "本地有标签诊断不等于域泛化或可达性能上界；本地未明显胜出不能证明不存在预测信号。重复外折训练重叠，折和种子不能当独立样本计算显著性。匹配改变训练阳性率，Brier仅辅助。",
+  "oof_complete": true
+}
