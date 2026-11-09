@@ -1,0 +1,49 @@
+{
+  "completed": true,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "split_seed": 42,
+  "training_seeds": [
+    42,
+    43,
+    44
+  ],
+  "versions": {
+    "python": "3.10.20",
+    "torch": "2.4.1+cpu",
+    "sklearn": "1.7.2"
+  },
+  "code_sha256": "7c3db079f7b86a4e392c451238b4569388279f57da892cae831681b8c07a269b",
+  "target_evaluated_after_training": true,
+  "target_used_for_selection": false,
+  "scope": "未加权完整MLP；纯域泛化；来源划分不变；同一轨迹内比较选模规则",
+  "reproduction_audits": [
+    {
+      "seed": 42,
+      "reproduced": true,
+      "best_epoch": 1,
+      "previous_best_epoch": 1,
+      "difference_auc": 0.0,
+      "difference_auprc": 0.0,
+      "difference_brier": -9.843958981292644e-11
+    },
+    {
+      "seed": 43,
+      "reproduced": true,
+      "best_epoch": 13,
+      "previous_best_epoch": 13,
+      "difference_auc": 0.0,
+      "difference_auprc": 0.0,
+      "difference_brier": -5.7412047338445404e-11
+    },
+    {
+      "seed": 44,
+      "reproduced": true,
+      "best_epoch": 23,
+      "previous_best_epoch": 23,
+      "difference_auc": 0.0,
+      "difference_auprc": 0.0,
+      "difference_brier": 7.8533318736973e-11
+    }
+  ],
+  "limitations": "同一来源验证集和东部数据反复用于探索；不能把规则改进视为新外部验证。各规则共用原来源AUC早停轨迹，不代表各自独立早停的算法。"
+}
