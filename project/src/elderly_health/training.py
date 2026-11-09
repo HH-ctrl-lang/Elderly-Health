@@ -59,12 +59,14 @@ def predict(model, x, device, batch_size=256, head="main"):
     return np.concatenate(probabilities).ravel()
 
 
-def fit(train, val, config, prior=None, sample_weights=None):
+def fit(train, val, config, prior=None, sample_weights=None, epoch_callback=None):
     """Fit a model with optional source-training-sample importance weights.
 
     Validation loss and AUC remain unweighted, preserving the historical checkpoint
     selection rule. With sample_weights=None, the prediction loss is equivalent to
     the original mean-reduced BCEWithLogitsLoss.
+    epoch_callback optionally copies read-only epoch snapshots for retrospective
+    diagnostics; it must not mutate the model or consume random numbers.
     """
     seed_everything(config.seed, config.threads)
     device = get_device(config.device)
@@ -217,6 +219,9 @@ def fit(train, val, config, prior=None, sample_weights=None):
         if causal:
             record["mask"] = model.gate.get_scores().cpu().tolist()
         history.append(record)
+        # 任务2 第4步：可选只读快照回调；不得消耗随机数、修改模型或执行目标域选模。
+        if epoch_callback is not None:
+            epoch_callback(model, dict(record))
         if record["eligible_for_selection"]:
             if auc > best_auc:
                 best_auc, best_epoch, stale = float(auc), epoch + 1, 0
