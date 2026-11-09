@@ -1,0 +1,33 @@
+{
+  "completed": true,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "versions": {
+    "python": "3.10.20",
+    "torch": "2.4.1+cpu",
+    "sklearn": "1.7.2"
+  },
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "site": "371082",
+  "models": [
+    "shallow_tree",
+    "mlp"
+  ],
+  "arms": [
+    "local_20",
+    "local_all_positive",
+    "local_repeat20",
+    "source_20",
+    "source_many_positive"
+  ],
+  "previous_code_sha256": "513797f4e8373a075c529823bd8f0085734e83cf2de279ba3f36c3724c73d8ec",
+  "code_sha256": "ab98795b955709475a5aafc1d0c58613bdd3f6d2362896cd8a2f070638d22e0e",
+  "local_labels_used_for_supervised_diagnostic": true,
+  "outer_test_used_for_selection": false,
+  "validation": "本地使用固定的全部内层验证集；来源验证匹配相同类别人数，所有条件固定验证样本",
+  "limitations": "仅371082，不能代表东部全部。增加阳性同时改变训练类别比例，因此设置重复阳性对照；新增信息与重复加权仍影响优化路径及预处理。无明显收益不能证明特征无信息。重叠外折和重复不作为独立显著性检验样本。本步验证集比第7步匹配条件更大，仅在本步内部比较20人和全部阳性；旧完整来源成绩仅供背景参考。",
+  "all_test_folds_matched": true
+}
