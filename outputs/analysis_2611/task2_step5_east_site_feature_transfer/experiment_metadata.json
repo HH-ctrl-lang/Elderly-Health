@@ -1,0 +1,43 @@
+{
+  "completed": true,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "versions": {
+    "python": "3.10.20",
+    "torch": "2.4.1+cpu",
+    "sklearn": "1.7.2"
+  },
+  "split_seed": 42,
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "bootstrap": 300,
+  "permutations": 10,
+  "smoothing_prior_n": 20,
+  "display_order": "source_validation_auc_only",
+  "target_used_for_training_or_selection": false,
+  "code_sha256": "6eb0d0e8b14407547337150fc7a82cb0e552eed077a8e28932147f1b1c6c64f3",
+  "source_order": [
+    "IADL",
+    "marital_status",
+    "education",
+    "hours_phone_per_day",
+    "sleep_duration",
+    "age",
+    "if_use_mobile_phone",
+    "gender",
+    "using_phone_year",
+    "living_alone",
+    "social_activity",
+    "residence",
+    "depression",
+    "smoke",
+    "sleep_quality",
+    "wealth",
+    "alcohol",
+    "physical_activity",
+    "chronic_disease"
+  ],
+  "limitations": "关联与置换不是因果效应；相关特征置换可产生不常见组合。Bootstrap区间固定来源评分，不含重拟合误差，未作多重比较校正；置换标准差不是置信区间。东部已被反复探索，本步不构成新外部验证。"
+}
