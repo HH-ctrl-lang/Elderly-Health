@@ -1,0 +1,250 @@
+{
+  "groups": {
+    "residence": {
+      "kind": "category",
+      "known": [
+        "1",
+        "2"
+      ]
+    },
+    "age": {
+      "kind": "category",
+      "known": [
+        "1",
+        "2"
+      ]
+    },
+    "gender": {
+      "kind": "category",
+      "known": [
+        "1",
+        "2"
+      ]
+    },
+    "education": {
+      "kind": "category",
+      "known": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    "marital_status": {
+      "kind": "category",
+      "known": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
+    },
+    "living_alone": {
+      "kind": "category",
+      "known": [
+        "1",
+        "2"
+      ]
+    },
+    "wealth": {
+      "kind": "category",
+      "known": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "chronic_disease": {
+      "kind": "category",
+      "known": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    "social_activity": {
+      "kind": "category",
+      "known": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    "IADL": {
+      "kind": "category",
+      "known": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    "depression": {
+      "kind": "category",
+      "known": [
+        "1",
+        "2"
+      ]
+    },
+    "sleep_quality": {
+      "kind": "category",
+      "known": [
+        "1",
+        "2"
+      ]
+    },
+    "sleep_duration": {
+      "kind": "category",
+      "known": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    "physical_activity": {
+      "kind": "category",
+      "known": [
+        "1",
+        "2"
+      ]
+    },
+    "if_use_mobile_phone": {
+      "kind": "category",
+      "known": [
+        "1",
+        "2"
+      ]
+    },
+    "using_phone_year": {
+      "kind": "category",
+      "known": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    "hours_phone_per_day": {
+      "kind": "category",
+      "known": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    "smoke": {
+      "kind": "category",
+      "known": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "alcohol": {
+      "kind": "category",
+      "known": [
+        "1",
+        "2"
+      ]
+    }
+  },
+  "coverage": {
+    "distance": {
+      "residence": {
+        "categorical": true,
+        "scale": 1.0
+      },
+      "age": {
+        "categorical": true,
+        "scale": 1.0
+      },
+      "gender": {
+        "categorical": true,
+        "scale": 1.0
+      },
+      "education": {
+        "categorical": true,
+        "scale": 4.0
+      },
+      "marital_status": {
+        "categorical": true,
+        "scale": 2.0
+      },
+      "living_alone": {
+        "categorical": true,
+        "scale": 1.0
+      },
+      "wealth": {
+        "categorical": true,
+        "scale": 2.0
+      },
+      "chronic_disease": {
+        "categorical": true,
+        "scale": 2.0
+      },
+      "social_activity": {
+        "categorical": true,
+        "scale": 3.0
+      },
+      "IADL": {
+        "categorical": true,
+        "scale": 2.0
+      },
+      "depression": {
+        "categorical": true,
+        "scale": 1.0
+      },
+      "sleep_quality": {
+        "categorical": true,
+        "scale": 1.0
+      },
+      "sleep_duration": {
+        "categorical": true,
+        "scale": 2.0
+      },
+      "physical_activity": {
+        "categorical": true,
+        "scale": 1.0
+      },
+      "if_use_mobile_phone": {
+        "categorical": true,
+        "scale": 1.0
+      },
+      "using_phone_year": {
+        "categorical": true,
+        "scale": 5.0
+      },
+      "hours_phone_per_day": {
+        "categorical": true,
+        "scale": 5.0
+      },
+      "smoke": {
+        "categorical": true,
+        "scale": 3.0
+      },
+      "alcohol": {
+        "categorical": true,
+        "scale": 1.0
+      }
+    },
+    "neighbors": 5,
+    "threshold_quantile": 0.8,
+    "thresholds": {
+      "positive": 0.24210526315789474,
+      "all": 0.16842105263157894
+    }
+  }
+}

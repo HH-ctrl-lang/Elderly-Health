@@ -1,0 +1,54 @@
+{
+  "completed": true,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "versions": {
+    "python": "3.10.20",
+    "torch": "2.4.1+cpu",
+    "sklearn": "1.7.2"
+  },
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "source_split_seed": 42,
+  "conditions": [
+    "mlp_source_auc",
+    "mlp_source_loss",
+    "shallow_tree"
+  ],
+  "predeclared_pairs": [
+    [
+      "age",
+      "marital_status"
+    ],
+    [
+      "IADL",
+      "hours_phone_per_day"
+    ],
+    [
+      "education",
+      "if_use_mobile_phone"
+    ]
+  ],
+  "minimum_positive_for_profile": 10,
+  "poor_ranking_definition": "阳性本站排序损失严格大于0.5，三种子均满足；不是概率0.5阈值",
+  "code_sha256": "cc6bec03cfc23f14f50d6f7c6a39269cc95489c71e686091ce95f4af38768c64",
+  "dependency_sha256": {
+    "training": "ff67344dcc001162c989a77cbea7f5825622f4fb6cfe6e4c27bd7b3dfec79977",
+    "step7": "513797f4e8373a075c529823bd8f0085734e83cf2de279ba3f36c3724c73d8ec"
+  },
+  "target_used_for_training_or_selection": false,
+  "individual_records_exported": false,
+  "limitations": "事后探索，存在重叠分组与历史反复检验，不能当因果证明或独立验证。来源低覆盖仅是距离启发式，不是缺样本的证明。来源全样本覆盖用于区分整体陌生和阳性陌生。树的三种子可能产生相同模型。不同选模条件复用同一MLP轨迹。排序损失使用同站阴性，站间差异包含阴性构成变化。",
+  "all_auc_identities_passed": true,
+  "source_models_reproduced": true,
+  "source_train_n": 2719,
+  "source_positive": 370,
+  "sites": [
+    "110113",
+    "110114",
+    "371082",
+    "371121"
+  ]
+}
