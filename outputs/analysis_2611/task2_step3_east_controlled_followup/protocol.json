@@ -1,0 +1,36 @@
+{
+  "split_seed": 42,
+  "training_seeds": [
+    42,
+    43,
+    44
+  ],
+  "regions": [
+    "east"
+  ],
+  "mask_groups": {
+    "full": [],
+    "socio_mask": [
+      "residence",
+      "education",
+      "wealth"
+    ],
+    "random_mask_1": [
+      "age",
+      "living_alone",
+      "if_use_mobile_phone"
+    ],
+    "random_mask_2": [
+      "if_use_mobile_phone",
+      "living_alone",
+      "sleep_duration"
+    ],
+    "random_mask_3": [
+      "smoke",
+      "age",
+      "sleep_quality"
+    ]
+  },
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "completed": false
+}

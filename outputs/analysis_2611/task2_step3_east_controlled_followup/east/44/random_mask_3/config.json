@@ -1,0 +1,41 @@
+{
+  "config": {
+    "model": "baseline",
+    "environment_granularity": "region",
+    "seed": 44,
+    "epochs": 300,
+    "batch_size": 64,
+    "learning_rate": 0.0003,
+    "weight_decay": 1e-05,
+    "patience": 80,
+    "latent_dim": 32,
+    "pos_weight": 3.0,
+    "sparse_start": 20,
+    "irm_start": 50,
+    "ramp_epochs": 40,
+    "irm_grace_epochs": 50,
+    "irm_mode": "v11",
+    "independence": "hsic",
+    "sparsity": "target",
+    "target_sparsity": 0.2631578947368421,
+    "lambda_sparse": 0.3,
+    "lambda_entropy": 30.0,
+    "lambda_irm": 0.01,
+    "lambda_env": 1.0,
+    "lambda_independence": 0.02,
+    "lambda_graph": 0.1,
+    "gate_init_std": 0.02,
+    "gate_temperature": 5.0,
+    "hsic_sigma": 1.0,
+    "device": "cpu",
+    "threads": 2,
+    "probe_epochs": 30,
+    "selection_start_epoch": 1
+  },
+  "removed_features": [
+    "smoke",
+    "age",
+    "sleep_quality"
+  ],
+  "split_seed": 42
+}

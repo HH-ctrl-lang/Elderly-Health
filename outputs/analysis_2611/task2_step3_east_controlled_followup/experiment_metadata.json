@@ -1,0 +1,55 @@
+{
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "split_seed": 42,
+  "training_seeds": [
+    42,
+    43,
+    44
+  ],
+  "regions": [
+    "east"
+  ],
+  "random_groups": {
+    "random_mask_1": [
+      "age",
+      "living_alone",
+      "if_use_mobile_phone"
+    ],
+    "random_mask_2": [
+      "if_use_mobile_phone",
+      "living_alone",
+      "sleep_duration"
+    ],
+    "random_mask_3": [
+      "smoke",
+      "age",
+      "sleep_quality"
+    ]
+  },
+  "weight_diagnostics": {
+    "east": {
+      "domain_classifier_oof_auc": 0.7925432509761211,
+      "source_sample_count": 3199,
+      "target_sample_count": 1570,
+      "weight_clip_lower_quantile": 0.01,
+      "weight_clip_upper_quantile": 0.99,
+      "weight_clip_lower_bound": 0.006789491961415508,
+      "weight_clip_upper_bound": 9.794497906267583,
+      "weight_min": 0.0058757045442881795,
+      "weight_q01": 0.005881026317125315,
+      "weight_median": 0.2892182491502799,
+      "weight_q99": 8.473305211053786,
+      "weight_max": 8.476271300405115,
+      "weight_mean": 1.0,
+      "effective_sample_size_source_train_validation": 915.2925673322535,
+      "effective_sample_size_ratio_source_train_validation": 0.2861183392723518,
+      "target_outcome_used_for_weight_estimation": false,
+      "train_weight_ess": 776.1347896329563
+    }
+  },
+  "python": "3.10.20",
+  "torch": "2.4.1+cpu",
+  "sklearn": "1.7.2",
+  "code_sha256": "eb966537260950232b97e1fcc37a5fa1ef8bba6b568c9af0621060f55717768b",
+  "interpretation": "探索性重复；3种子不是总体置信区间；固定权重只检验模型训练变化；不能自动宣布因果根因"
+}
