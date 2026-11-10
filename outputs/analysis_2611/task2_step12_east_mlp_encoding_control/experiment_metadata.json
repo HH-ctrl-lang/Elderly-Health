@@ -1,0 +1,61 @@
+{
+  "completed": true,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "versions": {
+    "python": "3.10.20",
+    "torch": "2.4.1+cpu",
+    "sklearn": "1.7.2"
+  },
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "source_split_seed": 42,
+  "arms": [
+    "numeric_original",
+    "numeric_padded",
+    "onehot_scaled",
+    "onehot_raw"
+  ],
+  "policies": [
+    "matched_source_auc_epoch",
+    "matched_source_loss_epoch",
+    "own_source_auc",
+    "own_source_loss"
+  ],
+  "parameter_counts": {
+    "numeric_original": 3585,
+    "numeric_padded": 5953,
+    "onehot_scaled": 5953,
+    "onehot_raw": 5953
+  },
+  "primary_contrast": "onehot_scaled vs numeric_padded；371082手机编码1组内AUC；原来源损失固定轮次并与各自来源损失选模交叉检查",
+  "contrasts": [
+    [
+      "numeric_padded",
+      "numeric_original"
+    ],
+    [
+      "onehot_scaled",
+      "numeric_padded"
+    ],
+    [
+      "onehot_raw",
+      "onehot_scaled"
+    ],
+    [
+      "onehot_scaled",
+      "numeric_original"
+    ]
+  ],
+  "bootstrap_draws": 500,
+  "target_used_for_preprocessing_training_or_selection": false,
+  "individual_records_exported": false,
+  "code_sha256": "ecf813ab1b1020a0ad8ff4050f27a9f6aabf90d0b96a5d7e21a0a305db935f86",
+  "bootstrap_scope": "固定三种子评分后，手机组×标签内配对重采样；不含训练与组构成不确定性",
+  "limitations": "独热仅是诊断，不预设全部变量都应无序。等宽对照控制总参数量并对齐二分类位置，不能完全控制有效连接数、优化几何及初始化与信息的对应关系。数值填补相同，不新增缺失指示；独热未知类别另行审计。相同轮次不代表相同收敛程度。反复查看东部，结果属于探索，不能用微小单次改善宣布根因。树参照复用第11步，三个种子可能是同一模型。",
+  "baseline_reproduced": true,
+  "equal_width_parameter_counts_passed": true,
+  "all_auc_identities_passed": true
+}

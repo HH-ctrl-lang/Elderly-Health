@@ -1,0 +1,265 @@
+{
+  "shared_imputation": "共同来源训练中位数；不新增缺失指示列",
+  "onehot_width": 56,
+  "drop": "if_binary",
+  "unknown_handling": "ignore，单独审计未知类别；二分类未知与基准类同为零",
+  "blocks": [
+    {
+      "feature": "residence",
+      "source_categories": [
+        1.0,
+        2.0
+      ],
+      "start": 0,
+      "width": 1,
+      "numeric_slot": 0,
+      "binary_drop_first": true
+    },
+    {
+      "feature": "age",
+      "source_categories": [
+        1.0,
+        2.0
+      ],
+      "start": 1,
+      "width": 1,
+      "numeric_slot": 1,
+      "binary_drop_first": true
+    },
+    {
+      "feature": "gender",
+      "source_categories": [
+        1.0,
+        2.0
+      ],
+      "start": 2,
+      "width": 1,
+      "numeric_slot": 2,
+      "binary_drop_first": true
+    },
+    {
+      "feature": "education",
+      "source_categories": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0
+      ],
+      "start": 3,
+      "width": 7,
+      "numeric_slot": 3,
+      "binary_drop_first": false
+    },
+    {
+      "feature": "marital_status",
+      "source_categories": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0
+      ],
+      "start": 10,
+      "width": 6,
+      "numeric_slot": 10,
+      "binary_drop_first": false
+    },
+    {
+      "feature": "living_alone",
+      "source_categories": [
+        1.0,
+        2.0
+      ],
+      "start": 16,
+      "width": 1,
+      "numeric_slot": 16,
+      "binary_drop_first": true
+    },
+    {
+      "feature": "wealth",
+      "source_categories": [
+        1.0,
+        2.0,
+        3.0,
+        4.0
+      ],
+      "start": 17,
+      "width": 4,
+      "numeric_slot": 17,
+      "binary_drop_first": false
+    },
+    {
+      "feature": "chronic_disease",
+      "source_categories": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "start": 21,
+      "width": 3,
+      "numeric_slot": 21,
+      "binary_drop_first": false
+    },
+    {
+      "feature": "social_activity",
+      "source_categories": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0
+      ],
+      "start": 24,
+      "width": 5,
+      "numeric_slot": 24,
+      "binary_drop_first": false
+    },
+    {
+      "feature": "IADL",
+      "source_categories": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "start": 29,
+      "width": 3,
+      "numeric_slot": 29,
+      "binary_drop_first": false
+    },
+    {
+      "feature": "depression",
+      "source_categories": [
+        1.0,
+        2.0
+      ],
+      "start": 32,
+      "width": 1,
+      "numeric_slot": 32,
+      "binary_drop_first": true
+    },
+    {
+      "feature": "sleep_quality",
+      "source_categories": [
+        1.0,
+        2.0
+      ],
+      "start": 33,
+      "width": 1,
+      "numeric_slot": 33,
+      "binary_drop_first": true
+    },
+    {
+      "feature": "sleep_duration",
+      "source_categories": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "start": 34,
+      "width": 3,
+      "numeric_slot": 34,
+      "binary_drop_first": false
+    },
+    {
+      "feature": "physical_activity",
+      "source_categories": [
+        1.0,
+        2.0
+      ],
+      "start": 37,
+      "width": 1,
+      "numeric_slot": 37,
+      "binary_drop_first": true
+    },
+    {
+      "feature": "if_use_mobile_phone",
+      "source_categories": [
+        1.0,
+        2.0
+      ],
+      "start": 38,
+      "width": 1,
+      "numeric_slot": 38,
+      "binary_drop_first": true
+    },
+    {
+      "feature": "using_phone_year",
+      "source_categories": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0
+      ],
+      "start": 39,
+      "width": 6,
+      "numeric_slot": 39,
+      "binary_drop_first": false
+    },
+    {
+      "feature": "hours_phone_per_day",
+      "source_categories": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0
+      ],
+      "start": 45,
+      "width": 6,
+      "numeric_slot": 45,
+      "binary_drop_first": false
+    },
+    {
+      "feature": "smoke",
+      "source_categories": [
+        1.0,
+        2.0,
+        3.0,
+        4.0
+      ],
+      "start": 51,
+      "width": 4,
+      "numeric_slot": 51,
+      "binary_drop_first": false
+    },
+    {
+      "feature": "alcohol",
+      "source_categories": [
+        1.0,
+        2.0
+      ],
+      "start": 55,
+      "width": 1,
+      "numeric_slot": 55,
+      "binary_drop_first": true
+    }
+  ],
+  "imputation_medians": [
+    2.0,
+    1.0,
+    2.0,
+    3.0,
+    2.0,
+    2.0,
+    2.0,
+    3.0,
+    5.0,
+    1.0,
+    1.0,
+    2.0,
+    3.0,
+    2.0,
+    1.0,
+    1.0,
+    1.0,
+    4.0,
+    2.0
+  ]
+}
