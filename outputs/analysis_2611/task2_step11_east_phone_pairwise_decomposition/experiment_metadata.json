@@ -1,0 +1,51 @@
+{
+  "completed": true,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "versions": {
+    "python": "3.10.20",
+    "torch": "2.4.1+cpu",
+    "sklearn": "1.7.2"
+  },
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "arms": [
+    "full",
+    "mask_phone_group"
+  ],
+  "primary_policy": "matched_source_loss_epoch",
+  "blocks": [
+    [
+      1,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      2,
+      2
+    ]
+  ],
+  "target_used_for_training_or_selection": false,
+  "individual_records_exported": false,
+  "source_split_seed": 42,
+  "bootstrap_draws": 500,
+  "combination_features": [
+    "age",
+    "education",
+    "IADL"
+  ],
+  "code_sha256": "65890d080a11edd14d98a062632ba26807c98ebfade168c1f6acda9674ae45c6",
+  "bootstrap_scope": "固定完整与屏蔽评分，先平均三种子比较矩阵；在标签×手机组内共享配对重采样。区间只反映固定组人数下的抽样变化，不包含训练与构成权重不确定性。",
+  "limitations": "反复查看东部的探索性诊断，不是独立确认或因果归因。AUC差分解是数学恒等式；来源验证混合站点与目标县区的块内差异仍包含其他特征构成变化。来源验证参与选模，其成绩可能乐观。手机组内AUC不受统一组间评分平移影响，但不能单独判断原因。MLP本身可学非线性交互，不能由分解宣称其缺乏交互能力。树三种子可能相同，不算三次独立支持。小类别块报告精确点值但标记不稳；组合阳性不足10人只报告计数。",
+  "models_reproduced": true,
+  "all_auc_identities_passed": true
+}
