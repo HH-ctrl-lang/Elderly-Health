@@ -1,0 +1,107 @@
+{
+  "completed": true,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "versions": {
+    "python": "3.10.20",
+    "torch": "2.4.1+cpu",
+    "sklearn": "1.7.2"
+  },
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "source_split_seed": 42,
+  "phone_group": 1,
+  "permutations": 30,
+  "bootstrap_draws": 500,
+  "groups": {
+    "residence": [
+      "residence"
+    ],
+    "age": [
+      "age"
+    ],
+    "gender": [
+      "gender"
+    ],
+    "education": [
+      "education"
+    ],
+    "marital_status": [
+      "marital_status"
+    ],
+    "living_alone": [
+      "living_alone"
+    ],
+    "wealth": [
+      "wealth"
+    ],
+    "chronic_disease": [
+      "chronic_disease"
+    ],
+    "social_activity": [
+      "social_activity"
+    ],
+    "IADL": [
+      "IADL"
+    ],
+    "depression": [
+      "depression"
+    ],
+    "sleep_quality": [
+      "sleep_quality"
+    ],
+    "sleep_duration": [
+      "sleep_duration"
+    ],
+    "physical_activity": [
+      "physical_activity"
+    ],
+    "if_use_mobile_phone": [
+      "if_use_mobile_phone"
+    ],
+    "using_phone_year": [
+      "using_phone_year"
+    ],
+    "hours_phone_per_day": [
+      "hours_phone_per_day"
+    ],
+    "smoke": [
+      "smoke"
+    ],
+    "alcohol": [
+      "alcohol"
+    ],
+    "phone_duration_pair": [
+      "using_phone_year",
+      "hours_phone_per_day"
+    ],
+    "education_IADL": [
+      "education",
+      "IADL"
+    ],
+    "age_education_IADL": [
+      "age",
+      "education",
+      "IADL"
+    ]
+  },
+  "target_used_for_training_or_selection": false,
+  "individual_records_exported": false,
+  "code_sha256": "ba2251517f51a6d574c553be8703d5a76fbb5636634aab4f3a1b62c239e1a906",
+  "primary_scope": "371082手机1组内，来源损失选模MLP vs 固定浅层树；其他站点和来源选模规则并列",
+  "limits": "特征打乱可能破坏与其他特征的相关结构，AUC下降不是临床因果效应，也不是独立可加贡献。相关特征可互相替代，单列下降小不代表无用。树基准AUC较高，下降更大可能部分反映可损失空间，不能单独证明MLP未利用该信息。置换重复不是独立患者，标准差只描述置换变化。配对区间固定模型评分，不包括训练不确定性。来源验证参与MLP选模及图中排序，有选择乐观性。类别风险表使用共同来源填补后的编码，未知组合退回来源先验。替身只是最多四叶的近似评分器，不是原集成树规则；来源验证R2低于0.7不得据此解释。东部反复查看，属于探索，不能把微小变化当根因。",
+  "models_reproduced": true,
+  "source_only_display_order": [
+    "age_education_IADL",
+    "education_IADL",
+    "hours_phone_per_day",
+    "phone_duration_pair",
+    "education",
+    "IADL",
+    "social_activity",
+    "age"
+  ],
+  "surrogate_source_fidelity_passed": false
+}
