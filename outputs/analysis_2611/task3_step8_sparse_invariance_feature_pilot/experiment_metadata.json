@@ -1,0 +1,47 @@
+{
+  "completed": true,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "paper": "https://proceedings.mlr.press/v286/du25b.html",
+  "paper_year": 2025,
+  "paper_equations": "公式11和算法1的梯度平方惩罚及IHT；未实现公式12内层极小极大求解",
+  "adaptations": "固定原始语义输入代替预训练表示；二分类正类权重3；截距纳入环境梯度惩罚但不稀疏化；类别编码整组投影；环境风险取等权均值；固定L2与回溯步长",
+  "versions": {
+    "python": "3.10.20",
+    "numpy": "1.26.4",
+    "scipy": "1.15.3",
+    "sklearn": "1.7.2"
+  },
+  "code_sha256": "5bd31c9f611a8b29b0185658735ac62d258cdc03a4485257c7f9407dbf05862c",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "split_seed": 42,
+  "source_environments": "county/site",
+  "environment_weighting": "equal_site_in_all_four_arms",
+  "positive_weight": 3.0,
+  "ridge": 0.0001,
+  "budgets": [
+    12
+  ],
+  "penalties": [
+    0.1,
+    1.0
+  ],
+  "steps": 1000,
+  "permutations": 20,
+  "encodings": [
+    "numeric",
+    "categorical_grouped"
+  ],
+  "methods": [
+    "erm",
+    "erm_iht",
+    "irm",
+    "irm_iht"
+  ],
+  "target_used_for_training_or_selection": false,
+  "individual_records_exported": false,
+  "limits": "这是低维分类适配，不是官方图像基准复现或因果识别。两种编码仅在各自内部做四对照，不能把编码差异归因不变性。类别组维数不同可影响组范数排名。来源验证反复选择超参与轮次会乐观；目标地区已反复探索。环境患病率等差异可使不变约束过强。教育留存或置换下降均不是因果效应；无隐层，本实验不检验隐层表征崩溃，只记录输出分数退化。与历史MLP的结构和环境等权损失不同，不作单因素结构归因。"
+}
