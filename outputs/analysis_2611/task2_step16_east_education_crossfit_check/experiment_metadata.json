@@ -1,0 +1,43 @@
+{
+  "completed": true,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "versions": {
+    "python": "3.10.20",
+    "torch": "2.4.1+cpu",
+    "sklearn": "1.7.2"
+  },
+  "scipy_version": "1.15.3",
+  "code_sha256": "6d096eb38beca6440656e02f2d5542c93b8a32f67239c92d0b4723176222857a",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "policies": [
+    "own_source_auc",
+    "own_source_loss"
+  ],
+  "arms": [
+    "full",
+    "apparent_phone",
+    "apparent_shared",
+    "oof_phone",
+    "oof_shared",
+    "oof_by_phone"
+  ],
+  "source_split_seed": 42,
+  "folds": 5,
+  "fold_seed": 26111016,
+  "shuffle_repeats": 50,
+  "shuffle_seed_start": 26111600,
+  "ridge": 20.0,
+  "positive_weight": 3.0,
+  "bootstrap_draws": 500,
+  "target_used_for_training_or_selection": false,
+  "individual_records_exported": false,
+  "primary_comparison": "来源损失选模，OOF共用教育修正vs OOF手机截距，371082与110114手机1；四站及全东部并列",
+  "limits": "来源五折模型只用80%来源训练样本，折外分数与完整模型分布可不同；修正应用于原完整MLP，不能把差异全归因训练内过拟合。原来源验证集供完整与各折选模，不是新的独立验证，东部也已反复探索。手机组内打乱保留站点分布及其关联，并非完全无信息；50次分布不是患者置信区间或严格置换P值。配对区间固定三次评分，不包括重新训练不确定性。修正表使用完整来源特征的类别/填补规则，不读取留出标签来预处理；折内MLP预处理严格只读该折训练特征。教育不是已证实因果因素。",
+  "models_reproduced": true,
+  "oof_coverage_complete": true,
+  "heldout_not_used_for_model_selection": true
+}
