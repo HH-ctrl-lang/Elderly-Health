@@ -1,0 +1,38 @@
+{
+  "completed": true,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "versions": {
+    "python": "3.10.20",
+    "torch": "2.4.1+cpu",
+    "sklearn": "1.7.2"
+  },
+  "scipy_version": "1.15.3",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "arms": [
+    "full",
+    "phone_intercept",
+    "education_shared",
+    "education_by_phone",
+    "education_shuffled"
+  ],
+  "policies": [
+    "own_source_auc",
+    "own_source_loss"
+  ],
+  "ridge": 20.0,
+  "positive_weight": 3.0,
+  "source_split_seed": 42,
+  "shuffle_seed": 26111015,
+  "bootstrap_draws": 500,
+  "target_used_for_training_or_selection": false,
+  "individual_records_exported": false,
+  "code_sha256": "5d189babeaa4edab40eb2514477e6e8a8d494d5af890c0907a106c5313e856ae",
+  "primary_comparison": "来源损失选模，371082手机1：分组教育修正vs手机截距、共享教育表和教育打乱；110114及其余站点并列检查",
+  "limits": "固定MLP之后的来源训练残差修正，不证明原网络训练时被手机带偏。残差拟合使用主模型已见过的来源训练人群，存在训练内过拟合，必须同时看来源验证。来源验证仍参与原MLP选模；所有条件和正则预先固定，不按验证或东部挑最好条件。打乱对照仅打乱修正表的来源拟合教育输入，主MLP输入不变，评估使用真实教育。教育编码可能是代理因素，不能作临床因果解释。区间固定三次模型评分，只反映当前患者抽样，未包含重新训练及多次探索的不确定性。新类别教育修正为零，仍保留对应手机截距。",
+  "models_reproduced": true,
+  "phone_intercept_preserves_within_group_auc": true
+}
