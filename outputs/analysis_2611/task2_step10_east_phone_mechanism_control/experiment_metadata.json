@@ -1,0 +1,54 @@
+{
+  "completed": true,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "versions": {
+    "python": "3.10.20",
+    "torch": "2.4.1+cpu",
+    "sklearn": "1.7.2"
+  },
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "arms": {
+    "full": [],
+    "mask_phone_group": [
+      "if_use_mobile_phone",
+      "using_phone_year",
+      "hours_phone_per_day"
+    ],
+    "random_triple_1": [
+      "age",
+      "IADL",
+      "depression"
+    ],
+    "random_triple_2": [
+      "smoke",
+      "marital_status",
+      "social_activity"
+    ]
+  },
+  "policies": [
+    "matched_source_auc_epoch",
+    "matched_source_loss_epoch",
+    "own_source_auc",
+    "own_source_loss"
+  ],
+  "strata": [
+    "age",
+    "education",
+    "IADL"
+  ],
+  "minimum_each_population_phone_cell": 5,
+  "minimum_positive_for_rank_summary": 10,
+  "source_split_seed": 42,
+  "target_used_for_training_or_selection": false,
+  "individual_records_exported": false,
+  "primary_comparison": "371082 手机三列屏蔽 vs 完整，匹配来源损失轮次；看冻结困难组与其他阳性的代价",
+  "code_sha256": "bf30b822365721bc1e76efd3ad4c62b9d31f35865e980e6593298c49ead17827",
+  "association_outputs": "来源共同人群权重标准化风险差，以及共同分层Mantel-Haenszel优势比；零分母不估计，不自行加伪计数",
+  "limitations": "既有东部结果提出的事后探索，不是独立确认。分层只控制年龄、教育、IADL，保留人群有限时不能外推到全站。风险差受患病率影响，不能单独证明机制或因果效应。屏蔽改变模型信息，不是临床因果干预。冻结困难组按原模型差结果挑选，改善含回归均值可能，必须对照随机删组和其他人群。树三种子可能相同。固定轮次控制选模变化，但不保证优化过程相同。",
+  "source_models_reproduced": true,
+  "frozen_groups_reproduced": true
+}
