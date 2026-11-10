@@ -1,0 +1,62 @@
+{
+  "completed": true,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "versions": {
+    "python": "3.10.20",
+    "torch": "2.4.1+cpu",
+    "sklearn": "1.7.2"
+  },
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "source_split_seed": 42,
+  "arms": [
+    "full",
+    "positive_phone_balance",
+    "negative_phone_balance",
+    "both_phone_balance",
+    "shuffled_positive_weights"
+  ],
+  "policies": [
+    "matched_source_auc_epoch",
+    "matched_source_loss_epoch",
+    "own_source_auc",
+    "own_source_loss"
+  ],
+  "contrasts": [
+    [
+      "positive_phone_balance",
+      "full"
+    ],
+    [
+      "negative_phone_balance",
+      "full"
+    ],
+    [
+      "both_phone_balance",
+      "full"
+    ],
+    [
+      "shuffled_positive_weights",
+      "full"
+    ],
+    [
+      "positive_phone_balance",
+      "shuffled_positive_weights"
+    ]
+  ],
+  "primary_contrast": "positive_phone_balance vs full及shuffled_positive_weights；371082手机编码1组内AUC；匹配原来源损失轮次",
+  "target_used_for_preprocessing_training_or_selection": false,
+  "individual_records_exported": false,
+  "bootstrap_draws": 500,
+  "code_sha256": "5a1ba1b67948121f230fde9dc65d1ac9dd520a22692d6c55f8e9a6a93b466f3e",
+  "training_dependency_sha256": "ff67344dcc001162c989a77cbea7f5825622f4fb6cfe6e4c27bd7b3dfec79977",
+  "validation_weighting": "不加样本权重，原pos_weight=3保持不变",
+  "source_probes": "每轮1至5、每10轮及固定参照轮次只读来源组内指标；不消费随机数或修改模型；完整模型复现另行核对",
+  "limitations": "权重不产生新患者，阳性内部平衡会降低有效样本量；无改善不能证明阳性覆盖充分。只有一次固定类内打乱，不代表所有随机权重情况。组内AUC改善才支持组内学习改善，只有组间或概率抬升不够。相同轮次与各自来源选模并列报告，不能事后挑最佳规则。固定评分配对区间不含训练与构成不确定性。长期反复查看东部，属于探索而非独立确认或临床因果证据。",
+  "baseline_reproduced": true,
+  "class_weight_totals_preserved": true,
+  "all_auc_identities_passed": true
+}
