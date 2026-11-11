@@ -1,0 +1,34 @@
+{
+  "completed": true,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "split_seed": 42,
+  "arms": [
+    "numeric",
+    "education_only",
+    "others_only",
+    "all_categorical"
+  ],
+  "steps": 1000,
+  "permutations": 20,
+  "bootstraps": 1000,
+  "positive_weight": 3.0,
+  "ridge": 0.0001,
+  "environment_weighting": "equal_site",
+  "selection": "source_validation_equal_site_macro_auc_then_weighted_bce",
+  "versions": {
+    "python": "3.10.20",
+    "numpy": "1.26.4",
+    "scipy": "1.15.3",
+    "sklearn": "1.7.2"
+  },
+  "code_sha256": "96d15b79710b1911a02194003fe05d9ce2dae50cb6b970db3ea03b6d3f6efede",
+  "dependency_sha256": "5bd31c9f611a8b29b0185658735ac62d258cdc03a4485257c7f9407dbf05862c",
+  "target_used_for_training_or_selection": false,
+  "individual_records_exported": false,
+  "limits": "四组改变的是类别表达及其参数维数，固定逐系数L2不能分离表达容量与正则化几何。全部类别同时改变的收益不能都归给教育。类别贡献为模型分数项而非因果效应。配对区间条件于固定模型、固定数据划分，三种子不是独立人群；小阳性数组不宜强推断。此前已多次查看东部结果，本实验属于探索性复核。此处无隐层，不检验隐层表征崩溃。"
+}

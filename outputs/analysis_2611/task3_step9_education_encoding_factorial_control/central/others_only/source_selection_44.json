@@ -1,0 +1,378 @@
+{
+  "source_macro": 0.771634907128,
+  "source_loss": 0.7580913989469437,
+  "epoch": 50,
+  "rho": 0.0,
+  "budget": null,
+  "history": [
+    {
+      "epoch": 0,
+      "objective": 0.925198960614299,
+      "risk": 0.9251987556623542,
+      "gradient_penalty": 0.7747017694862833,
+      "source_validation_macro_auc": 0.47395135779844855,
+      "source_validation_weighted_bce": 0.9289746164702312,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 25,
+      "objective": 0.7672555602908264,
+      "risk": 0.7672487044272129,
+      "gradient_penalty": 0.19371497852239883,
+      "source_validation_macro_auc": 0.7706965024852513,
+      "source_validation_weighted_bce": 0.7779748985469656,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 50,
+      "objective": 0.7460687802459883,
+      "risk": 0.7460584893116123,
+      "gradient_penalty": 0.15929839499624815,
+      "source_validation_macro_auc": 0.7716349071275864,
+      "source_validation_weighted_bce": 0.7580913989469437,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 75,
+      "objective": 0.7389509259372111,
+      "risk": 0.7389379804802817,
+      "gradient_penalty": 0.1507499875719547,
+      "source_validation_macro_auc": 0.7666221977729694,
+      "source_validation_weighted_bce": 0.7517546198243978,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 100,
+      "objective": 0.7361657752297924,
+      "risk": 0.7361507890113361,
+      "gradient_penalty": 0.14867157188348984,
+      "source_validation_macro_auc": 0.7634404423423695,
+      "source_validation_weighted_bce": 0.749608150413576,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 125,
+      "objective": 0.7349484846544092,
+      "risk": 0.7349319324785134,
+      "gradient_penalty": 0.14833691031955404,
+      "source_validation_macro_auc": 0.7618217810917522,
+      "source_validation_weighted_bce": 0.7489469455772884,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 150,
+      "objective": 0.7343688560401072,
+      "risk": 0.7343511022856095,
+      "gradient_penalty": 0.1484602239047663,
+      "source_validation_macro_auc": 0.7603227833681003,
+      "source_validation_weighted_bce": 0.7488421811808288,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 175,
+      "objective": 0.7340731913823095,
+      "risk": 0.7340545141267807,
+      "gradient_penalty": 0.14867152057645275,
+      "source_validation_macro_auc": 0.7604822221436105,
+      "source_validation_weighted_bce": 0.7489407474280388,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 200,
+      "objective": 0.7339134424527649,
+      "risk": 0.7338940530499993,
+      "gradient_penalty": 0.148867120911263,
+      "source_validation_macro_auc": 0.7595141689967919,
+      "source_validation_weighted_bce": 0.7491012409443091,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 225,
+      "objective": 0.7338226386808022,
+      "risk": 0.7338026973758488,
+      "gradient_penalty": 0.149024114998366,
+      "source_validation_macro_auc": 0.7587831748447451,
+      "source_validation_weighted_bce": 0.7492668328766972,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 250,
+      "objective": 0.733768510909456,
+      "risk": 0.7337481390813753,
+      "gradient_penalty": 0.14914349797155518,
+      "source_validation_macro_auc": 0.7592600304918664,
+      "source_validation_weighted_bce": 0.7494161622013877,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 275,
+      "objective": 0.7337346916042697,
+      "risk": 0.733713981223387,
+      "gradient_penalty": 0.14923216623096894,
+      "source_validation_macro_auc": 0.7588363211032484,
+      "source_validation_weighted_bce": 0.7495429867836979,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 300,
+      "objective": 0.7337125240575748,
+      "risk": 0.7336915449081322,
+      "gradient_penalty": 0.1492973357696707,
+      "source_validation_macro_auc": 0.7584552235422728,
+      "source_validation_weighted_bce": 0.7496473617664297,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 325,
+      "objective": 0.7336972685495396,
+      "risk": 0.7336760737016113,
+      "gradient_penalty": 0.14934503701711055,
+      "source_validation_macro_auc": 0.758190952929165,
+      "source_validation_weighted_bce": 0.7497317298598762,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 350,
+      "objective": 0.7336862522592684,
+      "risk": 0.7336648821928431,
+      "gradient_penalty": 0.1493799246959855,
+      "source_validation_macro_auc": 0.7580114677579035,
+      "source_validation_weighted_bce": 0.7497991941342425,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 375,
+      "objective": 0.7336779276178936,
+      "risk": 0.73365641332191,
+      "gradient_penalty": 0.14940546843954633,
+      "source_validation_macro_auc": 0.7580114677579035,
+      "source_validation_weighted_bce": 0.7498527845774998,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 400,
+      "objective": 0.7336713758578638,
+      "risk": 0.7336497411559503,
+      "gradient_penalty": 0.1494242123096979,
+      "source_validation_macro_auc": 0.7580114677579035,
+      "source_validation_weighted_bce": 0.7498951801868182,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 425,
+      "objective": 0.7336660376009628,
+      "risk": 0.7336443008966843,
+      "gradient_penalty": 0.14943800752269515,
+      "source_validation_macro_auc": 0.7580114677579035,
+      "source_validation_weighted_bce": 0.7499286366953731,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 450,
+      "objective": 0.7336615631163459,
+      "risk": 0.7336397387038472,
+      "gradient_penalty": 0.1494481970210494,
+      "source_validation_macro_auc": 0.7580114677579035,
+      "source_validation_weighted_bce": 0.7499550025327137,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 475,
+      "objective": 0.7336577273930858,
+      "risk": 0.7336358264426883,
+      "gradient_penalty": 0.14945575445797651,
+      "source_validation_macro_auc": 0.757764432184781,
+      "source_validation_weighted_bce": 0.7499757680365002,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 500,
+      "objective": 0.7336543811121401,
+      "risk": 0.7336324124127973,
+      "gradient_penalty": 0.14946138630070077,
+      "source_validation_macro_auc": 0.757764432184781,
+      "source_validation_weighted_bce": 0.7499921227647443,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 525,
+      "objective": 0.7336514218775213,
+      "risk": 0.7336293923972336,
+      "gradient_penalty": 0.14946560593914265,
+      "source_validation_macro_auc": 0.757764432184781,
+      "source_validation_weighted_bce": 0.7500050100629739,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 550,
+      "objective": 0.7336487770648816,
+      "risk": 0.7336266923746171,
+      "gradient_penalty": 0.14946878717746231,
+      "source_validation_macro_auc": 0.757764432184781,
+      "source_validation_weighted_bce": 0.7500151748331308,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 575,
+      "objective": 0.7336463934276122,
+      "risk": 0.7336242580227048,
+      "gradient_penalty": 0.1494712027676653,
+      "source_validation_macro_auc": 0.757764432184781,
+      "source_validation_weighted_bce": 0.750023203582499,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 600,
+      "objective": 0.7336442306864012,
+      "risk": 0.7336220482307888,
+      "gradient_penalty": 0.14947305216898263,
+      "source_validation_macro_auc": 0.7575173966116584,
+      "source_validation_weighted_bce": 0.7500295571830548,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 625,
+      "objective": 0.7336422574982027,
+      "risk": 0.7336200310104749,
+      "gradient_penalty": 0.14947448156924825,
+      "source_validation_macro_auc": 0.7575173966116584,
+      "source_validation_weighted_bce": 0.7500345972715852,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 650,
+      "objective": 0.7336404488661831,
+      "risk": 0.7336181808616516,
+      "gradient_penalty": 0.14947559835158297,
+      "source_validation_macro_auc": 0.7575173966116584,
+      "source_validation_weighted_bce": 0.7500386073264403,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 675,
+      "objective": 0.7336387844354413,
+      "risk": 0.733616477034906,
+      "gradient_penalty": 0.14947648156996496,
+      "source_validation_macro_auc": 0.7575173966116584,
+      "source_validation_weighted_bce": 0.7500418093922964,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 700,
+      "objective": 0.7336372473423433,
+      "risk": 0.7336149023555814,
+      "gradient_penalty": 0.149477189552157,
+      "source_validation_macro_auc": 0.7575173966116584,
+      "source_validation_weighted_bce": 0.7500443772977449,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 725,
+      "objective": 0.7336358234163622,
+      "risk": 0.7336134424063974,
+      "gradient_penalty": 0.14947776543051505,
+      "source_validation_macro_auc": 0.7575173966116584,
+      "source_validation_weighted_bce": 0.7500464470719437,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 750,
+      "objective": 0.7336345006110839,
+      "risk": 0.7336120849438075,
+      "gradient_penalty": 0.1494782411745458,
+      "source_validation_macro_auc": 0.7575173966116584,
+      "source_validation_weighted_bce": 0.750048125137409,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 775,
+      "objective": 0.7336332685876287,
+      "risk": 0.7336108194702371,
+      "gradient_penalty": 0.14947864053748863,
+      "source_validation_macro_auc": 0.7575173966116584,
+      "source_validation_weighted_bce": 0.7500494947440396,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 800,
+      "objective": 0.7336321184019327,
+      "risk": 0.7336096369128068,
+      "gradient_penalty": 0.14947898121383768,
+      "source_validation_macro_auc": 0.7575173966116584,
+      "source_validation_weighted_bce": 0.7500506210159616,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 825,
+      "objective": 0.733631042264611,
+      "risk": 0.7336085293766345,
+      "gradient_penalty": 0.14947927642219222,
+      "source_validation_macro_auc": 0.7575173966116584,
+      "source_validation_weighted_bce": 0.7500515549064243,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 850,
+      "objective": 0.7336300333528321,
+      "risk": 0.7336074899516669,
+      "gradient_penalty": 0.14947953606863978,
+      "source_validation_macro_auc": 0.7575173966116584,
+      "source_validation_weighted_bce": 0.7500523362944254,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 875,
+      "objective": 0.7336290856603758,
+      "risk": 0.7336065125588541,
+      "gradient_penalty": 0.1494797676033144,
+      "source_validation_macro_auc": 0.7575173966116584,
+      "source_validation_weighted_bce": 0.7500529964075527,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 900,
+      "objective": 0.7336281938763617,
+      "risk": 0.7336055918258799,
+      "gradient_penalty": 0.14947997665208412,
+      "source_validation_macro_auc": 0.7575173966116584,
+      "source_validation_weighted_bce": 0.7500535597164092,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 925,
+      "objective": 0.7336273532859523,
+      "risk": 0.7336047229855429,
+      "gradient_penalty": 0.14948016748312914,
+      "source_validation_macro_auc": 0.7575173966116584,
+      "source_validation_weighted_bce": 0.7500540454149943,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 950,
+      "objective": 0.7336265596881949,
+      "risk": 0.7336039017917971,
+      "gradient_penalty": 0.1494803433520843,
+      "source_validation_macro_auc": 0.7575173966116584,
+      "source_validation_weighted_bce": 0.750054468576931,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 975,
+      "objective": 0.7336258093274499,
+      "risk": 0.7336031244497764,
+      "gradient_penalty": 0.14948050675772676,
+      "source_validation_macro_auc": 0.7575173966116584,
+      "source_validation_weighted_bce": 0.750054841058093,
+      "eligible_validation_sites": 8
+    },
+    {
+      "epoch": 1000,
+      "objective": 0.7336250988357247,
+      "risk": 0.7336023875570316,
+      "gradient_penalty": 0.14948065963166904,
+      "source_validation_macro_auc": 0.7575173966116584,
+      "source_validation_weighted_bce": 0.750055172200979,
+      "eligible_validation_sites": 8
+    }
+  ]
+}
