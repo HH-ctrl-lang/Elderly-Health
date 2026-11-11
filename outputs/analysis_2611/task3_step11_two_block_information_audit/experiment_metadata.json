@@ -1,0 +1,78 @@
+{
+  "completed": true,
+  "encoder_retrained": false,
+  "split_seed": 42,
+  "probe_initialization_seed": 42,
+  "prediction_probe_steps": 1000,
+  "prediction_probe_positive_weight": 3.0,
+  "prediction_probe_ridge": 0.0001,
+  "prediction_probe_environment_weighting": "equal_source_site",
+  "prediction_probe_selection": "source_validation_equal_site_macro_auc_then_weighted_bce",
+  "semantic_probe": "class-balanced RidgeClassifier; fixed alpha 1; observed training categories only",
+  "arms": {
+    "two_block_control": 0.0,
+    "two_block_conditional_mmd": 0.1
+  },
+  "spaces": [
+    "raw19",
+    "prediction8",
+    "residual8",
+    "joint16",
+    "raw_joint35"
+  ],
+  "semantic_spaces": [
+    "observed_categories",
+    "raw19",
+    "prediction8",
+    "residual8",
+    "joint16"
+  ],
+  "target_used_for_training_or_selection": false,
+  "individual_records_exported": false,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "artifact_sha256": {
+    "experiment_design.json": "3d01a1f17027a5bf11c491fa88bbdb3394d752037c9b12fbd1762a00c851ab79",
+    "site_metrics_before_after.csv": "bb80294b3189b9b47047bf0d0501598d6e67bd9562614095a29fca607e230466",
+    "completion.json": "e500ced3fe17c1e49d98b8ee3aa0cefc82366e04a4309a1c43ae13a9dd7f99a8",
+    "east\\preprocessing.npz": "89c680d2a994c27e85fec532200e5a7015ffcb78f71fe36cb3a79b41753c90d4",
+    "east\\split_manifest.json": "058f58ef63e0e17f2ae6c9b93cc30187bd605503bfe760c7db1c9702be56de9f",
+    "east\\two_block_control.pt": "7a69f622a22afb59179b2cd3cdcd914614f9d33f6664ee2896b0cdd2e0d2b08e",
+    "east\\two_block_conditional_mmd.pt": "c1c732f41c67c877c14629abb15dd46f382d7f32f7425297421c104ace87f879",
+    "central\\preprocessing.npz": "7087181663a20540a6a960bef9bb54d57a16ba5bad422a56a5611d13cb47de11",
+    "central\\split_manifest.json": "7eac372ebaab87e959563263b7cc2a6646670ffa2d03d14182e337983edfca84",
+    "central\\two_block_control.pt": "78ec2d770c9d964dedca6940da4e9f778bc4ab49d9197b376c8baac2feb481e5",
+    "central\\two_block_conditional_mmd.pt": "34762df2cad876670a4e43024eddf5c4136a1e43243ce2a257bd3db36de7fb6a",
+    "west\\preprocessing.npz": "a9c768755c0ebec11693f251a93f8a7b3fb3dc691fb2fa20c4efa2cf79f68153",
+    "west\\split_manifest.json": "9797c85a60c8af86464c09c73247f90a4216e3bedaffdc7473e2a9ac328581ce",
+    "west\\two_block_control.pt": "696eff9df46b2285bd627613cef42706f67f4b94c57ede03bdce490b765231ba",
+    "west\\two_block_conditional_mmd.pt": "4e5caec0432736371a17eade2db66d8899374361a8992ec0efa258673f7d7aaa"
+  },
+  "versions": {
+    "python": "3.10.20",
+    "torch": "2.4.1+cpu",
+    "numpy": "1.26.4",
+    "scipy": "1.15.3",
+    "sklearn": "1.7.2"
+  },
+  "code_sha256": {
+    "sparse_invariance_feature_pilot.py": "5bd31c9f611a8b29b0185658735ac62d258cdc03a4485257c7f9407dbf05862c",
+    "conditional_mmd_adapter.py": "465a17506cce2c1e2962d1627dbfb69d7fd5c3c198797dc888d409af3ef7941b"
+  },
+  "runner_sha256": "b78d1f6c38d9d4413d8dd44bcbabb0145831fe1247d15bf70c32217bc76b8e82",
+  "research_links": [
+    "https://proceedings.mlr.press/v267/gamella25a.html",
+    "https://proceedings.iclr.cc/paper_files/paper/2025/hash/11822e84689e631615199db3b75cd0e4-Abstract-Conference.html",
+    "https://proceedings.iclr.cc/paper_files/paper/2025/hash/38fc6254f73450813db3b3e04397a9fc-Abstract-Conference.html"
+  ],
+  "limitations": [
+    "本步是诊断而非论文方法复现；不把可解释性或预测提升等同因果识别，原变量可读性也不是论文的神经元单义性指标。",
+    "单个历史编码器种子，来源验证已用于编码器选模，再用于读出选模；目标已反复探索。",
+    "原头与重拟合头的损失环境权重、正则和选模政策不同，改善只能定位到读出及其训练政策这一层。",
+    "表示维数与读出容量不同，拼接收益不能单独证明编码器丢失了信息。线性类别不可读不等于信息彻底不存在。",
+    "原类别正对照通过直接读取输入检验探针；它不是一个疾病预测算法。缺失原特征不当作恢复真值。",
+    "低维有效秩并非表征崩溃，预测块LayerNorm本身限制其坐标自由度；残余块没有因果或环境专属保证。",
+    "无MMD与MMD模型各自采用历史选出的轮次；本审计不能把全部差异单独归因MMD。"
+  ],
+  "frozen_encoder_count": 6,
+  "new_outcome_readout_count": 30
+}
