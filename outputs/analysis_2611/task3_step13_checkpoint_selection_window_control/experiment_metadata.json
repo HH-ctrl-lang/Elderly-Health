@@ -1,0 +1,61 @@
+{
+  "completed": true,
+  "settings": {
+    "epochs": 300,
+    "selection_start_epoch": 91,
+    "patience": 80,
+    "learning_rate": 0.0003,
+    "weight_decay": 1e-05,
+    "positive_weight": 3.0,
+    "per_environment_batch_size": 32,
+    "mmd_per_class_environment": 16,
+    "prediction_block_dim": 8,
+    "residual_block_dim": 8,
+    "reconstruction_weight": 1.0,
+    "threads": 2,
+    "device": "cpu"
+  },
+  "split_seed": 42,
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "mmd_weights": [
+    0.0,
+    0.1
+  ],
+  "route": "prediction_only",
+  "windows": {
+    "from_epoch1": 1,
+    "from_epoch91": 91
+  },
+  "stopping_rule": "late_window_patience_only",
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "expected_training_runs": 18,
+  "expected_selected_models": 36,
+  "target_used_for_training_or_selection": false,
+  "individual_records_exported": false,
+  "versions": {
+    "python": "3.10.20",
+    "torch": "2.4.1+cpu",
+    "numpy": "1.26.4",
+    "sklearn": "1.7.2"
+  },
+  "runner_sha256": "a0dc4354e284f8efde5ee8bdb75b918e20a6d64bb0805fcceaec6a8fb09b0543",
+  "code_sha256": {
+    "two_block_pathway_control.py": "ef7e742c261bb9c79d48bccfce0c4d2a751e6a67b9b992274350f32b6c755d4b",
+    "sparse_invariance_feature_pilot.py": "5bd31c9f611a8b29b0185658735ac62d258cdc03a4485257c7f9407dbf05862c",
+    "two_block_information_audit.py": "9d20b417e8500445b0ca35f4239891b9a3b8c8c0d50f7e432359d6f7cd058c06",
+    "conditional_mmd_adapter.py": "465a17506cce2c1e2962d1627dbfb69d7fd5c3c198797dc888d409af3ef7941b"
+  },
+  "limitations": [
+    "只检验选模起始轮次，不能据此认定因果机制或所有解耦方法均有效或无效。",
+    "从第1轮起可选的窗口包含晚期模型，不等于强迫早停；两窗口使用同一轨迹。",
+    "沿用来源合并验证AUC、数值编码、重建损失和晚期早停规则，不同时改变其他因素。",
+    "早期窗口搜索候选更多，来源验证收益可能包含选择噪声；不能据此保证目标收益。",
+    "来源验证重复使用，目标地区已多次探索；三初始化不是独立人群，不作确认性显著性结论。"
+  ],
+  "completed_training_runs": 18,
+  "completed_selected_models": 36
+}
