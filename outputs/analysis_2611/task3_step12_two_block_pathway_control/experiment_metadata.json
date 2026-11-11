@@ -1,0 +1,58 @@
+{
+  "completed": true,
+  "settings": {
+    "epochs": 300,
+    "selection_start_epoch": 91,
+    "patience": 80,
+    "learning_rate": 0.0003,
+    "weight_decay": 1e-05,
+    "positive_weight": 3.0,
+    "per_environment_batch_size": 32,
+    "mmd_per_class_environment": 16,
+    "prediction_block_dim": 8,
+    "residual_block_dim": 8,
+    "reconstruction_weight": 1.0,
+    "threads": 2,
+    "device": "cpu"
+  },
+  "split_seed": 42,
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "routes": [
+    "prediction_only",
+    "joint",
+    "raw_joint"
+  ],
+  "mmd_weights": [
+    0.0,
+    0.1
+  ],
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "expected_training_runs": 54,
+  "target_used_for_training_or_selection": false,
+  "individual_records_exported": false,
+  "versions": {
+    "python": "3.10.20",
+    "torch": "2.4.1+cpu",
+    "numpy": "1.26.4",
+    "sklearn": "1.7.2"
+  },
+  "code_sha256": {
+    "sparse_invariance_feature_pilot.py": "5bd31c9f611a8b29b0185658735ac62d258cdc03a4485257c7f9407dbf05862c",
+    "conditional_mmd_adapter.py": "465a17506cce2c1e2962d1627dbfb69d7fd5c3c198797dc888d409af3ef7941b",
+    "two_block_information_audit.py": "9d20b417e8500445b0ca35f4239891b9a3b8c8c0d50f7e432359d6f7cd058c06"
+  },
+  "runner_sha256": "ef7e742c261bb9c79d48bccfce0c4d2a751e6a67b9b992274350f32b6c755d4b",
+  "limitations": [
+    "本步检验结构策略，不是因果识别或新论文复现；三种子不是独立人群。",
+    "共同参数总数与起始预测受控，但有效分类容量及梯度路径随信息开关改变，不能单独解释成信息量效应。",
+    "MMD只作用于预测块；允许残余块或原输入分类时，这些路径没有相同的不变性保证。",
+    "重建保留历史数值编码与MSE，类别编码距离没有临床含义。",
+    "来源验证重复用于选模，目标地区已经多次探索；仅报告全部条件的配对变化。",
+    "分类路径分数标准差不是独立贡献或因果重要性；表示有效秩小也不直接证明崩溃。"
+  ],
+  "completed_training_runs": 54
+}
