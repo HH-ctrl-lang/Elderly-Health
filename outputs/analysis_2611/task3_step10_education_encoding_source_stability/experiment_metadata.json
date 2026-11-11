@@ -1,0 +1,48 @@
+{
+  "completed": true,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "split_seeds": [
+    42,
+    91,
+    2026,
+    2611,
+    7319
+  ],
+  "initialization_seeds": [
+    42,
+    43,
+    44
+  ],
+  "arms": [
+    "numeric",
+    "education_only"
+  ],
+  "regions": [
+    "east",
+    "central",
+    "west"
+  ],
+  "steps": 1000,
+  "case_count": 23,
+  "expected_fit_count": 138,
+  "completed_fit_count": 138,
+  "positive_weight": 3.0,
+  "ridge": 0.0001,
+  "source_environment_weighting": "equal_site",
+  "source_site_removal": "east_only; split42; remove_same_site_from_training_and_validation; keep_other_rows_fixed",
+  "selection": "source_validation_equal_site_macro_auc_then_weighted_bce",
+  "target_used_for_training_or_selection": false,
+  "individual_records_exported": false,
+  "versions": {
+    "python": "3.10.20",
+    "numpy": "1.26.4",
+    "scipy": "1.15.3",
+    "sklearn": "1.7.2"
+  },
+  "code_sha256": "7b6ff6e49b094ec7fe3576f8a4b85e3fe93324425a47232e4b2e0c91c24c6bc8",
+  "dependency_sha256": {
+    "sparse_invariance_feature_pilot.py": "5bd31c9f611a8b29b0185658735ac62d258cdc03a4485257c7f9407dbf05862c",
+    "education_encoding_factorial_control.py": "96d15b79710b1911a02194003fe05d9ce2dae50cb6b970db3ea03b6d3f6efede"
+  },
+  "limits": "同一目标人群被重复评估，重复划分和初始化不构成独立外部验证，不报告伪独立显著性。删来源站点同时减少样本、改变类别覆盖和环境等权权重，只检查依赖性，不识别站点因果效应。固定逐系数L2下，类别表达容量与正则化几何不能分离。教育类别贡献是模型关联而非因果效应；此处无隐层，不检验表征崩溃。目标地区已多次探索。"
+}
