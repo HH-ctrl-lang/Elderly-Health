@@ -183,11 +183,13 @@ def macro_table(metrics):
 
 def reference_check(rows, historical):
     """任务3 第11步：原头必须重现历史站点指标，拒绝加载错误模型后继续解释。"""
-    now = rows[(rows.stage=='test') & (rows.head=='original_head') &
+    now = rows[(rows.stage=='test') & (rows['head']=='original_head') &
                (rows.subgroup=='all') & (rows.group!='REGION_ALL')]
     old = historical[historical.stage=='before'].rename(columns={'held_out_region':'held_out','model':'arm','site_code':'group'})
     joined = now.merge(old,on=['held_out','arm','group'],suffixes=('_now','_old'),validate='one_to_one')
-    if len(joined)!=len(now):raise RuntimeError('历史站点结果未完整匹配')
+    expected = len(REGIONS)*len(ARMS)*4
+    if len(now)!=expected or len(joined)!=expected or len(old)!=expected:
+        raise RuntimeError(f'历史站点结果未完整匹配：预期{expected}行，当前{len(now)}行，匹配{len(joined)}行')
     result = []
     for metric in ('auc','auprc','brier'):
         delta = np.abs(joined[metric+'_now']-joined[metric+'_old'])
