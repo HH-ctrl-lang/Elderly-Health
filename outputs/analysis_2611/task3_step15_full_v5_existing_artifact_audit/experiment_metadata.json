@@ -1,0 +1,30 @@
+{
+  "completed": true,
+  "audit_mode": "existing_artifacts_only",
+  "training_runs": 0,
+  "models_loaded": false,
+  "data_sha256_from_historical_config": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "input_artifact_sha256": {
+    "east/v5/config.json": "4d18613cfe6a308393ffe0dd7c61f8a8449b447d8d2e4ffb0c27f29cc48b3b3f",
+    "east/v5/training.json": "1cb4b7bcb2c76391c9c76d9b6d3c9fff4831c831190cf9adf7e8d71486b4a2d5",
+    "east/v5/metrics.json": "4ab22972e6c3f3b6224a86c862011bc0d9a88fd387d18c250d299f47ad2b154d",
+    "central/v5/config.json": "4d18613cfe6a308393ffe0dd7c61f8a8449b447d8d2e4ffb0c27f29cc48b3b3f",
+    "central/v5/training.json": "614cddb6e2452e23ba1223f97eff11deea4639e722f40dfa0f15aea12f442d89",
+    "central/v5/metrics.json": "ed95cea5a0cb1fe97917ba6738a8996538b72e384efe43eb4ed355e9a2501ee6",
+    "west/v5/config.json": "4d18613cfe6a308393ffe0dd7c61f8a8449b447d8d2e4ffb0c27f29cc48b3b3f",
+    "west/v5/training.json": "96ac7825cfa90e94d02e08b788efee06f8c01d4014e065128a3009ec9138935b",
+    "west/v5/metrics.json": "f3fba7ba4c09ec54cb0ea61db04756195501b711bceb0774cbbb0becc0316e16"
+  },
+  "runner_sha256": "0deac89f7fb85b2f3c379022f91f60ec06f3cffd8b2a6cbf0cf81cc538283334",
+  "target_stage_metrics_available": false,
+  "individual_records_exported": false,
+  "limitations": [
+    "只读历史配置、日志与最终聚合指标，不训练、不加载模型、不读取个人预测文件。",
+    "早期来源AUC不是早期目标AUC，不能推断目标地区在哪轮下降。",
+    "不同阶段同时改变训练时间、学习率及多项损失，不能归因于某一约束。",
+    "训练损失数值及系数不等于梯度强度或因果重要性。",
+    "只包含历史种子42，不把它当作跨初始化的稳定性验证。"
+  ],
+  "audit_passed": true,
+  "failed_check_count": 0
+}
