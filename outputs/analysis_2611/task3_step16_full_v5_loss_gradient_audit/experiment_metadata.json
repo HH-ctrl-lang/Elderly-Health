@@ -1,0 +1,79 @@
+{
+  "completed": true,
+  "training_runs": 0,
+  "optimizer_steps": 0,
+  "model_loads": 3,
+  "source_data_only": true,
+  "modes": [
+    "eval",
+    "train_dropout"
+  ],
+  "batches": 12,
+  "batch_size": 64,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "individual_records_exported": false,
+  "runner_sha256": "d0cfd7cefb99af25ee6d53614c1b6ce788be65717bd2d4d67bdef8e57efa1274",
+  "code_sha256": {
+    "models.py": "3a0c5be47d200cbf3f69e6069dee3c8199aa033121df971fbc0414ff682e78b5",
+    "losses.py": "b74b305d4a961ff15e9456c976a4d23a115859bb85c19d6d60779b9f91c822d8"
+  },
+  "versions": {
+    "python": "3.10.20",
+    "torch": "2.4.1+cpu",
+    "numpy": "1.26.4"
+  },
+  "prior_work_checked": [
+    "doc/实验2610.md",
+    "doc/实验2611.md",
+    "gate_step3",
+    "task1_step4_gate_alignment",
+    "experiment3_feature_reliance",
+    "task3_step2_v5_representation_diagnostics",
+    "task3_step3_fixed_representation_probes",
+    "task3_step14_reconstruction_objective_control",
+    "task3_step15_full_v5_existing_artifact_audit"
+  ],
+  "limitations": [
+    "仅审计历史完整V5的最终检查点，不还原训练中的Adam动量或历史逐步梯度。",
+    "负梯度余弦只说明局部方向关系，不证明损害东部泛化或识别因果特征。",
+    "梯度范数跨不同参数坐标的比较受尺度影响，不等于优化器真实更新量。",
+    "train_dropout仅启用Dropout用于只读求导；不优化参数，eval作为随机失活敏感性对照。",
+    "诊断批次是同一来源人群的重复抽样，不是独立人群或跨初始化重复。",
+    "门控的局部负梯度不等于特征重要性，也不代表目标地区的因果作用。"
+  ],
+  "fold_artifacts": {
+    "east": {
+      "selected_epoch": 144,
+      "source_n": 2719,
+      "artifact_sha256": {
+        "config.json": "4d18613cfe6a308393ffe0dd7c61f8a8449b447d8d2e4ffb0c27f29cc48b3b3f",
+        "training.json": "1cb4b7bcb2c76391c9c76d9b6d3c9fff4831c831190cf9adf7e8d71486b4a2d5",
+        "best_model.pt": "a7237dc8b4aeda3dae3d95484c857ff4aa6eba83b5595d439b6c2248dcacacb9",
+        "splits.npz": "766eb0807b10b0502a303cf1dc3d83ca6d20c48f1e6155895bcf61358a645b5a"
+      },
+      "source_sample_order_sha256": "d22b42d796cf3feabcf8adee3e69209130cac7e139f099dc04bc0d976d993285"
+    },
+    "central": {
+      "selected_epoch": 118,
+      "source_n": 2695,
+      "artifact_sha256": {
+        "config.json": "4d18613cfe6a308393ffe0dd7c61f8a8449b447d8d2e4ffb0c27f29cc48b3b3f",
+        "training.json": "614cddb6e2452e23ba1223f97eff11deea4639e722f40dfa0f15aea12f442d89",
+        "best_model.pt": "38e412c1248f9f1a0d089dfab3a92836c5d9a2198d6790b4665068b3d56b15f1",
+        "splits.npz": "d050eb40c603e55c12c51c7a3de9138354bdd720e153d9275a90088a4ea4104d"
+      },
+      "source_sample_order_sha256": "af7b35e89db96a9bc1fa2fe5cd81855e59136bc2d56f0a95c6680223c2b01816"
+    },
+    "west": {
+      "selected_epoch": 92,
+      "source_n": 2692,
+      "artifact_sha256": {
+        "config.json": "4d18613cfe6a308393ffe0dd7c61f8a8449b447d8d2e4ffb0c27f29cc48b3b3f",
+        "training.json": "96ac7825cfa90e94d02e08b788efee06f8c01d4014e065128a3009ec9138935b",
+        "best_model.pt": "27e8288eedbb4a73f862ec19c034866c46eae6fc4c8a7ff1563ff34a14245622",
+        "splits.npz": "0edb93d821ed9a23c5afc112f7f096b8ac37df5bbdb73e2b26596e13821690d2"
+      },
+      "source_sample_order_sha256": "69815a1a2298a86eef2a5d41b7f9340f63d33a67db02ad1ebd844f2aedb7cd15"
+    }
+  }
+}
