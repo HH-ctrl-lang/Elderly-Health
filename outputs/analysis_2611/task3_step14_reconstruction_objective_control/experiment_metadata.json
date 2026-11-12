@@ -1,0 +1,61 @@
+{
+  "completed": true,
+  "settings": {
+    "epochs": 300,
+    "learning_rate": 0.0003,
+    "weight_decay": 1e-05,
+    "positive_weight": 3.0,
+    "per_environment_batch_size": 32,
+    "mmd_per_class_environment": 16,
+    "prediction_block_dim": 8,
+    "residual_block_dim": 8,
+    "threads": 2,
+    "device": "cpu"
+  },
+  "split_seed": 42,
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "mmd_weights": [
+    0.0,
+    0.1
+  ],
+  "reconstruction_weights": [
+    0.0,
+    1.0
+  ],
+  "route": "prediction_only",
+  "selection_start_epoch": 1,
+  "selection_metric": "pooled_source_validation_auc",
+  "stopping_rule": "fixed_epoch_budget_no_early_stopping",
+  "probe_per_source_region": 32,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "expected_training_runs": 36,
+  "target_used_for_training_or_selection": false,
+  "individual_records_exported": false,
+  "versions": {
+    "python": "3.10.20",
+    "torch": "2.4.1+cpu",
+    "numpy": "1.26.4",
+    "sklearn": "1.7.2"
+  },
+  "runner_sha256": "5ad003fa507d90dd0790210135d961118bdd3a4eebe81a8d92dd87a880cadd2f",
+  "code_sha256": {
+    "two_block_pathway_control.py": "ef7e742c261bb9c79d48bccfce0c4d2a751e6a67b9b992274350f32b6c755d4b",
+    "sparse_invariance_feature_pilot.py": "5bd31c9f611a8b29b0185658735ac62d258cdc03a4485257c7f9407dbf05862c",
+    "two_block_information_audit.py": "9d20b417e8500445b0ca35f4239891b9a3b8c8c0d50f7e432359d6f7cd058c06",
+    "conditional_mmd_adapter.py": "465a17506cce2c1e2962d1627dbfb69d7fd5c3c198797dc888d409af3ef7941b"
+  },
+  "limitations": [
+    "只检验重建目标开关，不能据此认定某个输入特征有因果作用。",
+    "两组分类路径、有效预测结构及参数总数相同；取消重建后残余块与解码器不再承担有效训练任务。",
+    "重建沿用标准化数值输入的MSE，类别编号间距离没有临床意义；不能把重建误差直接解释为医学信息量。",
+    "不同于第13步的晚期早停，本步四条件统一完整300轮，候选检查点范围完全相同。",
+    "梯度诊断只用固定来源训练样本；负余弦只表示局部方向冲突，不能单独证明外部性能下降。",
+    "取消重建组的原始重建梯度是假设诊断，不实际加入训练；其解码器质量不与有重建组等同。",
+    "来源验证反复使用，目标地区已多次探索；三初始化不是独立人群，不作确认性显著性结论。"
+  ],
+  "completed_training_runs": 36
+}
