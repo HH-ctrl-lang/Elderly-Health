@@ -1,270 +1,224 @@
-"""任务3 第15步：复核历史完整V5基线及分阶段训练表现。
+"""任务3 第15步：只读审计已有完整V5配置、训练日志和最终聚合指标。
 
-逐折读取历史配置，保持损失、调度、学习率策略、来源划分和晚期选模。
-早期快照仅作过程诊断；留出地区在训练和全部来源选择结束后才评估。
-本步不进行损失消融，不把训练阶段的相关变化解释为某项损失的因果作用。
+默认零训练、零模型加载，不调用训练器，不要求重新产生相同的停止轮次。
+早期阶段仅汇总来源验证日志；没有保存的早期目标指标明确标为不可用。
 """
 import argparse
-import copy
 import hashlib
-import inspect
 import json
-import platform
-import sys
-from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
-import torch
-from threadpoolctl import threadpool_limits
 
-HERE=Path(__file__).resolve().parent
-sys.path.insert(0,str(HERE))
-import sparse_invariance_feature_pilot as base
-import two_block_information_audit as audit
-from elderly_health import training,models,losses,config as config_module
-from elderly_health.config import TrainConfig
-from elderly_health.data import prepare_splits
-
+ROOT=Path(__file__).resolve().parents[4]
 REGIONS=('east','central','west')
-SEEDS=(42,43,44)
+LOSSES=('prediction','zc_prediction','sparse','entropy','graph','irm','environment','independence')
 STAGES=('prediction_phase','sparse_phase','invariance_ramp','full_objective')
-LOSS_NAMES=('prediction','zc_prediction','sparse','entropy','graph','irm','environment','independence')
+EXPECTED_HASH='969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de'
+AUDIT_MODE='existing_artifacts_only'
 
 
-def state_hash(state):
-    h=hashlib.sha256()
-    for k,v in sorted(state.items()):h.update(k.encode());h.update(v.detach().cpu().numpy().tobytes())
-    return h.hexdigest()
+def digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def dump(path,value):
+    path.write_text(json.dumps(value,ensure_ascii=False,indent=2,allow_nan=False),encoding='utf-8')
+
+
+def ramp(epoch,start,span):
+    """任务3 第15步：与原训练器一致，输入epoch为一基轮次。"""
+    return max(0.,min(1.,(epoch-1-start)/span))
 
 
 def full_start(cfg):
-    """任务3 第15步：训练内部轮次从0计；完整权重对应的一基轮次。"""
-    return max(cfg.sparse_start,cfg.irm_start)+cfg.ramp_epochs+1
+    return max(cfg['sparse_start'],cfg['irm_start'])+cfg['ramp_epochs']+1
+
+
+def first_selection(cfg):
+    explicit=cfg.get('selection_start_epoch')
+    return explicit if explicit is not None else cfg['irm_start']+1
 
 
 def stage_at(epoch,cfg):
     if epoch>=full_start(cfg):return 'full_objective'
-    if training.ramp(epoch-1,cfg.irm_start,cfg.ramp_epochs)>0:return 'invariance_ramp'
-    if training.ramp(epoch-1,cfg.sparse_start,cfg.ramp_epochs)>0:return 'sparse_phase'
+    if ramp(epoch,cfg['irm_start'],cfg['ramp_epochs'])>0:return 'invariance_ramp'
+    if ramp(epoch,cfg['sparse_start'],cfg['ramp_epochs'])>0:return 'sparse_phase'
     return 'prediction_phase'
 
 
-def loss_schedule(cfg):
-    """任务3 第15步：零权重也明确记录，避免把已计算但未加权的项当成启用。"""
-    rows=[]
-    for epoch in range(1,cfg.epochs+1):
-        sparse=training.ramp(epoch-1,cfg.sparse_start,cfg.ramp_epochs)
-        invariant=training.ramp(epoch-1,cfg.irm_start,cfg.ramp_epochs)
-        weights=dict(prediction=1.,zc_prediction=1.,sparse=sparse*cfg.lambda_sparse,
-            entropy=sparse*cfg.lambda_entropy,graph=sparse*cfg.lambda_graph,
-            irm=invariant*cfg.lambda_irm,environment=invariant*cfg.lambda_env,
-            independence=invariant*cfg.lambda_independence)
-        for name,weight in weights.items():
-            rows.append(dict(epoch=epoch,stage=stage_at(epoch,cfg),loss=name,effective_weight=weight,
-                enabled=weight>0,eligible_for_final_selection=epoch>=cfg.first_selection_epoch()))
-    return pd.DataFrame(rows)
+def weights_at(epoch,cfg):
+    """任务3 第15步：计算实际有效系数，保留历史零权重设置。"""
+    s=ramp(epoch,cfg['sparse_start'],cfg['ramp_epochs'])
+    i=ramp(epoch,cfg['irm_start'],cfg['ramp_epochs'])
+    return dict(prediction=1.,zc_prediction=1.,sparse=s*cfg['lambda_sparse'],
+        entropy=s*cfg['lambda_entropy'],graph=s*cfg['lambda_graph'],irm=i*cfg['lambda_irm'],
+        environment=i*cfg['lambda_env'],independence=i*cfg['lambda_independence'])
 
 
-def validate_config(payload):
-    """任务3 第15步：历史文件为唯一配置来源；不回退到默认值，不补开原本关闭的项。"""
-    if payload['input_sha256']!=base.EXPECTED_HASH or payload['feature_names']!=list(base.FEATURES):
-        raise ValueError('历史数据版本或特征顺序不一致')
-    cfg=TrainConfig(**payload['config'])
-    if cfg.model!='v5' or cfg.environment_granularity!='region' or cfg.seed!=42:
-        raise ValueError('必须使用历史地区留出V5种子42配置')
-    if cfg.irm_mode=='none' or cfg.independence=='none' or cfg.sparsity=='none':
-        raise ValueError('历史完整配置的约束模式不完整')
-    if min(cfg.lambda_sparse,cfg.lambda_irm,cfg.lambda_env,cfg.lambda_independence)<=0:
-        raise ValueError('预期保留的约束权重必须为正')
-    if cfg.lambda_graph!=0 or payload.get('graph_path') is not None:
-        raise ValueError('当前历史基线没有图先验；遇到其他先验配置须单独核对')
-    if cfg.first_selection_epoch()<full_start(cfg):raise ValueError('历史选模早于完整权重阶段')
-    if cfg.device!='cpu':raise ValueError('本步只复核历史CPU基线')
-    return cfg
+def audit_fold(region,payload,report,metrics):
+    """任务3 第15步：审计历史文件自身的一致性，发现差异只记录，不触发重训。"""
+    cfg=payload['config']
+    if cfg['model']!='v5' or cfg['environment_granularity']!='region':raise ValueError('历史文件不是地区环境完整V5')
+    if payload['input_sha256']!=EXPECTED_HASH:raise ValueError('历史数据版本不一致')
+    if cfg['ramp_epochs']<=0:raise ValueError('损失渐增跨度必须为正')
+    if cfg['lambda_graph']!=0 or payload.get('graph_path') is not None:
+        raise ValueError('本步针对无图先验的历史V5配置，其他配置须单独核对')
+    if cfg['irm_mode']=='none' or cfg['independence']=='none' or cfg['sparsity']=='none':
+        raise ValueError('预期完整基线的约束模式被关闭')
+    history=report['history']
+    if not history:raise ValueError('历史训练日志为空')
+    schedule=[];curves=[];phases=[];checks=[]
+    def check(name,passed,detail):
+        checks.append(dict(held_out=region,check=name,passed=bool(passed),detail=detail))
+    check('selection_after_full_weight',first_selection(cfg)>=full_start(cfg),'最终选择窗口不得早于完整权重阶段')
+    check('report_selection_matches_config',report.get('selection_start_epoch')==first_selection(cfg),'历史配置与日志选模窗口一致')
+    check('epochs_contiguous',[r['epoch'] for r in history]==list(range(1,len(history)+1)),'历史日志轮次连续')
+    for record in history:
+        epoch=record['epoch'];weights=weights_at(epoch,cfg);phase=stage_at(epoch,cfg)
+        expected_s=ramp(epoch,cfg['sparse_start'],cfg['ramp_epochs'])
+        expected_i=ramp(epoch,cfg['irm_start'],cfg['ramp_epochs'])
+        check(f'schedule_epoch_{epoch}',abs(record['sparse_ramp']-expected_s)<1e-12 and
+            abs(record['invariant_ramp']-expected_i)<1e-12 and
+            record['eligible_for_selection']==(epoch>=first_selection(cfg)),'损失渐增与选模资格核对')
+        row=dict(held_out=region,seed=cfg['seed'],epoch=epoch,phase=phase,
+            val_auc=record['val_auc'],val_loss=record['val_loss'],train_total=record['train_total'],
+            eligible_for_selection=record['eligible_for_selection'])
+        missing=[];total=0.
+        for loss,weight in weights.items():
+            key='train_'+loss
+            if weight>0 and key not in record:missing.append(loss)
+            raw=record.get(key)
+            contribution=weight*raw if raw is not None else 0. if weight==0 else None
+            row['weighted_'+loss]=contribution
+            if contribution is not None:total+=contribution
+            schedule.append(dict(held_out=region,epoch=epoch,phase=phase,loss=loss,
+                effective_weight=weight,raw_logged=raw is not None,enabled=weight>0,
+                raw_training_loss=raw,weighted_training_contribution=contribution))
+        difference=abs(total-record['train_total']) if not missing else None
+        row['weighted_total_difference']=difference
+        check(f'objective_epoch_{epoch}',not missing and difference<=2e-6,
+              '缺少有效损失：'+('|'.join(missing) if missing else '无')+'；检查逐项加权总和')
+        curves.append(row)
+    eligible=[r for r in history if r['eligible_for_selection']]
+    if not eligible:raise ValueError('历史日志没有可选完整模型')
+    recomputed=max(eligible,key=lambda r:r['val_auc'])
+    check('selected_epoch_matches_source_argmax',recomputed['epoch']==report['best_epoch'], '平分时保留最早轮次')
+    check('selected_auc_matches_source_argmax',abs(recomputed['val_auc']-report['best_val_auc'])<=2e-6,'来源AUC重算，不训练')
+    for phase in STAGES:
+        part=[r for r in history if stage_at(r['epoch'],cfg)==phase]
+        best=max(part,key=lambda r:r['val_auc']) if part else None
+        phases.append(dict(held_out=region,seed=cfg['seed'],phase=phase,available=bool(part),
+            start_epoch=part[0]['epoch'] if part else None,end_epoch=part[-1]['epoch'] if part else None,
+            best_source_epoch=best['epoch'] if best else None,best_source_auc=best['val_auc'] if best else None,
+            final_model_candidate=phase=='full_objective',target_phase_metrics_available=False))
+    site=[]
+    for group,values in metrics['per_site'].items():
+        site.append(dict(held_out=region,seed=cfg['seed'],group=str(group),scope='site',
+            selected_epoch=report['best_epoch'],**{k:values.get(k) for k in ('auc','auprc','brier','n','positive_rate')}))
+    pooled=dict(held_out=region,seed=cfg['seed'],group='REGION_ALL',scope='region_pooled',
+        selected_epoch=report['best_epoch'],**{k:metrics['main'].get(k) for k in ('auc','auprc','brier','n','positive_rate')})
+    macro=dict(held_out=region,seed=cfg['seed'],group='SITE_MACRO',scope='equal_site_macro',selected_epoch=report['best_epoch'])
+    for metric in ('auc','auprc','brier'):
+        values=[r[metric] for r in site]
+        macro[metric]=float(np.mean(values)) if values and all(v is not None and np.isfinite(v) for v in values) else None
+    return schedule,curves,phases,checks,site+[pooled,macro]
 
 
-class SourceSnapshots:
-    """任务3 第15步：回调只复制参数和来源记录；不推理、不读目标、不消耗随机数。"""
-    def __init__(self,cfg):
-        self.cfg=cfg;self.best={};self.fixed={}
-        boundaries={1,cfg.sparse_start+1,cfg.sparse_start+2,cfg.sparse_start+cfg.ramp_epochs+1,
-                    cfg.irm_start+1,cfg.irm_start+2,full_start(cfg)-1,full_start(cfg)}
-        self.boundaries={e for e in boundaries if 1<=e<=cfg.epochs}
-
-    def __call__(self,model,record):
-        epoch=record['epoch'];stage=stage_at(epoch,self.cfg)
-        expected_sparse=training.ramp(epoch-1,self.cfg.sparse_start,self.cfg.ramp_epochs)
-        expected_invariant=training.ramp(epoch-1,self.cfg.irm_start,self.cfg.ramp_epochs)
-        if record['sparse_ramp']!=expected_sparse or record['invariant_ramp']!=expected_invariant:
-            raise RuntimeError('实际损失排程与配置不一致')
-        if record['eligible_for_selection']!=(epoch>=self.cfg.first_selection_epoch()):
-            raise RuntimeError('实际最终选模窗口与配置不一致')
-        required=['train_prediction','train_zc_prediction']
-        if expected_sparse>0:required+=['train_sparse','train_entropy']
-        if expected_invariant>0:required+=['train_irm','train_environment','train_independence']
-        if any(k not in record for k in required):raise RuntimeError('完整训练缺少预期损失记录')
-        weights=dict(prediction=1.,zc_prediction=1.,sparse=expected_sparse*self.cfg.lambda_sparse,
-            entropy=expected_sparse*self.cfg.lambda_entropy,graph=expected_sparse*self.cfg.lambda_graph,
-            irm=expected_invariant*self.cfg.lambda_irm,environment=expected_invariant*self.cfg.lambda_env,
-            independence=expected_invariant*self.cfg.lambda_independence)
-        reconstructed=sum(weight*record.get('train_'+name,0.) for name,weight in weights.items())
-        if abs(reconstructed-record['train_total'])>2e-6:
-            raise RuntimeError('逐项加权损失与训练总损失不一致')
-        better=stage not in self.best or record['val_auc']>self.best[stage]['record']['val_auc']
-        if better or epoch in self.boundaries:
-            snapshot=dict(record=copy.deepcopy(record),state={k:v.detach().cpu().clone() for k,v in model.state_dict().items()})
-            if better:self.best[stage]=snapshot
-            if epoch in self.boundaries:self.fixed[epoch]=snapshot
-
-
-def verify_history(actual,expected):
-    """任务3 第15步：种子42先核对来源训练轨迹，不依据目标结果决定是否重现。"""
-    if actual['best_epoch']!=expected['best_epoch'] or len(actual['history'])!=len(expected['history']):
-        raise RuntimeError('历史选中轮次或停止轮次未复现')
-    maximum=0.
-    for a,b in zip(actual['history'],expected['history']):
-        if a['epoch']!=b['epoch'] or a['eligible_for_selection']!=b['eligible_for_selection']:
-            raise RuntimeError('历史轮次或选模资格不一致')
-        for key in ('val_auc','val_loss','sparse_ramp','invariant_ramp'):
-            difference=abs(a[key]-b[key]);maximum=max(maximum,difference)
-            if difference>2e-6:raise RuntimeError(f'历史来源曲线未复现：轮次{a["epoch"]}，字段{key}')
-    return dict(source_history_reproduced=True,max_source_history_difference=maximum,
-                selected_epoch=actual['best_epoch'],trained_epochs=len(actual['history']))
-
-
-def macro_table(table):
-    sites=table[(table.stage=='test')&(table.group!='REGION_ALL')]
-    keys=['seed','checkpoint','subgroup']
-    region=sites.groupby(['held_out']+keys,as_index=False)[['auc','auprc','brier']].mean()
-    global_=sites.groupby(keys,as_index=False)[['auc','auprc','brier']].mean();global_['held_out']='ALL'
-    return pd.concat([region,global_],ignore_index=True)
-
-
-def draw(schedule,curve,macro,boundary,output):
-    """任务3 第15步：明确区分完整基线与训练过程诊断，不展示目标最优轮次。"""
+def draw(schedule,curves,final,output):
+    """任务3 第15步：只展示已有信息，不生成不存在的早期目标曲线。"""
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
-    fig,ax=plt.subplots(figsize=(11,5))
-    values=schedule.pivot(index='epoch',columns='loss',values='effective_weight')
-    for name in LOSS_NAMES:ax.plot(values.index,values[name],label=name)
-    first=int(schedule.loc[schedule.eligible_for_final_selection,'epoch'].min())
-    ax.axvline(first,color='black',ls='--',label='Final selection starts')
-    ax.set_xlabel('Training epoch');ax.set_ylabel('Effective coefficient (not gradient strength)')
-    ax.set_title('Historical full V5 objective: zero coefficients stay zero');ax.legend(ncol=3,fontsize=8)
-    fig.tight_layout();fig.savefig(output/'figures/01_full_v5_loss_schedule.png',dpi=180);plt.close(fig)
     fig,axes=plt.subplots(1,3,figsize=(15,4.5),sharey=True)
     for ax,region in zip(axes,REGIONS):
-        for seed in SEEDS:
-            part=curve[(curve.held_out==region)&(curve.seed==seed)]
-            ax.plot(part.epoch,part.val_auc,label=f'Seed {seed}')
-        ax.axvline(first,color='black',ls='--');ax.set_title(region)
-        ax.set_xlabel('Training epoch');ax.set_ylabel('Source validation AUC');ax.legend(fontsize=8)
-    fig.tight_layout();fig.savefig(output/'figures/02_full_v5_source_learning.png',dpi=180);plt.close(fig)
-    fig,axes=plt.subplots(1,3,figsize=(15,5))
-    stages=['stage_best_'+s for s in STAGES]
-    labels=['Prediction phase','Sparse phase','Invariance ramp','Full-objective phase']
+        part=schedule[schedule.held_out==region]
+        values=part.pivot(index='epoch',columns='loss',values='effective_weight')
+        for loss in LOSSES:ax.plot(values.index,values[loss],label=loss)
+        ax.set_title(region);ax.set_xlabel('Recorded epoch');ax.set_ylabel('Effective loss coefficient');ax.legend(fontsize=7,ncol=2)
+    fig.suptitle('Historical full V5: configured zero weights remain zero')
+    fig.tight_layout();fig.savefig(output/'figures/01_existing_full_v5_loss_schedule.png',dpi=180);plt.close(fig)
+    fig,axes=plt.subplots(1,3,figsize=(15,4.5),sharey=True)
+    for ax,region in zip(axes,REGIONS):
+        part=curves[curves.held_out==region]
+        ax.plot(part.epoch,part.val_auc,label='Source validation AUC')
+        selected=final[(final.held_out==region)&(final.scope=='region_pooled')].iloc[0].selected_epoch
+        first=int(part.loc[part.eligible_for_selection,'epoch'].min())
+        ax.axvline(first,color='grey',ls='--',label='Eligible selection starts')
+        ax.axvline(selected,color='black',ls=':',label='Historical selected epoch')
+        ax.set_title(region);ax.set_xlabel('Recorded epoch');ax.set_ylabel('Source validation AUC');ax.legend(fontsize=7)
+    fig.tight_layout();fig.savefig(output/'figures/02_existing_source_learning.png',dpi=180);plt.close(fig)
+    fig,axes=plt.subplots(1,3,figsize=(15,4.5))
+    for ax,region in zip(axes,REGIONS):
+        part=curves[curves.held_out==region]
+        for loss in LOSSES:
+            if schedule[(schedule.held_out==region)&(schedule.loss==loss)].enabled.any():
+                ax.plot(part.epoch,part['weighted_'+loss],label=loss)
+        ax.set_title(region);ax.set_xlabel('Recorded epoch');ax.set_ylabel('Weighted mean training contribution');ax.legend(fontsize=7)
+    fig.suptitle('Training loss values are not gradient strength or causal importance')
+    fig.tight_layout();fig.savefig(output/'figures/03_existing_weighted_loss_contributions.png',dpi=180);plt.close(fig)
+    fig,axes=plt.subplots(1,3,figsize=(15,4.5))
     for ax,metric in zip(axes,('auc','auprc','brier')):
         for region in REGIONS:
-            part=macro[(macro.held_out==region)&(macro.subgroup=='all')]
-            values=part.groupby('checkpoint')[metric].mean().reindex(stages)
-            ax.plot(range(len(stages)),values,'o-',label=region)
-        ax.set_xticks(range(len(stages)));ax.set_xticklabels(labels,rotation=20,ha='right',fontsize=8)
+            part=final[(final.held_out==region)&(final.scope=='site')]
+            ax.scatter([region]*len(part),part[metric],alpha=.7,label=region)
+            macro=final[(final.held_out==region)&(final.scope=='equal_site_macro')].iloc[0][metric]
+            ax.scatter([region],[macro],marker='_',s=350,color='black')
         ax.set_title(metric.upper()+(' (lower better)' if metric=='brier' else ' (higher better)'))
-        ax.set_ylabel('Equal-site macro');ax.legend(fontsize=8)
-    fig.suptitle('Source-best within each phase; early phases are diagnostics, not final models')
-    fig.tight_layout();fig.savefig(output/'figures/03_phase_diagnostics_and_full_baseline.png',dpi=180);plt.close(fig)
-    fig,axes=plt.subplots(1,3,figsize=(15,5),sharey=True)
-    for ax,region in zip(axes,REGIONS):
-        part=boundary[(boundary.held_out==region)&(boundary.subgroup=='all')&(boundary.group!='REGION_ALL')]
-        for site,values in part.groupby('group'):
-            mean=values.groupby('epoch').auc.mean();ax.plot(mean.index,mean,'o-',label=str(site))
-        ax.axvline(first,color='black',ls='--');ax.set_title(region)
-        ax.set_xlabel('Fixed schedule boundary epoch');ax.set_ylabel('Held-out site AUC');ax.legend(fontsize=7)
-    fig.suptitle('Post-training diagnostics only; no target-based checkpoint selection')
-    fig.tight_layout();fig.savefig(output/'figures/04_site_schedule_boundary_diagnostics.png',dpi=180);plt.close(fig)
+        ax.set_ylabel('Stored final-model performance');ax.legend(fontsize=7)
+    fig.suptitle('Historical final checkpoint only: dots = sites; black bar = equal-site macro')
+    fig.tight_layout();fig.savefig(output/'figures/04_existing_final_site_metrics.png',dpi=180);plt.close(fig)
 
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--data',type=Path,default=base.PROJECT/'data/data_mission2.csv')
-    parser.add_argument('--previous',type=Path,default=base.ROOT/'outputs/v2-region-loro-selection91-42')
-    parser.add_argument('--output',type=Path,default=base.ROOT/'outputs/analysis_2611/task3_step15_full_v5_training_stage_audit')
+    parser.add_argument('--previous',type=Path,default=ROOT/'outputs/v2-region-loro-selection91-42')
+    parser.add_argument('--output',type=Path,default=ROOT/'outputs/analysis_2611/task3_step15_full_v5_existing_artifact_audit')
     args=parser.parse_args()
-    if audit.digest(args.data)!=base.EXPECTED_HASH:raise ValueError('固定CSV版本不一致')
-    if 'epoch_callback' not in inspect.signature(training.fit).parameters:raise RuntimeError('请先拉取支持只读快照回调的当前训练代码')
-    payloads={r:json.loads((args.previous/r/'v5/config.json').read_text(encoding='utf-8')) for r in REGIONS}
-    configs={r:validate_config(p) for r,p in payloads.items()}
-    if len({json.dumps(c.to_dict(),sort_keys=True) for c in configs.values()})!=1:raise ValueError('三折历史配置不一致，须先核对')
-    frame=base.attach_regions(base.read_raw(args.data));args.output.mkdir(parents=True,exist_ok=False)
-    (args.output/'figures').mkdir()
-    metadata=dict(completed=False,model='historical_full_v5',seeds=SEEDS,split_seed=42,expected_training_runs=9,
-        input_sha256=base.EXPECTED_HASH,config=configs['east'].to_dict(),
-        full_weight_start_epoch=full_start(configs['east']),early_checkpoints_are_diagnostics_only=True,
-        target_used_for_training_or_selection=False,individual_records_exported=False,
-        versions=dict(python=platform.python_version(),torch=torch.__version__,numpy=np.__version__,sklearn=__import__('sklearn').__version__),
-        runner_sha256=audit.digest(Path(__file__)),
-        code_sha256={Path(m.__file__).name:audit.digest(Path(m.__file__)) for m in (training,models,losses,config_module)},
-        limitations=['完整指历史V5配置；熵惩罚与图先验原权重为0，不擅自补开。',
-            'v11为项目梯度方差启发式，不等同于标准IRMv1；门控值不等于因果重要性。',
-            '阶段同时涉及训练时间、学习率调度和多项损失变化，不能归因于某一损失。',
-            '早期阶段最优只依据来源验证选择，不能当作完整目标下的最终模型或按目标表现反向选阶段。',
-            '固定边界诊断在训练结束后评估；目标已多次探索，三初始化不是独立人群。'])
-    base.dump(args.output/'experiment_metadata.json',metadata)
-    schedule=loss_schedule(configs['east']);schedule.to_csv(args.output/'loss_schedule.csv',index=False,encoding='utf-8-sig')
-    rows=[];boundaries=[];selections=[];curves=[];checks=[];runs=0
+    if args.output.resolve()==args.previous.resolve() or args.previous.resolve() in args.output.resolve().parents:
+        raise ValueError('输出目录不能放在历史输入目录内')
+    artifacts={};hashes={}
     for region in REGIONS:
-        cfg0=configs[region];frames=base.held_out_split(frame,region,seed=42,column=base.REGION)
-        splits,prep=prepare_splits(frames,environment_column=base.REGION)
-        if any(set(a.sample_ids)&set(b.sample_ids) for i,a in enumerate(splits) for b in splits[i+1:]):raise RuntimeError('人员划分重叠')
-        expected=json.loads((args.previous/region/'v5/training.json').read_text(encoding='utf-8'))
-        for seed in SEEDS:
-            cfg=replace(cfg0,seed=seed);capture=SourceSnapshots(cfg)
-            print(f'任务3 第15步：留出{region}，种子{seed}，保留历史完整目标，第{cfg.first_selection_epoch()}轮起选模',flush=True)
-            model,report=training.fit(splits[0],splits[1],cfg,epoch_callback=capture)
-            if set(capture.best)!=set(STAGES):raise RuntimeError('训练未覆盖全部预定阶段')
-            stage_full=capture.best['full_objective']
-            if stage_full['record']['epoch']!=report['best_epoch'] or state_hash(stage_full['state'])!=state_hash(model.state_dict()):
-                raise RuntimeError('完整阶段的来源最优与正式选中模型不一致')
-            reproduction=verify_history(report,expected) if seed==42 else dict(source_history_reproduced=None)
-            checks.append(dict(held_out=region,seed=seed,all_expected_losses_recorded=True,loss_schedule_verified=True,
-                full_stage_selection_verified=True,**reproduction))
-            folder=args.output/region/str(seed);folder.mkdir(parents=True)
-            base.dump(folder/'config.json',cfg.to_dict());base.dump(folder/'training.json',report)
-            torch.save(dict(state_dict=model.state_dict(),config=cfg.to_dict(),features=list(base.FEATURES),
-                best_epoch=report['best_epoch'],env_map=report['env_map']),folder/'full_model.pt')
-            np.savez(folder/'preprocessing.npz',median=prep.imputer.statistics_,mean=prep.scaler.mean_,scale=prep.scaler.scale_)
-            curves.extend(dict(held_out=region,seed=seed,phase=stage_at(r['epoch'],cfg),
-                **{k:v for k,v in r.items() if k!='mask'}) for r in report['history'])
-            # 任务3 第15步：全部快照已按来源记录确定，此后才使用目标数据进行诊断。
-            chosen={'stage_best_'+stage:shot for stage,shot in capture.best.items()}
-            chosen['final_full_model']=stage_full
-            for name,shot in chosen.items():
-                model.load_state_dict(shot['state']);model.eval()
-                selections.append(dict(held_out=region,seed=seed,checkpoint=name,epoch=shot['record']['epoch'],
-                    source_validation_auc=shot['record']['val_auc'],final_model=name=='final_full_model',
-                    state_sha256=state_hash(shot['state'])))
-                context=dict(held_out=region,seed=seed,checkpoint=name,epoch=shot['record']['epoch'])
-                for stage,part,split in zip(('source_train','source_validation','test'),frames,splits):
-                    p=training.predict(model,split.x,torch.device('cpu'))
-                    rows.extend(audit.evaluate(context,stage,part,p))
-                if name!='final_full_model':torch.save(dict(state_dict=shot['state'],epoch=shot['record']['epoch'],diagnostic_only=True),folder/(name+'.pt'))
-            for epoch,shot in capture.fixed.items():
-                model.load_state_dict(shot['state']);model.eval()
-                p=training.predict(model,splits[2].x,torch.device('cpu'))
-                boundaries.extend(audit.evaluate(dict(held_out=region,seed=seed,epoch=epoch), 'test',frames[2],p))
-            runs+=1
-            for name,values in dict(metrics=rows,boundary_metrics=boundaries,source_only_checkpoints=selections,
-                training_curves=curves,control_checks=checks).items():pd.DataFrame(values).to_csv(args.output/(name+'.csv'),index=False,encoding='utf-8-sig')
-            metadata['completed_training_runs']=runs;base.dump(args.output/'experiment_metadata.json',metadata)
-    table=pd.DataFrame(rows);macro=macro_table(table);macro.to_csv(args.output/'region_and_global_macro.csv',index=False,encoding='utf-8-sig')
-    draw(schedule,pd.DataFrame(curves),macro,pd.DataFrame(boundaries),args.output)
-    if runs!=metadata['expected_training_runs']:raise RuntimeError('训练数量不完整')
-    metadata['completed']=True;base.dump(args.output/'experiment_metadata.json',metadata)
-    print(f'任务3 第15步完成：复核完整V5，训练{runs}次，输出目录：{args.output}',flush=True)
+        artifacts[region]={}
+        for name in ('config.json','training.json','metrics.json'):
+            path=args.previous/region/'v5'/name
+            if not path.is_file():raise FileNotFoundError(f'缺少已有文件：{path}。本脚本不会自动训练补齐。')
+            artifacts[region][name]=json.loads(path.read_text(encoding='utf-8-sig'))
+            hashes[f'{region}/v5/{name}']=digest(path)
+    existing=args.output/'experiment_metadata.json'
+    if args.output.exists():
+        if not existing.is_file():raise ValueError('输出目录已存在且不属于本只读审计，请指定新目录')
+        previous_meta=json.loads(existing.read_text(encoding='utf-8'))
+        if previous_meta.get('audit_mode')!=AUDIT_MODE or previous_meta.get('input_artifact_sha256')!=hashes:
+            raise ValueError('已有输出不属于相同历史文件的只读审计，请指定新目录')
+    args.output.mkdir(parents=True,exist_ok=True);(args.output/'figures').mkdir(exist_ok=True)
+    metadata=dict(completed=False,audit_mode=AUDIT_MODE,training_runs=0,models_loaded=False,
+        data_sha256_from_historical_config=EXPECTED_HASH,input_artifact_sha256=hashes,
+        runner_sha256=digest(Path(__file__)),target_stage_metrics_available=False,
+        individual_records_exported=False,
+        limitations=['只读历史配置、日志与最终聚合指标，不训练、不加载模型、不读取个人预测文件。',
+            '早期来源AUC不是早期目标AUC，不能推断目标地区在哪轮下降。',
+            '不同阶段同时改变训练时间、学习率及多项损失，不能归因于某一约束。',
+            '训练损失数值及系数不等于梯度强度或因果重要性。',
+            '只包含历史种子42，不把它当作跨初始化的稳定性验证。'])
+    dump(existing,metadata)
+    schedules=[];curves=[];phases=[];checks=[];final=[]
+    for region in REGIONS:
+        files=artifacts[region]
+        result=audit_fold(region,files['config.json'],files['training.json'],files['metrics.json'])
+        for collection,values in zip((schedules,curves,phases,checks,final),result):collection.extend(values)
+        print(f'任务3 第15步：已审计{region}历史V5，零训练，记录{len(files["training.json"]["history"])}轮',flush=True)
+    tables=dict(loss_schedule=pd.DataFrame(schedules),source_training_curves=pd.DataFrame(curves),
+        source_phase_summary=pd.DataFrame(phases),artifact_consistency_checks=pd.DataFrame(checks),
+        historical_final_metrics=pd.DataFrame(final))
+    for name,table in tables.items():table.to_csv(args.output/(name+'.csv'),index=False,encoding='utf-8-sig')
+    draw(tables['loss_schedule'],tables['source_training_curves'],tables['historical_final_metrics'],args.output)
+    failed=tables['artifact_consistency_checks'].loc[lambda x:~x.passed]
+    metadata.update(completed=True,audit_passed=failed.empty,failed_check_count=len(failed))
+    dump(existing,metadata)
+    if not failed.empty:print(f'注意：历史文件有{len(failed)}项一致性检查未通过，已记录；不会重训。',flush=True)
+    print(f'任务3 第15步完成：训练0次，模型加载0次，输出目录：{args.output}',flush=True)
 
 
-if __name__=='__main__':
-    with threadpool_limits(limits=2):main()
+if __name__=='__main__':main()
