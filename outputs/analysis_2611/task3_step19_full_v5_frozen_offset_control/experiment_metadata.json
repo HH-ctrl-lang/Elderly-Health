@@ -1,0 +1,31 @@
+{
+  "completed": true,
+  "v5_training_runs": 0,
+  "model_loads": 3,
+  "head_fits": 21,
+  "minimum_source_auc_gain": 0.005,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "runner_sha256": "61ee1b343ae86abf047b9bdee011c3d9be07b82a84753c4272ec54c3c0b1e30f",
+  "ridge_grid": [
+    0.01,
+    0.1,
+    1.0
+  ],
+  "full_v5_frozen": true,
+  "individual_records_exported": false,
+  "target_access_after_all_source_selection": true,
+  "limitations": [
+    "历史完整V5保持冻结；其历史约束没有删除。新增校正头只用预测损失和L2，不具有原约束的因果或不变性保证。",
+    "区别于轻量双块探针或从零旁路训练：本步固定完整V5分数作为偏置，只学习加性修正。",
+    "原始19维与隐层64维的有效容量不同；收益不能单独归因于信息恢复或表示崩溃。",
+    "数值编码、数据划分不变；本步没有新增类别编码、交互模型或论文算法复现。",
+    "仅来源训练拟合；来源合并AUC选正则，0.005固定门槛用于避免追逐极小增益，不是统计显著性阈值。",
+    "同时报告固定0.1正则以区分选择影响；不按目标结果选择部署模型。",
+    "来源站点宏AUC和阳性至少10的宏AUC只作敏感性报告，不再遍历选模政策。",
+    "历史检查点和本次头拟合都使用同一来源训练人群，非交叉拟合；既有来源验证也被多次探索。",
+    "AUC/AP按原始分数排序，Brier按sigmoid概率；与历史单精度概率排序可能有极小并列差异。",
+    "单历史种子、同一批探索数据；配对错误只描述关联，不能作为独立确认或因果识别。"
+  ],
+  "full_v5_states_unchanged": true,
+  "full_v5_gradients_untouched": true
+}
