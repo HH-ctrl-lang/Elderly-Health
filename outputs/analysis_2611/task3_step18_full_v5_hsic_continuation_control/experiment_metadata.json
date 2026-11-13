@@ -1,0 +1,19 @@
+{
+  "completed": true,
+  "source_phase_complete": true,
+  "target_used_for_selection": false,
+  "train_from_scratch_runs": 0,
+  "planned_continuation_runs": 9,
+  "new_continuation_runs": 9,
+  "reused_continuation_runs": 0,
+  "individual_records_exported": false,
+  "signature": "84024e620cfec900f2f70c04a36988faf909cb84bb2534ff31c01b71c6f17668",
+  "limitations": [
+    "从历史最终完整模型局部续训，不等同于改变整个从头训练过程。",
+    "三组均重置Adam并共用较小固定学习率；原约束续训用于控制新增训练时间和优化器重置。",
+    "力度仅在历史检查点的来源批次上匹配，不保证整条训练轨迹或各参数组力度相等。",
+    "所有六项有效损失均保留并从第一步使用完整权重；原历史零图/零熵配置保持不变。",
+    "第0轮可选；固定末轮为预定机制终点，不能根据目标结果改选。",
+    "仅历史种子42，来源重复批次不是独立队列；目标微小变化不能视为稳定改进。"
+  ]
+}
