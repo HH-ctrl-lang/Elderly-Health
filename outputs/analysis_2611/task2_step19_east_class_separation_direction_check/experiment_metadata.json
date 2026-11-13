@@ -1,0 +1,77 @@
+{
+  "completed": true,
+  "training_runs": 0,
+  "optimizer_steps": 0,
+  "model_loads": 0,
+  "individual_records_exported": false,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "runner_sha256": "614d741ec414264d541090a41e29874b61202f92ed5eb10371bf096ce4c872dc",
+  "prerequisite_hashes": {
+    "source_distance_rules.json": "82446d9ba03aa12399c7c01250226fc245861fc2683524064f3d6efe3fc682eb",
+    "distance_pair_bins.csv": "b22340db34d04495bd41defbfe861b41bea53bf840095aae8a08ac55416934ea",
+    "experiment_metadata.json": "db30f2b832feaf46c8adf9d86e637c31319e9600eecc6cbc0ad54aa11d6e04db"
+  },
+  "spaces": {
+    "full_19": [
+      "residence",
+      "age",
+      "gender",
+      "education",
+      "marital_status",
+      "living_alone",
+      "wealth",
+      "chronic_disease",
+      "social_activity",
+      "IADL",
+      "depression",
+      "sleep_quality",
+      "sleep_duration",
+      "physical_activity",
+      "if_use_mobile_phone",
+      "using_phone_year",
+      "hours_phone_per_day",
+      "smoke",
+      "alcohol"
+    ],
+    "demographic": [
+      "residence",
+      "age",
+      "gender",
+      "marital_status",
+      "living_alone"
+    ],
+    "health_function": [
+      "chronic_disease",
+      "IADL",
+      "depression",
+      "physical_activity"
+    ],
+    "demographic_health": [
+      "residence",
+      "age",
+      "gender",
+      "marital_status",
+      "living_alone",
+      "chronic_disease",
+      "IADL",
+      "depression",
+      "physical_activity"
+    ]
+  },
+  "source_references": [
+    "equal_site_all",
+    "equal_site_min10"
+  ],
+  "limitations": [
+    "仅作方向检查，没有新增置信区间、显著性检验、因果效应或特征重要性排名。",
+    "同类距离排除自身；每类至少2人，来源小阳性站点仍不可靠，单列最小人数敏感性分析。",
+    "异类减同类均值及其相对值只描述所选距离下的分离，不等价于最优可分类性；负值不截断。",
+    "距离逐特征相加，人口健康组合不额外估计交互；分离弱不证明输入信息不足，也不证明隐层崩溃。",
+    "缺失任一侧距离记1；完整样本为原始19项均无缺失的选择后人群，不是缺失干预。",
+    "子空间沿用来源类型和尺度，权重在所选组内重新归一；不能与第18步原始分摊数直接相加。",
+    "同类与异类都按站点内比较，站点均值等权；来源筛选改变参照人群，不视为正确答案。",
+    "近距离与其他距离的错误率来自第17步保存汇总；关联不证明相似造成错误。",
+    "重复使用既有数据做探索，改进方向需后续受控模型对照验证。"
+  ],
+  "models_used": "第17步已有聚合预测结果；未加载模型"
+}
