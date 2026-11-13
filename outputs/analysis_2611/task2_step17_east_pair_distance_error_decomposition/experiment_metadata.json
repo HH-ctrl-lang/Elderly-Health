@@ -1,0 +1,41 @@
+{
+  "completed": true,
+  "training_runs": 0,
+  "optimizer_steps": 0,
+  "model_loads": 3,
+  "individual_records_exported": false,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "runner_sha256": "9a80cbf69d14e94a3e9a365933a80c1a6190e589569c113061617d4c3c787530",
+  "helper_sha256": "d0cfd7cefb99af25ee6d53614c1b6ce788be65717bd2d4d67bdef8e57efa1274",
+  "code_sha256": {
+    "models.py": "3a0c5be47d200cbf3f69e6069dee3c8199aa033121df971fbc0414ff682e78b5",
+    "losses.py": "b74b305d4a961ff15e9456c976a4d23a115859bb85c19d6d60779b9f91c822d8"
+  },
+  "torch_version": "2.4.1+cpu",
+  "numpy_version": "1.26.4",
+  "distances": [
+    "phone_balanced",
+    "equal_19"
+  ],
+  "calibration_pairs_per_site": 5000,
+  "prior_work_checked": [
+    "doc/实验2610.md",
+    "doc/实验2611.md",
+    "task2_step9_east_persistent_ranking_failures",
+    "task2_step11_east_phone_pairwise_decomposition",
+    "task3_step18_full_v5_hsic_continuation_control"
+  ],
+  "limitations": [
+    "当前为反复使用东部标签的探索性诊断，不是新的独立验证或因果证明。",
+    "距离按来源特征类型与尺度定义，非临床验证的相似度；粗分组不能保证各变量构成真正匹配。",
+    "手机三列主分析合为一个等权块，19列等权仅为敏感性对照；距离规则不是特征重要性。",
+    "全部比较仅在同一站点内部，来源验证参照为有效站点等权；来源验证参与过历史选模，可能乐观。",
+    "来源训练异标签配对的分位点决定区间；目标标签仅用于最终错误分解和碰撞描述。",
+    "配对共享患者，配对数不是独立样本量；小组按不同患者人数标记，不进行配对级显著性检验。",
+    "任一侧缺失记距离1，另报完整特征配对数量和错误率；未发现差异不能证明没有测量或遗漏变量问题。",
+    "构成项与组内排序项是依赖来源参照和分组方式的代数恒等式，不代表原因占比。",
+    "精确相同输入的异标签配对不等于错标；其上界仅约束当前有限样本，不能证明模型可达到该成绩。"
+  ],
+  "model_states_unchanged": true,
+  "optimizer_gradients_untouched": true
+}
