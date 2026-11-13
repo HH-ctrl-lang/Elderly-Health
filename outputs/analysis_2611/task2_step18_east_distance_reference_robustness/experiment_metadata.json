@@ -1,0 +1,44 @@
+{
+  "completed": true,
+  "training_runs": 0,
+  "optimizer_steps": 0,
+  "model_loads": 3,
+  "bootstrap_repeats": 500,
+  "individual_records_exported": false,
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "runner_sha256": "711c882d041b60e88666ba131151a6e66bb23f8cc37acee89c37ec1c5e20edc2",
+  "previous_step_artifact_sha256": {
+    "source_distance_rules.json": "82446d9ba03aa12399c7c01250226fc245861fc2683524064f3d6efe3fc682eb",
+    "distance_pair_bins.csv": "b22340db34d04495bd41defbfe861b41bea53bf840095aae8a08ac55416934ea"
+  },
+  "helper_sha256": {
+    "east_pair_distance_error_decomposition.py": "9a80cbf69d14e94a3e9a365933a80c1a6190e589569c113061617d4c3c787530",
+    "full_v5_loss_gradient_audit.py": "d0cfd7cefb99af25ee6d53614c1b6ce788be65717bd2d4d67bdef8e57efa1274",
+    "models.py": "3a0c5be47d200cbf3f69e6069dee3c8199aa033121df971fbc0414ff682e78b5",
+    "losses.py": "b74b305d4a961ff15e9456c976a4d23a115859bb85c19d6d60779b9f91c822d8"
+  },
+  "reference_policies": [
+    "equal_site_all",
+    "pair_weighted_all",
+    "equal_site_min10",
+    "shared_complete_sites"
+  ],
+  "cohorts": [
+    "all",
+    "complete"
+  ],
+  "torch_version": "2.4.1+cpu",
+  "numpy_version": "1.26.4",
+  "limitations": [
+    "固定历史模型、来源距离规则及观察到的站点；区间不包含重训、选模、阈值估计或新站点的不确定性。",
+    "按站点×标签×是否缺失分层重采样患者，类别人数及缺失分层人数固定；不将配对当成独立患者。",
+    "只有2至3名阳性时，bootstrap也无法补出未观察到的异质性；结合最小阳性数和逐站点参照敏感性判断。",
+    "参照等站点、配对数加权、排除小阳性站点对应不同人群与权重，不根据东部结果挑选最佳参照。",
+    "缺失完整样本是选择后的人群，AUC变化不能证明缺失填补导致性能差；shared_complete_sites固定两种人群的来源成员。",
+    "bootstrap正值比例不是P值，未做因果检验；分解不解释原因占比。",
+    "特征块分摊的是距离，不是对AUC的贡献；相似度没有医学因果含义。",
+    "同一数据反复探索，单种子条件区间不是独立确认，未进行多重比较显著性宣告。"
+  ],
+  "model_states_unchanged": true,
+  "optimizer_gradients_untouched": true
+}
