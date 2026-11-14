@@ -1,0 +1,37 @@
+{
+  "completed": true,
+  "paper": "https://doi.org/10.1038/s41586-024-08328-6",
+  "paper_year": 2025,
+  "method": "official_TabPFN_v2",
+  "package_versions": {
+    "tabpfn": "2.0.9",
+    "scikit-learn": "1.6.1",
+    "torch": "2.4.1+cpu",
+    "numpy": "1.26.4",
+    "scipy": "1.15.3",
+    "pandas": "2.2.3"
+  },
+  "checkpoint_sha256": "f65a35685aeef42e31b796d9bfa34e68d6fc780bc98e7bff7763802964cf435f",
+  "checkpoint_url": "https://huggingface.co/Prior-Labs/TabPFN-v2-clf/resolve/275f19d2add9c2c0de38f9ebaded3856599fa2e7/tabpfn-v2-classifier.ckpt",
+  "input_sha256": "969f0c1c82faafcfa402f37572e4a8ceb324492062cf1e590465f82dc6b5b6de",
+  "runner_sha256": "206144a0438e1e7b468122eed8f08405433b841ee9578e152fd8a3db5498c61f",
+  "n_estimators": 4,
+  "seed": 42,
+  "device": "cpu",
+  "query_batch_size": 128,
+  "pretrained_parameter_updates": 0,
+  "v5_training_runs": 0,
+  "context_fits": 3,
+  "individual_records_exported": false,
+  "source_validation_used_for_selection": false,
+  "limitations": [
+    "小中型表格预测方法，适用规模覆盖19维；不是专门为低维因果解耦设计，也不识别因果特征。",
+    "直接使用作者分类器、内部预处理和2025原始v2权重；未添加加权BCE、IRM、稀疏或本项目校正头。",
+    "输入为原19项原始数值和缺失，采用官方自动类别检测；患者划分与完整V5相同，预处理及训练目标不同。",
+    "固定默认四成员集成、固定种子、无超参搜索；这是作者方法的有限配置评估，不是Nature整套基准复现。",
+    "只用来源训练样本作为上下文；未将来源验证并入，不使用目标标签训练、校准或选模。",
+    "不重训线性、树或V5；V5站点AUC由旧汇总读取，差异不能单独归因于表征崩溃。",
+    "CPU使用完整来源训练人群，可能耗时较长；查询分批仅控制内存，不减少样本。",
+    "既有数据已反复探索，单固定配置结果只作方法适用性线索。"
+  ]
+}
